@@ -1,0 +1,18 @@
+version: "3.5"
+
+services:
+  postgres:
+    image: postgres:12.5
+    volumes:
+      - backend-caencamp-pgData:/var/lib/postgresql/data
+      - ./data/db/dump:/db-dump
+      - ./data/db/init:/db-init
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=local-password
+      - POSTGRES_USER=backend-local-user
+      - POSTGRES_DB=cc_backend_db
+
+volumes:
+  backend-caencamp-pgData:
