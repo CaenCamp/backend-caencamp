@@ -5,7 +5,7 @@
 -- Dumped from database version 12.5 (Debian 12.5-1.pgdg100+1)
 -- Dumped by pg_dump version 12.5 (Debian 12.5-1.pgdg100+1)
 
--- Started on 2021-07-15 08:14:01 UTC
+-- Started on 2021-07-15 17:19:19 UTC
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -27,7 +27,7 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 
 
 --
--- TOC entry 3163 (class 0 OID 0)
+-- TOC entry 3166 (class 0 OID 0)
 -- Dependencies: 2
 -- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
 --
@@ -209,7 +209,7 @@ CREATE SEQUENCE public.migrations_id_seq
 
 
 --
--- TOC entry 3164 (class 0 OID 0)
+-- TOC entry 3167 (class 0 OID 0)
 -- Dependencies: 203
 -- Name: migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
@@ -243,7 +243,7 @@ CREATE SEQUENCE public.migrations_lock_index_seq
 
 
 --
--- TOC entry 3165 (class 0 OID 0)
+-- TOC entry 3168 (class 0 OID 0)
 -- Dependencies: 205
 -- Name: migrations_lock_index_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
 --
@@ -264,7 +264,12 @@ CREATE TABLE public.organization (
     url character varying(255) DEFAULT NULL::character varying,
     logo character varying(255) DEFAULT NULL::character varying,
     description_html text,
-    description_markdown text
+    description_markdown text,
+    email character varying(150),
+    address_country character varying(5) DEFAULT 'FR'::character varying NOT NULL,
+    address_locality character varying(150) DEFAULT 'Caen'::character varying NOT NULL,
+    postal_code character varying(20) DEFAULT '14000'::character varying NOT NULL,
+    street_address character varying(300)
 );
 
 
@@ -544,17 +549,18 @@ ALTER TABLE ONLY public.migrations_lock ALTER COLUMN index SET DEFAULT nextval('
 
 
 --
--- TOC entry 3154 (class 0 OID 16851)
+-- TOC entry 3157 (class 0 OID 16851)
 -- Dependencies: 232
 -- Data for Name: contact_point; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.contact_point (id, organization_id, email, telephone, name, contact_type) FROM stdin;
+5d960d34-8b44-4bd5-840a-f55cfb10d01e	7	contact@caen.camp	\N	Alexis	\N
 \.
 
 
 --
--- TOC entry 3130 (class 0 OID 16424)
+-- TOC entry 3133 (class 0 OID 16424)
 -- Dependencies: 208
 -- Data for Name: edition; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -623,7 +629,7 @@ COPY public.edition (id, category_id, mode_id, place_id, sponsor_id, organizer_i
 
 
 --
--- TOC entry 3131 (class 0 OID 16432)
+-- TOC entry 3134 (class 0 OID 16432)
 -- Dependencies: 209
 -- Data for Name: edition_category; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -637,7 +643,7 @@ COPY public.edition_category (id, label, description) FROM stdin;
 
 
 --
--- TOC entry 3134 (class 0 OID 16440)
+-- TOC entry 3137 (class 0 OID 16440)
 -- Dependencies: 212
 -- Data for Name: edition_mode; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -650,17 +656,18 @@ COPY public.edition_mode (id, label) FROM stdin;
 
 
 --
--- TOC entry 3155 (class 0 OID 16867)
+-- TOC entry 3158 (class 0 OID 16867)
 -- Dependencies: 233
 -- Data for Name: job_posting; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.job_posting (id, title, url, date_posted, employer_overview, employment_type, experience_requirements, job_start_date, skills, valid_through, hiring_organization_id, base_salary, job_location_type, job_immediate_start, published) FROM stdin;
+080651f8-7dd5-465a-95c3-78674b8a84ac	Premiére offre	https://www.arte.tv/fr/videos/090542-000-A/girl/	2021-07-15	arstrast	CDD	arstarst	2021-07-28	arstrsat	2021-07-31	7	\N	office	f	f
 \.
 
 
 --
--- TOC entry 3126 (class 0 OID 16387)
+-- TOC entry 3129 (class 0 OID 16387)
 -- Dependencies: 204
 -- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -671,11 +678,12 @@ COPY public.migrations (id, name, batch, migration_time) FROM stdin;
 5	20200307072349_creation-table-job_posting.js	2	2021-07-15 08:05:02.46+00
 6	20200410065709_user_account.js	2	2021-07-15 08:05:02.476+00
 7	20200428102341_refresh-token.js	2	2021-07-15 08:05:02.498+00
+8	20210715154720_update-organization.js	3	2021-07-15 15:53:08.187+00
 \.
 
 
 --
--- TOC entry 3128 (class 0 OID 16395)
+-- TOC entry 3131 (class 0 OID 16395)
 -- Dependencies: 206
 -- Data for Name: migrations_lock; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -686,20 +694,20 @@ COPY public.migrations_lock (index, is_locked) FROM stdin;
 
 
 --
--- TOC entry 3136 (class 0 OID 16445)
+-- TOC entry 3139 (class 0 OID 16445)
 -- Dependencies: 214
 -- Data for Name: organization; Type: TABLE DATA; Schema: public; Owner: -
 --
 
-COPY public.organization (id, name, slug, description, url, logo, description_html, description_markdown) FROM stdin;
-7	CaenCamp	caencamp	Le meetup des développeurs caennais	https://caen.camp	https://www.caen.camp/static/logoFondBlanc-278da657a83902f7d21083ade8e9ce7a.png	\N	\N
-8	SII	sii	Fondé en 1979, le Groupe SII est une Entreprise de Services du Numérique à dimension internationale disposant d’une large couverture géographique avec 88 implantations réparties sur 4 continents.	https://sii-group.com/fr-FR	https://sii-group.com/themes/custom/sii/logo.svg	\N	\N
-9	Imagile	imagile	Nous pensons et développons des applications web et mobiles qui plaisent à vos utilisateurs	https://www.imagile.fr/	https://hoodspot.fr/uploads/500/927/50092784300028/logo.jpg	\N	\N
+COPY public.organization (id, name, slug, description, url, logo, description_html, description_markdown, email, address_country, address_locality, postal_code, street_address) FROM stdin;
+8	SII	sii	Fondé en 1979, le Groupe SII est une Entreprise de Services du Numérique à dimension internationale disposant d’une large couverture géographique avec 88 implantations réparties sur 4 continents.	https://sii-group.com/fr-FR	https://sii-group.com/themes/custom/sii/logo.svg	\N	\N	\N	FR	Caen	14000	\N
+9	Imagile	imagile	Nous pensons et développons des applications web et mobiles qui plaisent à vos utilisateurs	https://www.imagile.fr/	https://hoodspot.fr/uploads/500/927/50092784300028/logo.jpg	\N	\N	\N	FR	Caen	14000	\N
+7	CaenCamp	caencamp	Le meetup des développeurs caennais	https://caen.camp	https://www.caen.camp/static/logoFondBlanc-278da657a83902f7d21083ade8e9ce7a.png	\N	\N	contact@caen.camp	FR	Caen	14000	Le Dôme - 3 Esplanade Stéphane Hessel
 \.
 
 
 --
--- TOC entry 3138 (class 0 OID 16455)
+-- TOC entry 3141 (class 0 OID 16455)
 -- Dependencies: 216
 -- Data for Name: place; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -714,17 +722,18 @@ COPY public.place (id, name, slug, description, url, address1, address2, city, l
 
 
 --
--- TOC entry 3157 (class 0 OID 16895)
+-- TOC entry 3160 (class 0 OID 16895)
 -- Dependencies: 235
 -- Data for Name: refresh_token; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.refresh_token (id, user_id, remember_me, created_at, validity_timestamp) FROM stdin;
+47ae070c-3cdd-4251-bf78-4ae0d576d5be	c9225b1e-5bfe-4790-beba-d870e2b72661	f	2021-07-15 16:55:12.09351+00	1626371712
 \.
 
 
 --
--- TOC entry 3140 (class 0 OID 16466)
+-- TOC entry 3143 (class 0 OID 16466)
 -- Dependencies: 218
 -- Data for Name: speaker; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -767,7 +776,7 @@ COPY public.speaker (id, name, slug, biography, short_biography, biography_html,
 
 
 --
--- TOC entry 3142 (class 0 OID 16474)
+-- TOC entry 3145 (class 0 OID 16474)
 -- Dependencies: 220
 -- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -826,7 +835,7 @@ COPY public.tag (id, label, slug) FROM stdin;
 
 
 --
--- TOC entry 3144 (class 0 OID 16482)
+-- TOC entry 3147 (class 0 OID 16482)
 -- Dependencies: 222
 -- Data for Name: talk; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -902,7 +911,7 @@ COPY public.talk (id, type_id, edition_id, title, slug, description, video, shor
 
 
 --
--- TOC entry 3146 (class 0 OID 16491)
+-- TOC entry 3149 (class 0 OID 16491)
 -- Dependencies: 224
 -- Data for Name: talk_speaker; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -979,7 +988,7 @@ COPY public.talk_speaker (talk_id, speaker_id) FROM stdin;
 
 
 --
--- TOC entry 3147 (class 0 OID 16494)
+-- TOC entry 3150 (class 0 OID 16494)
 -- Dependencies: 225
 -- Data for Name: talk_tag; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -1080,7 +1089,7 @@ COPY public.talk_tag (talk_id, tag_id) FROM stdin;
 
 
 --
--- TOC entry 3148 (class 0 OID 16497)
+-- TOC entry 3151 (class 0 OID 16497)
 -- Dependencies: 226
 -- Data for Name: talk_type; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -1093,17 +1102,18 @@ COPY public.talk_type (id, label, description, duration_in_minutes) FROM stdin;
 
 
 --
--- TOC entry 3156 (class 0 OID 16886)
+-- TOC entry 3159 (class 0 OID 16886)
 -- Dependencies: 234
 -- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: -
 --
 
 COPY public.user_account (id, username, password, created_at) FROM stdin;
+c9225b1e-5bfe-4790-beba-d870e2b72661	alexis	$2b$10$YCNa6ZX1RG8.2jZhvSMaL.jsIHnURFXu6P2Q3MJ.DqzI956D7aiaS	2021-07-15 16:50:21.278051+00
 \.
 
 
 --
--- TOC entry 3150 (class 0 OID 16506)
+-- TOC entry 3153 (class 0 OID 16506)
 -- Dependencies: 228
 -- Data for Name: web_site; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -1209,7 +1219,7 @@ COPY public.web_site (id, type_id, speaker_id, url) FROM stdin;
 
 
 --
--- TOC entry 3152 (class 0 OID 16514)
+-- TOC entry 3155 (class 0 OID 16514)
 -- Dependencies: 230
 -- Data for Name: web_site_type; Type: TABLE DATA; Schema: public; Owner: -
 --
@@ -1223,7 +1233,7 @@ COPY public.web_site_type (id, label) FROM stdin;
 
 
 --
--- TOC entry 3166 (class 0 OID 0)
+-- TOC entry 3169 (class 0 OID 0)
 -- Dependencies: 207
 -- Name: admin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1232,7 +1242,7 @@ SELECT pg_catalog.setval('public.admin_id_seq', 1, false);
 
 
 --
--- TOC entry 3167 (class 0 OID 0)
+-- TOC entry 3170 (class 0 OID 0)
 -- Dependencies: 210
 -- Name: edition_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1241,7 +1251,7 @@ SELECT pg_catalog.setval('public.edition_category_id_seq', 12, true);
 
 
 --
--- TOC entry 3168 (class 0 OID 0)
+-- TOC entry 3171 (class 0 OID 0)
 -- Dependencies: 211
 -- Name: edition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1250,7 +1260,7 @@ SELECT pg_catalog.setval('public.edition_id_seq', 59, true);
 
 
 --
--- TOC entry 3169 (class 0 OID 0)
+-- TOC entry 3172 (class 0 OID 0)
 -- Dependencies: 213
 -- Name: edition_mode_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1259,16 +1269,16 @@ SELECT pg_catalog.setval('public.edition_mode_id_seq', 9, true);
 
 
 --
--- TOC entry 3170 (class 0 OID 0)
+-- TOC entry 3173 (class 0 OID 0)
 -- Dependencies: 203
 -- Name: migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
 
-SELECT pg_catalog.setval('public.migrations_id_seq', 7, true);
+SELECT pg_catalog.setval('public.migrations_id_seq', 8, true);
 
 
 --
--- TOC entry 3171 (class 0 OID 0)
+-- TOC entry 3174 (class 0 OID 0)
 -- Dependencies: 205
 -- Name: migrations_lock_index_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1277,7 +1287,7 @@ SELECT pg_catalog.setval('public.migrations_lock_index_seq', 1, true);
 
 
 --
--- TOC entry 3172 (class 0 OID 0)
+-- TOC entry 3175 (class 0 OID 0)
 -- Dependencies: 215
 -- Name: organization_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1286,7 +1296,7 @@ SELECT pg_catalog.setval('public.organization_id_seq', 10, true);
 
 
 --
--- TOC entry 3173 (class 0 OID 0)
+-- TOC entry 3176 (class 0 OID 0)
 -- Dependencies: 217
 -- Name: place_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1295,7 +1305,7 @@ SELECT pg_catalog.setval('public.place_id_seq', 15, true);
 
 
 --
--- TOC entry 3174 (class 0 OID 0)
+-- TOC entry 3177 (class 0 OID 0)
 -- Dependencies: 219
 -- Name: speaker_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1304,7 +1314,7 @@ SELECT pg_catalog.setval('public.speaker_id_seq', 33, true);
 
 
 --
--- TOC entry 3175 (class 0 OID 0)
+-- TOC entry 3178 (class 0 OID 0)
 -- Dependencies: 221
 -- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1313,7 +1323,7 @@ SELECT pg_catalog.setval('public.tag_id_seq', 49, true);
 
 
 --
--- TOC entry 3176 (class 0 OID 0)
+-- TOC entry 3179 (class 0 OID 0)
 -- Dependencies: 223
 -- Name: talk_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1322,7 +1332,7 @@ SELECT pg_catalog.setval('public.talk_id_seq', 68, true);
 
 
 --
--- TOC entry 3177 (class 0 OID 0)
+-- TOC entry 3180 (class 0 OID 0)
 -- Dependencies: 227
 -- Name: talk_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1331,7 +1341,7 @@ SELECT pg_catalog.setval('public.talk_type_id_seq', 9, true);
 
 
 --
--- TOC entry 3178 (class 0 OID 0)
+-- TOC entry 3181 (class 0 OID 0)
 -- Dependencies: 229
 -- Name: web_site_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1340,7 +1350,7 @@ SELECT pg_catalog.setval('public.web_site_id_seq', 98, true);
 
 
 --
--- TOC entry 3179 (class 0 OID 0)
+-- TOC entry 3182 (class 0 OID 0)
 -- Dependencies: 231
 -- Name: web_site_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
 --
@@ -1349,7 +1359,7 @@ SELECT pg_catalog.setval('public.web_site_type_id_seq', 12, true);
 
 
 --
--- TOC entry 2970 (class 2606 OID 16866)
+-- TOC entry 2973 (class 2606 OID 16866)
 -- Name: contact_point contact_point_organization_id_email_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1358,7 +1368,7 @@ ALTER TABLE ONLY public.contact_point
 
 
 --
--- TOC entry 2972 (class 2606 OID 16859)
+-- TOC entry 2975 (class 2606 OID 16859)
 -- Name: contact_point contact_point_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1367,7 +1377,7 @@ ALTER TABLE ONLY public.contact_point
 
 
 --
--- TOC entry 2933 (class 2606 OID 16699)
+-- TOC entry 2936 (class 2606 OID 16699)
 -- Name: edition_category edition_category_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1376,7 +1386,7 @@ ALTER TABLE ONLY public.edition_category
 
 
 --
--- TOC entry 2935 (class 2606 OID 16701)
+-- TOC entry 2938 (class 2606 OID 16701)
 -- Name: edition_mode edition_mode_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1385,7 +1395,7 @@ ALTER TABLE ONLY public.edition_mode
 
 
 --
--- TOC entry 2925 (class 2606 OID 16703)
+-- TOC entry 2928 (class 2606 OID 16703)
 -- Name: edition edition_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1394,7 +1404,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 2974 (class 2606 OID 16880)
+-- TOC entry 2977 (class 2606 OID 16880)
 -- Name: job_posting job_posting_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1403,7 +1413,7 @@ ALTER TABLE ONLY public.job_posting
 
 
 --
--- TOC entry 2923 (class 2606 OID 16400)
+-- TOC entry 2926 (class 2606 OID 16400)
 -- Name: migrations_lock migrations_lock_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1412,7 +1422,7 @@ ALTER TABLE ONLY public.migrations_lock
 
 
 --
--- TOC entry 2921 (class 2606 OID 16392)
+-- TOC entry 2924 (class 2606 OID 16392)
 -- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1421,7 +1431,7 @@ ALTER TABLE ONLY public.migrations
 
 
 --
--- TOC entry 2937 (class 2606 OID 16705)
+-- TOC entry 2940 (class 2606 OID 16705)
 -- Name: organization organization_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1430,7 +1440,7 @@ ALTER TABLE ONLY public.organization
 
 
 --
--- TOC entry 2940 (class 2606 OID 16707)
+-- TOC entry 2943 (class 2606 OID 16707)
 -- Name: place place_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1439,7 +1449,7 @@ ALTER TABLE ONLY public.place
 
 
 --
--- TOC entry 2980 (class 2606 OID 16902)
+-- TOC entry 2983 (class 2606 OID 16902)
 -- Name: refresh_token refresh_token_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1448,7 +1458,7 @@ ALTER TABLE ONLY public.refresh_token
 
 
 --
--- TOC entry 2982 (class 2606 OID 16909)
+-- TOC entry 2985 (class 2606 OID 16909)
 -- Name: refresh_token refresh_token_user_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1457,7 +1467,7 @@ ALTER TABLE ONLY public.refresh_token
 
 
 --
--- TOC entry 2943 (class 2606 OID 16709)
+-- TOC entry 2946 (class 2606 OID 16709)
 -- Name: speaker speaker_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1466,7 +1476,7 @@ ALTER TABLE ONLY public.speaker
 
 
 --
--- TOC entry 2946 (class 2606 OID 16711)
+-- TOC entry 2949 (class 2606 OID 16711)
 -- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1475,7 +1485,7 @@ ALTER TABLE ONLY public.tag
 
 
 --
--- TOC entry 2951 (class 2606 OID 16713)
+-- TOC entry 2954 (class 2606 OID 16713)
 -- Name: talk talk_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1484,7 +1494,7 @@ ALTER TABLE ONLY public.talk
 
 
 --
--- TOC entry 2956 (class 2606 OID 16715)
+-- TOC entry 2959 (class 2606 OID 16715)
 -- Name: talk_speaker talk_speaker_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1493,7 +1503,7 @@ ALTER TABLE ONLY public.talk_speaker
 
 
 --
--- TOC entry 2960 (class 2606 OID 16717)
+-- TOC entry 2963 (class 2606 OID 16717)
 -- Name: talk_tag talk_tag_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1502,7 +1512,7 @@ ALTER TABLE ONLY public.talk_tag
 
 
 --
--- TOC entry 2962 (class 2606 OID 16719)
+-- TOC entry 2965 (class 2606 OID 16719)
 -- Name: talk_type talk_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1511,7 +1521,7 @@ ALTER TABLE ONLY public.talk_type
 
 
 --
--- TOC entry 2976 (class 2606 OID 16892)
+-- TOC entry 2979 (class 2606 OID 16892)
 -- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1520,7 +1530,7 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- TOC entry 2978 (class 2606 OID 16894)
+-- TOC entry 2981 (class 2606 OID 16894)
 -- Name: user_account user_account_username_unique; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1529,7 +1539,7 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- TOC entry 2966 (class 2606 OID 16721)
+-- TOC entry 2969 (class 2606 OID 16721)
 -- Name: web_site web_site_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1538,7 +1548,7 @@ ALTER TABLE ONLY public.web_site
 
 
 --
--- TOC entry 2968 (class 2606 OID 16723)
+-- TOC entry 2971 (class 2606 OID 16723)
 -- Name: web_site_type web_site_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1547,7 +1557,7 @@ ALTER TABLE ONLY public.web_site_type
 
 
 --
--- TOC entry 2957 (class 1259 OID 16724)
+-- TOC entry 2960 (class 1259 OID 16724)
 -- Name: idx_9e8bff4a6f0601d5; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1555,7 +1565,7 @@ CREATE INDEX idx_9e8bff4a6f0601d5 ON public.talk_tag USING btree (talk_id);
 
 
 --
--- TOC entry 2958 (class 1259 OID 16725)
+-- TOC entry 2961 (class 1259 OID 16725)
 -- Name: idx_9e8bff4abad26311; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1563,7 +1573,7 @@ CREATE INDEX idx_9e8bff4abad26311 ON public.talk_tag USING btree (tag_id);
 
 
 --
--- TOC entry 2948 (class 1259 OID 16726)
+-- TOC entry 2951 (class 1259 OID 16726)
 -- Name: idx_9f24d5bb74281a5e; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1571,7 +1581,7 @@ CREATE INDEX idx_9f24d5bb74281a5e ON public.talk USING btree (edition_id);
 
 
 --
--- TOC entry 2949 (class 1259 OID 16727)
+-- TOC entry 2952 (class 1259 OID 16727)
 -- Name: idx_9f24d5bbc54c8c93; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1579,7 +1589,7 @@ CREATE INDEX idx_9f24d5bbc54c8c93 ON public.talk USING btree (type_id);
 
 
 --
--- TOC entry 2926 (class 1259 OID 16728)
+-- TOC entry 2929 (class 1259 OID 16728)
 -- Name: idx_a891181f12469de2; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1587,7 +1597,7 @@ CREATE INDEX idx_a891181f12469de2 ON public.edition USING btree (category_id);
 
 
 --
--- TOC entry 2927 (class 1259 OID 16729)
+-- TOC entry 2930 (class 1259 OID 16729)
 -- Name: idx_a891181f12f7fb51; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1595,7 +1605,7 @@ CREATE INDEX idx_a891181f12f7fb51 ON public.edition USING btree (sponsor_id);
 
 
 --
--- TOC entry 2928 (class 1259 OID 16730)
+-- TOC entry 2931 (class 1259 OID 16730)
 -- Name: idx_a891181f77e5854a; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1603,7 +1613,7 @@ CREATE INDEX idx_a891181f77e5854a ON public.edition USING btree (mode_id);
 
 
 --
--- TOC entry 2929 (class 1259 OID 16731)
+-- TOC entry 2932 (class 1259 OID 16731)
 -- Name: idx_a891181f876c4dda; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1611,7 +1621,7 @@ CREATE INDEX idx_a891181f876c4dda ON public.edition USING btree (organizer_id);
 
 
 --
--- TOC entry 2930 (class 1259 OID 16732)
+-- TOC entry 2933 (class 1259 OID 16732)
 -- Name: idx_a891181fda6a219; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1619,7 +1629,7 @@ CREATE INDEX idx_a891181fda6a219 ON public.edition USING btree (place_id);
 
 
 --
--- TOC entry 2963 (class 1259 OID 16733)
+-- TOC entry 2966 (class 1259 OID 16733)
 -- Name: idx_ad410411c54c8c93; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1627,7 +1637,7 @@ CREATE INDEX idx_ad410411c54c8c93 ON public.web_site USING btree (type_id);
 
 
 --
--- TOC entry 2964 (class 1259 OID 16734)
+-- TOC entry 2967 (class 1259 OID 16734)
 -- Name: idx_ad410411d04a0f27; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1635,7 +1645,7 @@ CREATE INDEX idx_ad410411d04a0f27 ON public.web_site USING btree (speaker_id);
 
 
 --
--- TOC entry 2953 (class 1259 OID 16735)
+-- TOC entry 2956 (class 1259 OID 16735)
 -- Name: idx_b2c12bee6f0601d5; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1643,7 +1653,7 @@ CREATE INDEX idx_b2c12bee6f0601d5 ON public.talk_speaker USING btree (talk_id);
 
 
 --
--- TOC entry 2954 (class 1259 OID 16736)
+-- TOC entry 2957 (class 1259 OID 16736)
 -- Name: idx_b2c12beed04a0f27; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1651,7 +1661,7 @@ CREATE INDEX idx_b2c12beed04a0f27 ON public.talk_speaker USING btree (speaker_id
 
 
 --
--- TOC entry 2947 (class 1259 OID 16737)
+-- TOC entry 2950 (class 1259 OID 16737)
 -- Name: uniq_389b783989d9b62; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1659,7 +1669,7 @@ CREATE UNIQUE INDEX uniq_389b783989d9b62 ON public.tag USING btree (slug);
 
 
 --
--- TOC entry 2941 (class 1259 OID 16738)
+-- TOC entry 2944 (class 1259 OID 16738)
 -- Name: uniq_741d53cd989d9b62; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1667,7 +1677,7 @@ CREATE UNIQUE INDEX uniq_741d53cd989d9b62 ON public.place USING btree (slug);
 
 
 --
--- TOC entry 2944 (class 1259 OID 16739)
+-- TOC entry 2947 (class 1259 OID 16739)
 -- Name: uniq_7b85db61989d9b62; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1675,7 +1685,7 @@ CREATE UNIQUE INDEX uniq_7b85db61989d9b62 ON public.speaker USING btree (slug);
 
 
 --
--- TOC entry 2952 (class 1259 OID 16741)
+-- TOC entry 2955 (class 1259 OID 16741)
 -- Name: uniq_9f24d5bb989d9b62; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1683,7 +1693,7 @@ CREATE UNIQUE INDEX uniq_9f24d5bb989d9b62 ON public.talk USING btree (slug);
 
 
 --
--- TOC entry 2931 (class 1259 OID 16742)
+-- TOC entry 2934 (class 1259 OID 16742)
 -- Name: uniq_a891181f989d9b62; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1691,7 +1701,7 @@ CREATE UNIQUE INDEX uniq_a891181f989d9b62 ON public.edition USING btree (slug);
 
 
 --
--- TOC entry 2938 (class 1259 OID 16743)
+-- TOC entry 2941 (class 1259 OID 16743)
 -- Name: uniq_c1ee637c989d9b62; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1699,7 +1709,7 @@ CREATE UNIQUE INDEX uniq_c1ee637c989d9b62 ON public.organization USING btree (sl
 
 
 --
--- TOC entry 2996 (class 2606 OID 16860)
+-- TOC entry 2999 (class 2606 OID 16860)
 -- Name: contact_point contact_point_organization_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1708,7 +1718,7 @@ ALTER TABLE ONLY public.contact_point
 
 
 --
--- TOC entry 2992 (class 2606 OID 16744)
+-- TOC entry 2995 (class 2606 OID 16744)
 -- Name: talk_tag fk_9e8bff4a6f0601d5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1717,7 +1727,7 @@ ALTER TABLE ONLY public.talk_tag
 
 
 --
--- TOC entry 2993 (class 2606 OID 16749)
+-- TOC entry 2996 (class 2606 OID 16749)
 -- Name: talk_tag fk_9e8bff4abad26311; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1726,7 +1736,7 @@ ALTER TABLE ONLY public.talk_tag
 
 
 --
--- TOC entry 2988 (class 2606 OID 16754)
+-- TOC entry 2991 (class 2606 OID 16754)
 -- Name: talk fk_9f24d5bb74281a5e; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1735,7 +1745,7 @@ ALTER TABLE ONLY public.talk
 
 
 --
--- TOC entry 2989 (class 2606 OID 16759)
+-- TOC entry 2992 (class 2606 OID 16759)
 -- Name: talk fk_9f24d5bbc54c8c93; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1744,7 +1754,7 @@ ALTER TABLE ONLY public.talk
 
 
 --
--- TOC entry 2983 (class 2606 OID 16764)
+-- TOC entry 2986 (class 2606 OID 16764)
 -- Name: edition fk_a891181f12469de2; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1753,7 +1763,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 2984 (class 2606 OID 16769)
+-- TOC entry 2987 (class 2606 OID 16769)
 -- Name: edition fk_a891181f12f7fb51; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1762,7 +1772,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 2985 (class 2606 OID 16774)
+-- TOC entry 2988 (class 2606 OID 16774)
 -- Name: edition fk_a891181f77e5854a; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1771,7 +1781,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 2986 (class 2606 OID 16779)
+-- TOC entry 2989 (class 2606 OID 16779)
 -- Name: edition fk_a891181f876c4dda; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1780,7 +1790,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 2987 (class 2606 OID 16784)
+-- TOC entry 2990 (class 2606 OID 16784)
 -- Name: edition fk_a891181fda6a219; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1789,7 +1799,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 2994 (class 2606 OID 16789)
+-- TOC entry 2997 (class 2606 OID 16789)
 -- Name: web_site fk_ad410411c54c8c93; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1798,7 +1808,7 @@ ALTER TABLE ONLY public.web_site
 
 
 --
--- TOC entry 2995 (class 2606 OID 16794)
+-- TOC entry 2998 (class 2606 OID 16794)
 -- Name: web_site fk_ad410411d04a0f27; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1807,7 +1817,7 @@ ALTER TABLE ONLY public.web_site
 
 
 --
--- TOC entry 2990 (class 2606 OID 16799)
+-- TOC entry 2993 (class 2606 OID 16799)
 -- Name: talk_speaker fk_b2c12bee6f0601d5; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1816,7 +1826,7 @@ ALTER TABLE ONLY public.talk_speaker
 
 
 --
--- TOC entry 2991 (class 2606 OID 16804)
+-- TOC entry 2994 (class 2606 OID 16804)
 -- Name: talk_speaker fk_b2c12beed04a0f27; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1825,7 +1835,7 @@ ALTER TABLE ONLY public.talk_speaker
 
 
 --
--- TOC entry 2997 (class 2606 OID 16881)
+-- TOC entry 3000 (class 2606 OID 16881)
 -- Name: job_posting job_posting_hiring_organization_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1834,7 +1844,7 @@ ALTER TABLE ONLY public.job_posting
 
 
 --
--- TOC entry 2998 (class 2606 OID 16903)
+-- TOC entry 3001 (class 2606 OID 16903)
 -- Name: refresh_token refresh_token_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1842,7 +1852,7 @@ ALTER TABLE ONLY public.refresh_token
     ADD CONSTRAINT refresh_token_user_id_foreign FOREIGN KEY (user_id) REFERENCES public.user_account(id) ON DELETE CASCADE;
 
 
--- Completed on 2021-07-15 08:14:01 UTC
+-- Completed on 2021-07-15 17:19:20 UTC
 
 --
 -- PostgreSQL database dump complete
