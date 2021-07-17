@@ -10,6 +10,7 @@ const dbMiddleware = require('./toolbox/middleware/db');
 const jwtMiddleware = require('./toolbox/authentication/jwtMiddleware');
 const organizationRouter = require('./organization/router');
 const jobPostingRouter = require('./job-posting/router');
+const websiteTypeRouter = require('./website/type-router');
 const authenticationRouter = require('./toolbox/authentication/router');
 const config = require('./config');
 
@@ -104,5 +105,6 @@ app.use(authenticationRouter.routes()).use(
 
 app.use(organizationRouter.routes()).use(organizationRouter.allowedMethods());
 app.use(jobPostingRouter.routes()).use(jobPostingRouter.allowedMethods());
+app.use(websiteTypeRouter.routes()).use(websiteTypeRouter.allowedMethods());
 
 app.listen(3001, () => global.console.log('API started on port 3001'));

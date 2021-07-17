@@ -3,11 +3,13 @@ import { fetchUtils, Admin, Resource } from 'react-admin';
 
 import jobBoardDataProvider from './jobBoardDataProvider';
 import { authProvider } from './authProvider';
-import Organization from './organization';
-import JobPosting from './job-posting';
 import inMemoryJWT from './inMemoryJWT';
 import LoginPage from './LoginPage';
 import LogoutButton from './LogoutButton';
+
+import Organization from './organization';
+import jobPosting from './job-posting';
+import webSiteTypes from './website/websiteTypes';
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -50,13 +52,24 @@ const App = () => (
             <Resource
                 key="job-posting"
                 name="job-postings"
-                list={JobPosting.list}
-                edit={permissions === 'authenticated' ? JobPosting.edit : null}
+                list={jobPosting.list}
+                edit={permissions === 'authenticated' ? jobPosting.edit : null}
                 create={
-                    permissions === 'authenticated' ? JobPosting.create : null
+                    permissions === 'authenticated' ? jobPosting.create : null
                 }
-                icon={JobPosting.icon}
-                option={JobPosting.option}
+                icon={jobPosting.icon}
+                option={jobPosting.option}
+            />,
+            <Resource
+                key="website-types"
+                name="website-types"
+                list={webSiteTypes.list}
+                edit={permissions === 'authenticated' ? webSiteTypes.edit : null}
+                create={
+                    permissions === 'authenticated' ? webSiteTypes.create : null
+                }
+                icon={webSiteTypes.icon}
+                option={webSiteTypes.option}
             />,
         ]}
     </Admin>
