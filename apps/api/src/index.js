@@ -14,6 +14,7 @@ const jwtMiddleware = require('./toolbox/authentication/jwtMiddleware');
 
 const jobPostingRouter = require('./job-posting/router');
 const organizationRouter = require('./organization/router');
+const placeRouter = require('./place/router');
 const speakerRouter = require('./speaker/router');
 const tagRouter = require('./tag/router');
 const talkRouter = require('./talk/router');
@@ -111,6 +112,7 @@ app.use(authenticationRouter.routes()).use(
 
 app.use(jobPostingRouter.routes()).use(jobPostingRouter.allowedMethods());
 app.use(organizationRouter.routes()).use(organizationRouter.allowedMethods());
+app.use(placeRouter.routes()).use(placeRouter.allowedMethods());
 app.use(speakerRouter.routes()).use(speakerRouter.allowedMethods());
 app.use(tagRouter.routes()).use(tagRouter.allowedMethods());
 app.use(talkRouter.routes()).use(talkRouter.allowedMethods());

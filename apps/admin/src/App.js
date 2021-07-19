@@ -9,6 +9,7 @@ import LogoutButton from './LogoutButton';
 
 import jobPostings from './job-postings';
 import organizations from './organizations';
+import places from './places';
 import speakers from './speakers';
 import tags from './tags';
 import talks from './talks';
@@ -118,6 +119,17 @@ const App = () => (
                 }
                 icon={talks.icon}
                 option={talks.option}
+            />,
+            <Resource
+                key="places"
+                name="places"
+                list={places.list}
+                edit={permissions === 'authenticated' ? places.edit : null}
+                create={
+                    permissions === 'authenticated' ? places.create : null
+                }
+                icon={places.icon}
+                option={places.option}
             />,
         ]}
     </Admin>

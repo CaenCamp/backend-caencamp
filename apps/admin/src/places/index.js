@@ -76,7 +76,6 @@ const PlaceList = (props) => {
         <TextField source="name" sortable={true} />
         <WebsiteField source="url" sortable={false} />
         <Address source="postal_code" sortable={true} label="Address"/>
-        <EditionField source="editions" sortable={false} />
         <EditButton />
       </Datagrid>
     </List>
