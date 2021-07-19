@@ -15,6 +15,7 @@ const jwtMiddleware = require('./toolbox/authentication/jwtMiddleware');
 const jobPostingRouter = require('./job-posting/router');
 const organizationRouter = require('./organization/router');
 const tagRouter = require('./tag/router');
+const talkTypeRouter = require('./talk/type-router');
 const websiteTypeRouter = require('./website/type-router');
 
 const app = new Koa();
@@ -109,6 +110,7 @@ app.use(authenticationRouter.routes()).use(
 app.use(jobPostingRouter.routes()).use(jobPostingRouter.allowedMethods());
 app.use(organizationRouter.routes()).use(organizationRouter.allowedMethods());
 app.use(tagRouter.routes()).use(tagRouter.allowedMethods());
+app.use(talkTypeRouter.routes()).use(talkTypeRouter.allowedMethods());
 app.use(websiteTypeRouter.routes()).use(websiteTypeRouter.allowedMethods());
 
 app.listen(3001, () => global.console.log('API started on port 3001'));

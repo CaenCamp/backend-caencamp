@@ -10,6 +10,7 @@ import LogoutButton from './LogoutButton';
 import jobPostings from './job-postings';
 import organizations from './organizations';
 import tags from './tags';
+import talkTypes from './talks/types';
 import webSiteTypes from './websites/types';
 
 const httpClient = (url, options = {}) => {
@@ -82,6 +83,17 @@ const App = () => (
                 }
                 icon={tags.icon}
                 option={tags.option}
+            />,
+            <Resource
+                key="talk-types"
+                name="talk-types"
+                list={talkTypes.list}
+                edit={permissions === 'authenticated' ? talkTypes.edit : null}
+                create={
+                    permissions === 'authenticated' ? talkTypes.create : null
+                }
+                icon={talkTypes.icon}
+                option={talkTypes.option}
             />,
         ]}
     </Admin>
