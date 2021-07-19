@@ -9,6 +9,7 @@ import LogoutButton from './LogoutButton';
 
 import jobPostings from './job-postings';
 import organizations from './organizations';
+import speakers from './speakers';
 import tags from './tags';
 import talkTypes from './talks/types';
 import webSiteTypes from './websites/types';
@@ -94,6 +95,17 @@ const App = () => (
                 }
                 icon={talkTypes.icon}
                 option={talkTypes.option}
+            />,
+            <Resource
+                key="speakers"
+                name="speakers"
+                list={speakers.list}
+                edit={permissions === 'authenticated' ? speakers.edit : null}
+                create={
+                    permissions === 'authenticated' ? speakers.create : null
+                }
+                icon={speakers.icon}
+                option={speakers.option}
             />,
         ]}
     </Admin>

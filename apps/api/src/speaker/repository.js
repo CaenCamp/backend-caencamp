@@ -12,9 +12,13 @@ const slugConfig = {
   trim: true, // trim leading and trailing replacement chars, defaults to `true`
 };
 
-const tableName = "tag";
-const authorizedSort = ["label"];
-const authorizedFilters = ["label"];
+const tableName = "speaker";
+const authorizedSort = [
+  'name',
+];
+const authorizedFilters = [
+  'name',
+];
 
 /**
  * Knex query for filtrated Oject list
@@ -84,7 +88,7 @@ const getPaginatedList = async (queryParameters) => {
       authorizedSort,
     })
     .then(({ data, pagination }) => ({
-      tags: data,
+      speakers: data,
       pagination,
     }));
 };
@@ -126,7 +130,7 @@ const createOne = async (apiData) => {
     .returning("id")
     .insert({
         ...apiData,
-        slug: slugify(apiData.label, slugConfig),
+        slug: slugify(apiData.name, slugConfig),
     })
     .then(([wsId]) => {
       return getOneByIdQuery(client, wsId);

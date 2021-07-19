@@ -57,8 +57,6 @@ const SpeakerList = (props) => {
       <Datagrid>
         <TextField source="name" sortable={true} />
         <TextField source="shortBiography" sortable={false} />
-        <WebsitesField source="websites" sortable={false} />
-        <TalksField source="talks" sortable={false} />
         <EditButton />
       </Datagrid>
     </List>
