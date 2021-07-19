@@ -7,6 +7,8 @@ import inMemoryJWT from './inMemoryJWT';
 import LoginPage from './LoginPage';
 import LogoutButton from './LogoutButton';
 
+import editionCategories from './editions/categories';
+import editionModes from './editions/modes';
 import jobPostings from './job-postings';
 import organizations from './organizations';
 import places from './places';
@@ -130,6 +132,28 @@ const App = () => (
                 }
                 icon={places.icon}
                 option={places.option}
+            />,
+            <Resource
+                key="edition-categories"
+                name="edition-categories"
+                list={editionCategories.list}
+                edit={permissions === 'authenticated' ? editionCategories.edit : null}
+                create={
+                    permissions === 'authenticated' ? editionCategories.create : null
+                }
+                icon={editionCategories.icon}
+                option={editionCategories.option}
+            />,
+            <Resource
+                key="edition-modes"
+                name="edition-modes"
+                list={editionModes.list}
+                edit={permissions === 'authenticated' ? editionModes.edit : null}
+                create={
+                    permissions === 'authenticated' ? editionModes.create : null
+                }
+                icon={editionModes.icon}
+                option={editionModes.option}
             />,
         ]}
     </Admin>

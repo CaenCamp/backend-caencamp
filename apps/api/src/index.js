@@ -12,6 +12,8 @@ const authenticationRouter = require('./toolbox/authentication/router');
 const dbMiddleware = require('./toolbox/middleware/db');
 const jwtMiddleware = require('./toolbox/authentication/jwtMiddleware');
 
+const editionCategoryRouter = require('./edition/category-router');
+const editionModeRouter = require('./edition/mode-router');
 const jobPostingRouter = require('./job-posting/router');
 const organizationRouter = require('./organization/router');
 const placeRouter = require('./place/router');
@@ -110,6 +112,8 @@ app.use(authenticationRouter.routes()).use(
     authenticationRouter.allowedMethods()
 );
 
+app.use(editionCategoryRouter.routes()).use(editionCategoryRouter.allowedMethods());
+app.use(editionModeRouter.routes()).use(editionModeRouter.allowedMethods());
 app.use(jobPostingRouter.routes()).use(jobPostingRouter.allowedMethods());
 app.use(organizationRouter.routes()).use(organizationRouter.allowedMethods());
 app.use(placeRouter.routes()).use(placeRouter.allowedMethods());
