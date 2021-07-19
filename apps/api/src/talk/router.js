@@ -12,7 +12,7 @@ const {
 } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
-    prefix: '/api/tags',
+    prefix: '/api/talks',
 });
 
 router.use(async (ctx, next) => {
@@ -29,10 +29,10 @@ router.use(async (ctx, next) => {
 });
 
 router.get('/', async (ctx) => {
-    const { tags, pagination } = await getPaginatedList(ctx.query);
+    const { talks, pagination } = await getPaginatedList(ctx.query);
 
     const linkHeaderValue = formatPaginationToLinkHeader({
-        resourceURI: '/api/tags',
+        resourceURI: '/api/talks',
         pagination,
     });
 
@@ -40,89 +40,89 @@ router.get('/', async (ctx) => {
     if (linkHeaderValue) {
         ctx.set('Link', linkHeaderValue);
     }
-    ctx.body = tags;
+    ctx.body = talks;
 });
 
 router.post('/', async (ctx) => {
-    const newTag = await createOne(ctx.request.body);
+    const newTalk = await createOne(ctx.request.body);
 
-    if (newTag.error) {
-        const explainedError = new Error(newTag.error.message);
+    if (newTalk.error) {
+        const explainedError = new Error(newTalk.error.message);
         explainedError.status = 400;
 
         throw explainedError;
     }
 
-    ctx.body = newTag;
+    ctx.body = newTalk;
 });
 
-router.get('/:tagId', async (ctx) => {
-    const tag = await getOne(ctx.params.tagId);
+router.get('/:talkId', async (ctx) => {
+    const talk = await getOne(ctx.params.talkId);
 
-    if (!tag.id) {
+    if (!talk.id) {
         const explainedError = new Error(
-            `The tag of id ${ctx.params.tagId} does not exist.`
+            `The talk of id ${ctx.params.talkId} does not exist.`
         );
         explainedError.status = 404;
 
         throw explainedError;
     }
 
-    if (tag.error) {
-        const explainedError = new Error(tag.error.message);
+    if (talk.error) {
+        const explainedError = new Error(talk.error.message);
         explainedError.status = 400;
 
         throw explainedError;
     }
 
-    ctx.body = tag;
+    ctx.body = talk;
 });
 
-router.delete('/:tagId', async (ctx) => {
-    const deletedTag = await deleteOne(ctx.params.tagId);
+router.delete('/:talkId', async (ctx) => {
+    const deletedTalk = await deleteOne(ctx.params.talkId);
 
-    if (!deletedTag.id) {
+    if (!deletedTalk.id) {
         const explainedError = new Error(
-            `The organization of id ${ctx.params.tagId} does not exist.`
+            `The organization of id ${ctx.params.talkId} does not exist.`
         );
         explainedError.status = 404;
 
         throw explainedError;
     }
 
-    if (deletedTag.error) {
-        const explainedError = new Error(deletedTag.error.message);
+    if (deletedTalk.error) {
+        const explainedError = new Error(deletedTalk.error.message);
         explainedError.status = 400;
 
         throw explainedError;
     }
 
-    ctx.body = deletedTag;
+    ctx.body = deletedTalk;
 });
 
-router.put('/:tagId', async (ctx) => {
-    const updatedTag = await updateOne(
-        ctx.params.tagId,
+router.put('/:talkId', async (ctx) => {
+    const updatedTalk = await updateOne(
+        ctx.params.talkId,
         ctx.request.body
     );
 
-    if (updatedTag.error) {
-        const explainedError = new Error(updatedTag.error.message);
+    if (updatedTalk.error) {
+        const explainedError = new Error(updatedTalk.error.message);
         explainedError.status = 400;
 
         throw explainedError;
     }
 
-    if (!updatedTag.id) {
+    if (!updatedTalk.id) {
         const explainedError = new Error(
-            `The tag of id ${ctx.params.tagId} does not exist, so it could not be updated`
+            `The tag of id ${ctx.params.talkId} does not exist, so it could not be updated`
         );
         explainedError.status = 404;
 
         throw explainedError;
     }
 
-    ctx.body = updatedTag;
+    ctx.body = updatedTalk;
 });
 
 module.exports = router;

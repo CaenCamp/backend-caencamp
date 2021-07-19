@@ -81,10 +81,10 @@ export const TalkEdit = (props) => (
           label="Description rapide"
           validate={required()}
         />
-        <ReferenceInput label="Type" source="type" reference="talk_types">
+        <ReferenceInput label="Type" source="typeId" reference="talk-types">
           <SelectInput optionText="label" />
         </ReferenceInput>
-        <ReferenceArrayInput source="tags" reference="tags">
+        <ReferenceArrayInput source="tagsId" reference="tags">
           <SelectArrayInput optionText="label" />
         </ReferenceArrayInput>
       </FormTab>
@@ -99,6 +99,9 @@ export const TalkCreate = (props) => (
   <Create {...props}>
     <SimpleForm>
       <TextInput fullWidth source="title" validate={required()} />
+      <ReferenceInput label="Type" source="typeId" reference="talk-types">
+          <SelectInput optionText="label" />
+        </ReferenceInput>
       <TextInput
           fullWidth
           source="shortDescription"

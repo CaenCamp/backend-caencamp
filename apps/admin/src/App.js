@@ -11,6 +11,7 @@ import jobPostings from './job-postings';
 import organizations from './organizations';
 import speakers from './speakers';
 import tags from './tags';
+import talks from './talks';
 import talkTypes from './talks/types';
 import webSiteTypes from './websites/types';
 
@@ -106,6 +107,17 @@ const App = () => (
                 }
                 icon={speakers.icon}
                 option={speakers.option}
+            />,
+            <Resource
+                key="talks"
+                name="talks"
+                list={talks.list}
+                edit={permissions === 'authenticated' ? talks.edit : null}
+                create={
+                    permissions === 'authenticated' ? talks.create : null
+                }
+                icon={talks.icon}
+                option={talks.option}
             />,
         ]}
     </Admin>

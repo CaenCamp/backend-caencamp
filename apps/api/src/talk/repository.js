@@ -1,5 +1,15 @@
 const omit = require('lodash.omit');
+const slugify = require('slugify');
 const { getDbClient } = require('../toolbox/dbConnexion');
+
+const slugConfig = {
+    replacement: "-", // replace spaces with replacement character, defaults to `-`
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: true, // convert to lower case, defaults to `false`
+    strict: true, // strip special characters except replacement, defaults to `false`
+    locale: 'fr', // language code of the locale to use
+    trim: true, // trim leading and trailing replacement chars, defaults to `true`
+  };
 
 const tableName = 'talk';
 const authorizedSort = [
@@ -129,7 +139,11 @@ const createOne = async (apiData) => {
 
     return client(tableName)
         .returning('id')
-        .insert(apiData)
+        .insert({
+            ...apiData,
+            description: apiData.shortDescription,
+            slug: slugify(apiData.title, slugConfig),
+        })
         .then(([wsId]) => {
             return getOneByIdQuery(client, wsId);
         })
