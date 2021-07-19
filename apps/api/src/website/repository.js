@@ -108,7 +108,6 @@ const getOneByIdQuery = (client, id) => {
 const getOne = async (id) => {
     const client = getDbClient();
     return getOneByIdQuery(client, id)
-        .then(formatJobPostingForAPI)
         .catch((error) => ({ error }));
 };
 

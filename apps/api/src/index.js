@@ -6,13 +6,16 @@ const serve = require('koa-static');
 const { oas } = require('koa-oas3');
 const error = require('koa-json-error');
 
+const config = require('./config');
+
+const authenticationRouter = require('./toolbox/authentication/router');
 const dbMiddleware = require('./toolbox/middleware/db');
 const jwtMiddleware = require('./toolbox/authentication/jwtMiddleware');
-const organizationRouter = require('./organization/router');
+
 const jobPostingRouter = require('./job-posting/router');
+const organizationRouter = require('./organization/router');
+const tagRouter = require('./tag/router');
 const websiteTypeRouter = require('./website/type-router');
-const authenticationRouter = require('./toolbox/authentication/router');
-const config = require('./config');
 
 const app = new Koa();
 
@@ -103,8 +106,9 @@ app.use(authenticationRouter.routes()).use(
     authenticationRouter.allowedMethods()
 );
 
-app.use(organizationRouter.routes()).use(organizationRouter.allowedMethods());
 app.use(jobPostingRouter.routes()).use(jobPostingRouter.allowedMethods());
+app.use(organizationRouter.routes()).use(organizationRouter.allowedMethods());
+app.use(tagRouter.routes()).use(tagRouter.allowedMethods());
 app.use(websiteTypeRouter.routes()).use(websiteTypeRouter.allowedMethods());
 
 app.listen(3001, () => global.console.log('API started on port 3001'));

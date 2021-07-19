@@ -1,15 +1,16 @@
 import React from 'react';
 import { fetchUtils, Admin, Resource } from 'react-admin';
 
-import jobBoardDataProvider from './jobBoardDataProvider';
+import dataProvider from './dataProvider';
 import { authProvider } from './authProvider';
 import inMemoryJWT from './inMemoryJWT';
 import LoginPage from './LoginPage';
 import LogoutButton from './LogoutButton';
 
-import Organization from './organization';
-import jobPosting from './job-posting';
-import webSiteTypes from './website/websiteTypes';
+import jobPostings from './job-postings';
+import organizations from './organizations';
+import tags from './tags';
+import webSiteTypes from './websites/types';
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -23,7 +24,7 @@ const httpClient = (url, options = {}) => {
     return fetchUtils.fetchJson(url, options);
 };
 
-const dataProvider = jobBoardDataProvider(
+const caenCampDataProvider = dataProvider(
     'http://localhost:3001/api',
     httpClient
 );
@@ -31,7 +32,7 @@ const dataProvider = jobBoardDataProvider(
 const App = () => (
     <Admin
         authProvider={authProvider}
-        dataProvider={dataProvider}
+        dataProvider={caenCampDataProvider}
         loginPage={LoginPage}
         logoutButton={LogoutButton}
     >
@@ -39,26 +40,26 @@ const App = () => (
             <Resource
                 key="organisation"
                 name="organizations"
-                list={Organization.list}
+                list={organizations.list}
                 edit={
-                    permissions === 'authenticated' ? Organization.edit : null
+                    permissions === 'authenticated' ? organizations.edit : null
                 }
                 create={
-                    permissions === 'authenticated' ? Organization.create : null
+                    permissions === 'authenticated' ? organizations.create : null
                 }
-                icon={Organization.icon}
-                option={Organization.option}
+                icon={organizations.icon}
+                option={organizations.option}
             />,
             <Resource
                 key="job-posting"
                 name="job-postings"
-                list={jobPosting.list}
-                edit={permissions === 'authenticated' ? jobPosting.edit : null}
+                list={jobPostings.list}
+                edit={permissions === 'authenticated' ? jobPostings.edit : null}
                 create={
-                    permissions === 'authenticated' ? jobPosting.create : null
+                    permissions === 'authenticated' ? jobPostings.create : null
                 }
-                icon={jobPosting.icon}
-                option={jobPosting.option}
+                icon={jobPostings.icon}
+                option={jobPostings.option}
             />,
             <Resource
                 key="website-types"
@@ -70,6 +71,17 @@ const App = () => (
                 }
                 icon={webSiteTypes.icon}
                 option={webSiteTypes.option}
+            />,
+            <Resource
+                key="tags"
+                name="tags"
+                list={tags.list}
+                edit={permissions === 'authenticated' ? tags.edit : null}
+                create={
+                    permissions === 'authenticated' ? tags.create : null
+                }
+                icon={tags.icon}
+                option={tags.option}
             />,
         ]}
     </Admin>
