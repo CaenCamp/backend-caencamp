@@ -87,7 +87,11 @@ router.post('/authenticate', async (ctx) => {
         cookieOptions
     );
 
-    const token = jwt.sign({ username }, config.security.jwt.secretkey, {
+    const token = jwt.sign({
+        id: user.id,
+        fullName: 'CaenCamp Admin',
+        avatar: 'https://secure-content.meetupstatic.com/images/https%3A%2F%2Fsecure.meetupstatic.com%2Fphotos%2Fevent%2F2%2Ff%2F0%2F4%2Fhighres_468312036.jpeg/56x56.jpg',
+    }, config.security.jwt.secretkey, {
         expiresIn: config.security.jwt.expiration,
     });
 

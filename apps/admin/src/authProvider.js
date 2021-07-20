@@ -1,7 +1,5 @@
-import inMemoryJWT from './inMemoryJWT';
-
 export const authProvider = {
-    login: ({ username, password }) => {
+    login: ({ username, password }) =>  {
         const request = new Request('http://localhost:3001/authenticate', {
             method: 'POST',
             body: JSON.stringify({ username, password }),
@@ -9,56 +7,43 @@ export const authProvider = {
             credentials: 'include',
         });
         return fetch(request)
-            .then((response) => {
+            .then(response => {
                 if (response.status < 200 || response.status >= 300) {
                     throw new Error(response.statusText);
                 }
                 return response.json();
             })
-            .then(({ token, tokenExpiry }) => {
-                inMemoryJWT.setToken(token, tokenExpiry);
-                return localStorage.setItem('permissions', 'authenticated');
+            .then(auth => {
+                localStorage.setItem('auth', JSON.stringify(auth));
+            })
+            .catch(() => {
+                throw new Error('Network error')
             });
     },
     logout: () => {
-        const request = new Request('http://localhost:3001/logout', {
-            method: 'GET',
-            headers: new Headers({ 'Content-Type': 'application/json' }),
-            credentials: 'include',
-        });
-        inMemoryJWT.ereaseToken();
-        localStorage.setItem('permissions', 'anonymous');
-
-        return fetch(request).then(() => '/');
+        localStorage.removeItem('auth');
+        return Promise.resolve();
     },
-    checkAuth: () => {
-        const role = localStorage.getItem('permissions');
-        if (!inMemoryJWT.getToken() && role === 'authenticated') {
-            return inMemoryJWT.getRefreshedJWT().then((gotIt) => {
-                if (!gotIt) {
-                    localStorage.setItem('permissions', 'anonymous');
-                }
-                return Promise.resolve();
-            });
-        } else {
-            return Promise.resolve();
-        }
-    },
+    checkAuth: () => localStorage.getItem('auth')
+        ? Promise.resolve()
+        : Promise.reject(),
     checkError: (error) => {
         const status = error.status;
         if (status === 401 || status === 403) {
-            inMemoryJWT.ereaseToken();
-            localStorage.setItem('permissions', 'anonymous');
+            localStorage.removeItem('auth');
+            return Promise.reject({ redirectTo: '/credentials-required' });
         }
         return Promise.resolve();
     },
-    getPermissions: () => {
-        const role = localStorage.getItem('permissions');
-        const finalRole =
-            role === 'authenticated' && inMemoryJWT.getToken
-                ? 'authenticated'
-                : 'anonymous';
-
-        return Promise.resolve(finalRole);
+    getIdentity: () => {
+        try {
+            const { id, fullName, avatar } = JSON.parse(localStorage.getItem('auth'));
+            return Promise.resolve({ id, fullName, avatar });
+        } catch (error) {
+            return Promise.reject(error);
+        }
     },
+    getPermissions: () => localStorage.getItem('auth')
+        ? Promise.resolve('admin')
+        : Promise.reject(),
 };

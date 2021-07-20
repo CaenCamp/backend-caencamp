@@ -12,20 +12,7 @@ const {
 } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
-    prefix: '/api/talks',
-});
-
-router.use(async (ctx, next) => {
-    if (
-        !ctx.state.jwt &&
-        ['POST', 'PUT', 'DELETE'].includes(ctx.request.method)
-    ) {
-        ctx.throw(401, "You don't have the rights to make this query");
-
-        return;
-    }
-
-    await next();
+    prefix: '/talks',
 });
 
 router.get('/', async (ctx) => {

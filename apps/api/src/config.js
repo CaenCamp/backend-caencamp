@@ -56,7 +56,7 @@ const config = convict({
             expiration: {
                 doc: 'duration in seconds of the token lifetime',
                 format: 'integer',
-                default: 600, // 10 min - Token life time must be short !
+                default: 21600, // 5h
                 env: 'JWT_EXPIRATION',
             },
         },
