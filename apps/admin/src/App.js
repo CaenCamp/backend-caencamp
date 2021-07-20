@@ -7,6 +7,7 @@ import inMemoryJWT from './inMemoryJWT';
 import LoginPage from './LoginPage';
 import LogoutButton from './LogoutButton';
 
+import editions from './editions';
 import editionCategories from './editions/categories';
 import editionModes from './editions/modes';
 import jobPostings from './job-postings';
@@ -154,6 +155,17 @@ const App = () => (
                 }
                 icon={editionModes.icon}
                 option={editionModes.option}
+            />,
+            <Resource
+                key="editions"
+                name="editions"
+                list={editions.list}
+                edit={permissions === 'authenticated' ? editions.edit : null}
+                create={
+                    permissions === 'authenticated' ? editions.create : null
+                }
+                icon={editions.icon}
+                option={editions.option}
             />,
         ]}
     </Admin>

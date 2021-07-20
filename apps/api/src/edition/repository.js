@@ -11,12 +11,15 @@ const slugConfig = {
     trim: true, // trim leading and trailing replacement chars, defaults to `true`
   };
 
-const tableName = 'talk';
+const tableName = 'edition';
 const authorizedSort = [
     'title',
+    'number',
+    'start_date_time',
 ];
 const authorizedFilters = [
     'title',
+    'published',
 ];
 
 /**
@@ -89,7 +92,7 @@ const getPaginatedList = async (queryParameters) => {
             authorizedSort,
         })
         .then(({ data, pagination }) => ({
-            talks: data,
+            editions: data,
             pagination,
         }));
 };
@@ -127,15 +130,6 @@ const getOne = async (id) => {
  */
 const createOne = async (apiData) => {
     const client = getDbClient();
-
-    const type = await client
-        .first('id')
-        .from('talk_type')
-        .where({ id: apiData.typeId });
-
-    if (!type) {
-        return { error: new Error('this type does not exist') };
-    }
 
     return client(tableName)
         .returning('id')
