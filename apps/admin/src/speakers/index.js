@@ -17,6 +17,8 @@ import {
   FormTab,
 } from "react-admin";
 
+import { MarkdownInput, caenCampOptions } from '../components/inputs/MarkdownInput';
+
 const SpeakerFilters = (props) => (
   <Filter {...props}>
     <TextInput source="name" alwaysOn />
@@ -77,12 +79,11 @@ export const SpeakerEdit = (props) => (
           label="Bio rapide"
           validate={required()}
         />
-        <TextInput
-          fullWidth
-          source="biography"
+        <MarkdownInput
+          source="biographyMarkdown"
           label="Bio complète"
-          multiline
           validate={required()}
+          options={caenCampOptions}
         />
       </FormTab>
       <FormTab label="Sites web">
