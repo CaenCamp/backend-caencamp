@@ -19,18 +19,10 @@ const WebSiteTypePagination = (props) => (
   <Pagination rowsPerPageOptions={[10, 25]} {...props} />
 );
 
-const WebSiteTypeFilters = (props) => (
-    <Filter {...props}>
-      <TextInput source="label" alwaysOn />
-    </Filter>
-  );
-
 const WebSiteTypeList = (props) => {
   return (
     <List
       {...props}
-      filters={<WebSiteTypeFilters />}
-      filterDefaultValues={{}}
       sort={{ field: "label", order: "ASC" }}
       exporter={false}
       pagination={<WebSiteTypePagination />}

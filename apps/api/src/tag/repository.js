@@ -13,7 +13,7 @@ const slugConfig = {
 };
 
 const tableName = "tag";
-const authorizedSort = ["label"];
+const authorizedSort = ["label", "nbTalks"];
 const authorizedFilters = ["label"];
 
 /**
@@ -23,7 +23,20 @@ const authorizedFilters = ["label"];
  * @returns {Promise} - Knew query for filtrated Oject list
  */
 const getFilteredQuery = (client) => {
-  return client.select("*").from(tableName);
+  return client.select(
+      `${tableName}.*`,
+      client.raw(`(SELECT ARRAY(
+        SELECT tt.talk_id
+        FROM   talk_tag tt
+        WHERE  tt.tag_id = ${tableName}.id
+      ) as talks)`),
+      client.raw(`(
+        SELECT count(*)
+        FROM   talk_tag tt
+        WHERE  tt.tag_id = ${tableName}.id
+      ) as nb_talks`),
+  )
+  .from(tableName);
 };
 
 /**
@@ -97,7 +110,14 @@ const getPaginatedList = async (queryParameters) => {
  */
 const getOneByIdQuery = (client, id) => {
   return client
-    .first("*")
+    .first(
+        `${tableName}.*`,
+        client.raw(`(SELECT ARRAY(
+          SELECT tt.talk_id
+          FROM   talk_tag tt
+          WHERE  tt.tag_id = ${tableName}.id
+        ) as talks)`),
+    )
     .from(tableName)
     .where({ [`${tableName}.id`]: id });
 };
@@ -169,7 +189,10 @@ const updateOne = async (id, apiData) => {
   // update the Oject
   const updatedObject = await client(tableName)
     .where({ id })
-    .update(apiData)
+    .update({
+      ...omit(apiData, ['talks']),
+      slug: slugify(apiData.label, slugConfig),
+    })
     .catch((error) => ({ error }));
   if (updatedObject.error) {
     return updatedObject;

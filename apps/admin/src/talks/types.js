@@ -14,24 +14,15 @@ import {
   TextInput,
   required,
 } from "react-admin";
-import PropTypes from "prop-types";
 
 const TalkTypePagination = (props) => (
   <Pagination rowsPerPageOptions={[10, 25]} {...props} />
 );
 
-const TalkTypeFilters = (props) => (
-    <Filter {...props}>
-      <TextInput source="label" alwaysOn />
-    </Filter>
-  );
-
 const TalkTypeList = (props) => {
   return (
     <List
       {...props}
-      filters={<TalkTypeFilters />}
-      filterDefaultValues={{}}
       sort={{ field: "label", order: "ASC" }}
       exporter={false}
       pagination={<TalkTypePagination />}
