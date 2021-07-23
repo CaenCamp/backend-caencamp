@@ -54,6 +54,7 @@ const App = () => {
       <Resource name="organizations" {...organizations} />
       <Resource name="job-postings" {...jobPostings} />
       <Resource name="website-types" {...webSiteTypes} />
+      <Resource name="websites" {...webSiteTypes} />
       <Resource name="tags" {...tags} />
       <Resource name="talk-types" {...talkTypes} />
       <Resource name="speakers" {...speakers} />

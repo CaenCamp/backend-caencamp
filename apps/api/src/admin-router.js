@@ -10,6 +10,7 @@ const speakerRouter = require('./speaker/router');
 const tagRouter = require('./tag/router');
 const talkRouter = require('./talk/router');
 const talkTypeRouter = require('./talk/type-router');
+const websiteRouter = require('./website/router');
 const websiteTypeRouter = require('./website/type-router');
 
 const router = new Router({
@@ -36,6 +37,7 @@ router.use(speakerRouter.routes()).use(speakerRouter.allowedMethods());
 router.use(tagRouter.routes()).use(tagRouter.allowedMethods());
 router.use(talkRouter.routes()).use(talkRouter.allowedMethods());
 router.use(talkTypeRouter.routes()).use(talkTypeRouter.allowedMethods());
+router.use(websiteRouter.routes()).use(websiteRouter.allowedMethods());
 router.use(websiteTypeRouter.routes()).use(websiteTypeRouter.allowedMethods());
 
 module.exports = router;

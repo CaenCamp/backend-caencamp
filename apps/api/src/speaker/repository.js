@@ -27,7 +27,19 @@ const authorizedFilters = [
  * @returns {Promise} - Knew query for filtrated Oject list
  */
 const getFilteredQuery = (client) => {
-  return client.select("*").from(tableName);
+  return client.select(
+        `${tableName}.*`,
+        client.raw(`(SELECT ARRAY(
+          SELECT ts.talk_id
+          FROM talk_speaker ts
+          WHERE  ts.speaker_id = ${tableName}.id
+        ) as talks)`),
+        client.raw(`(SELECT ARRAY(
+          SELECT ws.id
+          FROM web_site ws
+          WHERE  ws.speaker_id = ${tableName}.id
+        ) as websites)`),
+    ).from(tableName);
 };
 
 /**
@@ -101,7 +113,19 @@ const getPaginatedList = async (queryParameters) => {
  */
 const getOneByIdQuery = (client, id) => {
   return client
-    .first("*")
+    .first(
+        `${tableName}.*`,
+        client.raw(`(SELECT ARRAY(
+          SELECT ts.talk_id
+          FROM talk_speaker ts
+          WHERE  ts.speaker_id = ${tableName}.id
+        ) as talks)`),
+        client.raw(`(SELECT ARRAY(
+          SELECT ws.id
+          FROM web_site ws
+          WHERE  ws.speaker_id = ${tableName}.id
+        ) as websites)`),
+    )
     .from(tableName)
     .where({ [`${tableName}.id`]: id });
 };

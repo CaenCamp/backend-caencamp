@@ -69,17 +69,18 @@ export default (apiUrl, httpClient) => ({
     },
 
     getManyReference: (resource, params) => {
-        const { currentPage, perPage } = params;
+        const { page: currentPage, perPage } = params.pagination;
         const { field, order } = params.sort;
+        const filters = {
+            ...params.filter,
+            [params.target]: params.id,
+        };
         const query = {
             sortBy: field,
             orderBy: order,
-            filters: JSON.stringify({
-                ...params.filter,
-                [params.target]: params.id,
-            }),
             currentPage,
             perPage,
+            ...formatFilters(filters),
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
 

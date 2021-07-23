@@ -31,7 +31,7 @@ export const authProvider = {
         const status = error.status;
         if (status === 401 || status === 403) {
             localStorage.removeItem('auth');
-            return Promise.reject({ redirectTo: '/credentials-required' });
+            return Promise.reject({ redirectTo: '/login' });
         }
         return Promise.resolve();
     },

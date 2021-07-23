@@ -5,6 +5,7 @@ const tableName = 'web_site';
 const authorizedSort = [
     'typeId',
     'speakerId',
+    'url'
 ];
 const authorizedFilters = [
     'typeId',
@@ -24,49 +25,6 @@ const getFilteredQuery = (client) => {
 };
 
 /**
- * Return queryParameters with name as real row db name
- *
- * It is not always possible to name the applicable filters from the API
- * with a name compatible with SQL tables. This is especially true when operating JOINs.
- * This method allows to transform the name of a filter that can be used from the API into a name compatible
- * with the PostgreSQL tables
- *
- * @param {Object} queryParameters
- * @return {Object} Query parameters renamed as db row name
- */
-const renameFiltersFromAPI = (queryParameters) => {
-    const filterNamesToChange = {};
-
-    return Object.keys(queryParameters).reduce((acc, filter) => {
-        if (filter === 'sortBy') {
-            const sortName = Object.prototype.hasOwnProperty.call(
-                filterNamesToChange,
-                queryParameters.sortBy
-            )
-                ? filterNamesToChange[queryParameters.sortBy]
-                : queryParameters.sortBy;
-
-            return {
-                ...acc,
-                sortBy: sortName,
-            };
-        }
-
-        const filterName = Object.prototype.hasOwnProperty.call(
-            filterNamesToChange,
-            filter
-        )
-            ? filterNamesToChange[filter]
-            : filter;
-
-        return {
-            ...acc,
-            [filterName]: queryParameters[filter],
-        };
-    }, {});
-};
-
-/**
  * Return paginated and filtered list of WebSite
  *
  * @param {object} queryParameters - An object og query parameters from Koa
@@ -74,9 +32,10 @@ const renameFiltersFromAPI = (queryParameters) => {
  */
 const getPaginatedList = async (queryParameters) => {
     const client = getDbClient();
+
     return getFilteredQuery(client)
         .paginateRestList({
-            queryParameters: renameFiltersFromAPI(queryParameters),
+            queryParameters,
             authorizedFilters,
             authorizedSort,
         })
@@ -199,9 +158,7 @@ const updateOne = async (id, apiData) => {
 module.exports = {
     createOne,
     deleteOne,
-    formatJobPostingForAPI,
     getOne,
     getPaginatedList,
-    renameFiltersFromAPI,
     updateOne,
 };
