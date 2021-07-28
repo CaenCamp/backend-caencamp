@@ -12,7 +12,11 @@ import {
 
 const SpeakerFilters = (props) => (
   <Filter {...props}>
-    <TextInput source="name" alwaysOn />
+    <TextInput
+            source="name:%l%"
+            label="Nom"
+            alwaysOn
+    />
   </Filter>
 );
 
@@ -44,12 +48,14 @@ const SpeakerList = (props) => {
       filterDefaultValues={{}}
       sort={{ field: "name", order: "ASC" }}
       exporter={false}
-    //   pagination={<SpeakerPagination />}
+      pagination={<SpeakerPagination />}
       bulkActionButtons={false}
     >
       <Datagrid>
-        <TextField source="name" sortable={true} />
-        <TextField source="shortBiography" sortable={false} />
+        <TextField label="Nom" source="name" sortable={true} />
+        <TextField label="En bref" source="shortBiography" sortable={false} />
+        <TalksField label="Nombre de talks" source="nbTalks" sortable={true} />
+        <WebsitesField label="Nombre de sites" source="websites" sortable={false} />
         <EditButton />
       </Datagrid>
     </List>

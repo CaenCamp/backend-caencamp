@@ -17,6 +17,8 @@ const slugConfig = {
 const tableName = "speaker";
 const authorizedSort = [
   'name',
+  'talks',
+  'nbTalks',
 ];
 const authorizedFilters = [
   'name',
@@ -36,6 +38,11 @@ const getFilteredQuery = (client) => {
           FROM talk_speaker ts
           WHERE  ts.speaker_id = ${tableName}.id
         ) as talks)`),
+        client.raw(`(
+          SELECT count(*)
+          FROM talk_speaker ts
+          WHERE  ts.speaker_id = ${tableName}.id
+        ) as nb_talks`),
         client.raw(`(SELECT ARRAY(
           SELECT ws.id
           FROM web_site ws
