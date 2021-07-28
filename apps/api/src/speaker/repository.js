@@ -1,5 +1,7 @@
 const omit = require("lodash.omit");
 const slugify = require('slugify');
+const { markdownToTxt } = require('markdown-to-txt');
+const marked  = require("marked");
 
 const { getDbClient } = require("../toolbox/dbConnexion");
 
@@ -153,8 +155,10 @@ const createOne = async (apiData) => {
   return client(tableName)
     .returning("id")
     .insert({
-        ...apiData,
-        slug: slugify(apiData.name, slugConfig),
+      ...omit(apiData, ['talks', 'websites']),
+      slug: slugify(apiData.name, slugConfig),
+      biographyHtml: marked(apiData.biographyMarkdown),
+      biography: markdownToTxt(apiData.biographyMarkdown),
     })
     .then(([wsId]) => {
       return getOneByIdQuery(client, wsId);
@@ -194,10 +198,17 @@ const updateOne = async (id, apiData) => {
     return {};
   }
 
+  const dataForUpdate = {
+    ...omit(apiData, ['talks', 'websites']),
+    slug: slugify(apiData.name, slugConfig),
+    biographyHtml: marked(apiData.biographyMarkdown),
+    biography: markdownToTxt(apiData.biographyMarkdown),
+  };
+
   // update the Oject
   const updatedObject = await client(tableName)
     .where({ id })
-    .update(apiData)
+    .update(dataForUpdate)
     .catch((error) => ({ error }));
   if (updatedObject.error) {
     return updatedObject;

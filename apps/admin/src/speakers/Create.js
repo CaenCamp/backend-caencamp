@@ -7,6 +7,7 @@ import {
   TopToolbar,
 } from "react-admin";
 import { Breadcrumb, ResourceBreadcrumbItems } from "../components/menu";
+import { MarkdownInput, caenCampOptions } from '../components/inputs/MarkdownInput';
 
 const SpeakerBreadcrumb = (props) => (
   <Breadcrumb {...props}>
@@ -33,13 +34,12 @@ export const SpeakerCreate = (props) => (
           label="Bio rapide"
           validate={required()}
         />
-        <TextInput
-          fullWidth
-          source="biography"
-          label="Bio complète"
-          multiline
-          validate={required()}
-        />
+        <MarkdownInput
+            source="biographyMarkdown"
+            label="Bio complète"
+            validate={required()}
+            options={caenCampOptions}
+          />
       </SimpleForm>
     </Create>
   </>
