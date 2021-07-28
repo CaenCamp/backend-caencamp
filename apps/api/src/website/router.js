@@ -44,9 +44,9 @@ router.post('/', async (ctx) => {
 });
 
 router.get('/:websiteId', async (ctx) => {
-    const type = await getOne(ctx.params.websiteId);
+    const website = await getOne(ctx.params.websiteId);
 
-    if (!type.id) {
+    if (!!website || !website.id) {
         const explainedError = new Error(
             `The website of id ${ctx.params.websiteId} does not exist.`
         );
@@ -55,14 +55,14 @@ router.get('/:websiteId', async (ctx) => {
         throw explainedError;
     }
 
-    if (type.error) {
-        const explainedError = new Error(type.error.message);
+    if (website.error) {
+        const explainedError = new Error(website.error.message);
         explainedError.status = 400;
 
         throw explainedError;
     }
 
-    ctx.body = type;
+    ctx.body = website;
 });
 
 router.delete('/:websiteId', async (ctx) => {
@@ -109,7 +109,7 @@ router.put('/:websideId', async (ctx) => {
         throw explainedError;
     }
 
-    ctx.body = updatedType;
+    ctx.body = updatedWebsite;
 });
 
 module.exports = router;

@@ -5,7 +5,6 @@ import {
   Create,
   Edit,
   EditButton,
-  Filter,
   List,
   Pagination,
   SimpleForm,

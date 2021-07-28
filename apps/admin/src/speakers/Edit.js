@@ -15,6 +15,7 @@ import {
 
 import { MarkdownInput, caenCampOptions } from '../components/inputs/MarkdownInput';
 import { Breadcrumb, ResourceBreadcrumbItems } from "../components/menu";
+import { AddNewWebsiteButton } from './index';
 
 const SpeakerBreadcrumb = (props) => (
   <Breadcrumb {...props}>
@@ -66,6 +67,7 @@ export const SpeakerEdit = (props) => (
               <EditButton />
             </Datagrid>
           </ReferenceManyField>
+          <AddNewWebsiteButton />
         </FormTab>
         <FormTab label="Les talks">
           <p>Simple liste des talks avec lien d'édition</p>

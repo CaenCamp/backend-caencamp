@@ -19,6 +19,7 @@ import speakers from "./speakers";
 import tags from "./tags";
 import talks from "./talks";
 import talkTypes from "./talks/types";
+import webSites from "./websites";
 import webSiteTypes from "./websites/types";
 
 const httpClient = (url, options = {}) => {
@@ -54,7 +55,7 @@ const App = () => {
       <Resource name="organizations" {...organizations} />
       <Resource name="job-postings" {...jobPostings} />
       <Resource name="website-types" {...webSiteTypes} />
-      <Resource name="websites" {...webSiteTypes} />
+      <Resource name="websites" {...webSites} />
       <Resource name="tags" {...tags} />
       <Resource name="talk-types" {...talkTypes} />
       <Resource name="speakers" {...speakers} />
