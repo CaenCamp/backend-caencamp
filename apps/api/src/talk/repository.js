@@ -1,6 +1,8 @@
 const omit = require('lodash.omit');
 const slugify = require('slugify');
 const { getDbClient } = require('../toolbox/dbConnexion');
+const { markdownToTxt } = require('markdown-to-txt');
+const marked  = require("marked");
 
 const slugConfig = {
     replacement: "-", // replace spaces with replacement character, defaults to `-`
@@ -14,9 +16,11 @@ const slugConfig = {
 const tableName = 'talk';
 const authorizedSort = [
     'title',
+    'typeId',
 ];
 const authorizedFilters = [
     'title',
+    'typeId',
 ];
 
 /**
@@ -27,7 +31,19 @@ const authorizedFilters = [
  */
 const getFilteredQuery = (client) => {
     return client
-        .select('*')
+        .select(
+            `${tableName}.*`,
+            client.raw(`(SELECT ARRAY(
+              SELECT ts.speaker_id
+              FROM talk_speaker ts
+              WHERE  ts.talk_id = ${tableName}.id
+            ) as speakers)`),
+            client.raw(`(SELECT ARRAY(
+                SELECT tt.tag_id
+                FROM talk_tag tt
+                WHERE  tt.talk_id = ${tableName}.id
+            ) as tags)`),
+        )
         .from(tableName);
 };
 
@@ -46,20 +62,6 @@ const renameFiltersFromAPI = (queryParameters) => {
     const filterNamesToChange = {};
 
     return Object.keys(queryParameters).reduce((acc, filter) => {
-        if (filter === 'sortBy') {
-            const sortName = Object.prototype.hasOwnProperty.call(
-                filterNamesToChange,
-                queryParameters.sortBy
-            )
-                ? filterNamesToChange[queryParameters.sortBy]
-                : queryParameters.sortBy;
-
-            return {
-                ...acc,
-                sortBy: sortName,
-            };
-        }
-
         const filterName = Object.prototype.hasOwnProperty.call(
             filterNamesToChange,
             filter
@@ -102,7 +104,19 @@ const getPaginatedList = async (queryParameters) => {
  */
 const getOneByIdQuery = (client, id) => {
     return client
-        .first('*')
+        .first(
+            `${tableName}.*`,
+            client.raw(`(SELECT ARRAY(
+              SELECT ts.speaker_id
+              FROM talk_speaker ts
+              WHERE  ts.talk_id = ${tableName}.id
+            ) as speakers)`),
+            client.raw(`(SELECT ARRAY(
+                SELECT tt.tag_id
+                FROM talk_tag tt
+                WHERE  tt.talk_id = ${tableName}.id
+            ) as tags)`),
+        )
         .from(tableName)
         .where({ [`${tableName}.id`]: id });
 };
@@ -137,17 +151,39 @@ const createOne = async (apiData) => {
         return { error: new Error('this type does not exist') };
     }
 
-    return client(tableName)
-        .returning('id')
-        .insert({
-            ...apiData,
-            description: apiData.shortDescription,
-            slug: slugify(apiData.title, slugConfig),
-        })
-        .then(([wsId]) => {
-            return getOneByIdQuery(client, wsId);
-        })
-        .catch((error) => ({ error }));
+    const { speakers, tags, ...data } = apiData;
+
+    const talkData = {
+        ...data,
+        slug: slugify(data.title, slugConfig),
+        descriptionHtml: marked(data.descriptionMarkdown),
+        description: markdownToTxt(data.descriptionMarkdown),
+      }
+
+    // @todo Add transaction
+    try {
+        const [newTalkId] = await client(tableName)
+            .returning('id')
+            .insert(talkData);
+        
+        const speakersData = speakers.map(speaker => ({
+            speakerId: speaker,
+            talkId: newTalkId,
+        }));
+        await client('talk_speaker')
+            .insert(speakersData);
+
+        const tagsData = tags.map(tag => ({
+            tagId: tag,
+            talkId: newTalkId,
+        }));
+        await client('talk_tag')
+            .insert(tagsData);
+
+        return getOneByIdQuery(client, newTalkId);
+    } catch (error) {
+        return { error };
+    }
 };
 
 /**
@@ -183,6 +219,46 @@ const updateOne = async (id, apiData) => {
         .where({ id });
     if (!currentObject) {
         return {};
+    }
+
+    const { speakers, tags, ...data } = apiData;
+
+    const talkData = {
+        ...data,
+        slug: slugify(data.title, slugConfig),
+        descriptionHtml: marked(data.descriptionMarkdown),
+        description: markdownToTxt(data.descriptionMarkdown),
+      }
+
+    // @todo Add transaction
+    try {
+        await client(tableName)
+            .where({ id })
+            .update(talkData);
+        
+        const speakersData = speakers.map(speaker => ({
+            speakerId: speaker,
+            talkId: id,
+        }));
+        await client('talk_speaker')
+            .where({ talkId: id })
+            .del();
+        await client('talk_speaker')
+            .insert(speakersData);
+
+        const tagsData = tags.map(tag => ({
+            tagId: tag,
+            talkId: id,
+        }));
+        await client('talk_tag')
+            .where({ talkId: id })
+            .del();
+        await client('talk_tag')
+            .insert(tagsData);
+
+        return getOneByIdQuery(client, id);
+    } catch (error) {
+        return { error };
     }
 
     // update the Oject
