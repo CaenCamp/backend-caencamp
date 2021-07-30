@@ -47,17 +47,17 @@ const CaenCampMenu = () => {
                     <Menu>
                         <MenuItem
                             name="editions.caencamp"
-                            to={'/editions?filter={}'}
+                            to={'/editions?filter=%7B"categoryId"%3A"26311f0a-6846-4c90-af26-74ec95479886"%7D'}
                             label="CaenCamp"
                         />
                         <MenuItem
                             name="editions.coding"
-                            to={'/editions?filter={}'}
+                            to={'/editions?filter=%7B"categoryId"%3A"ccae06c2-81e6-415c-a8d4-54b19a306d2c"%7D'}
                             label="Coding"
                         />
                         <MenuItem
                             name="editions.devops"
-                            to={'/editions?filter={}'}
+                            to={'/editions?filter=%7B"categoryId"%3A"07af0ca4-e84c-4cf7-87e2-96aaa48edd29"%7D'}
                             label="Devops"
                         />
                     </Menu>

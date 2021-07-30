@@ -1,6 +1,8 @@
 const omit = require('lodash.omit');
 const slugify = require('slugify');
 const { getDbClient } = require('../toolbox/dbConnexion');
+const { markdownToTxt } = require('markdown-to-txt');
+const marked  = require("marked");
 
 const slugConfig = {
     replacement: "-", // replace spaces with replacement character, defaults to `-`
@@ -16,10 +18,14 @@ const authorizedSort = [
     'title',
     'number',
     'start_date_time',
+    'categoryId',
+    'modeId',
 ];
 const authorizedFilters = [
     'title',
     'published',
+    'categoryId',
+    'modeId',
 ];
 
 /**
@@ -135,8 +141,9 @@ const createOne = async (apiData) => {
         .returning('id')
         .insert({
             ...apiData,
-            description: apiData.shortDescription,
             slug: slugify(apiData.title, slugConfig),
+            descriptionHtml: marked(apiData.descriptionMarkdown),
+            description: markdownToTxt(apiData.descriptionMarkdown),
         })
         .then(([wsId]) => {
             return getOneByIdQuery(client, wsId);
@@ -182,7 +189,12 @@ const updateOne = async (id, apiData) => {
     // update the Oject
     const updatedObject = await client(tableName)
         .where({ id })
-        .update(apiData)
+        .update({
+            ...apiData,
+            slug: slugify(apiData.title, slugConfig),
+            descriptionHtml: marked(apiData.descriptionMarkdown),
+            description: markdownToTxt(apiData.descriptionMarkdown),
+        })
         .catch((error) => ({ error }));
     if (updatedObject.error) {
         return updatedObject;

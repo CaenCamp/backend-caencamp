@@ -14,8 +14,6 @@ import {
   ReferenceField,
   ReferenceInput,
   SelectInput,
-  ReferenceArrayInput,
-  SelectArrayInput,
 } from "react-admin";
 
 const TalkFilters = (props) => (

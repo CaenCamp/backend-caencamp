@@ -1,44 +1,70 @@
-import React from 'react';
-import { Edit, TextInput, TabbedForm, FormTab, required } from 'react-admin';
+import React from "react";
+import {
+  Edit,
+  TextInput,
+  TabbedForm,
+  FormTab,
+  required,
+  ReferenceInput,
+  SelectInput,
+  DateTimeInput,
+  NumberInput,
+} from "react-admin";
+import {
+    MarkdownInput,
+    caenCampOptions,
+  } from "../components/inputs/MarkdownInput";
 
 const EditionTitle = ({ record }) =>
-    record ? `Edition ${record.title}` : null;
+  record ? `Edition ${record.title}` : null;
 
 export const EditionEdit = (props) => {
-    const handleStringify = React.useCallback(
-        (v) => JSON.stringify(v, null, 2),
-        []
-    );
-    const handleParse = React.useCallback((v) => JSON.parse(v), []);
-
-    return (
-        <Edit title={<EditionTitle />} {...props}>
-            <TabbedForm>
-                <FormTab label="L'edition">
-                    <TextInput
-                    fullWidth
-                    label="titre"
-                    source="title"
-                    validate={required()}
-                    />
-                    <TextInput
-                        fullWidth
-                        multiline
-                        label="Présentation"
-                        source="shortDescription"
-                        validate={required()}
-                    />
-                </FormTab>
-                <FormTab label="Le lieux">
-                    <h3>Places</h3>
-                </FormTab>
-                <FormTab label="Les talks">
-                    <h3>Talks</h3>
-                </FormTab>
-                <FormTab label="Les sponsors">
-                    <h3>Sponsors</h3>
-                </FormTab>
-            </TabbedForm>
-        </Edit>
-    );
+  return (
+    <Edit title={<EditionTitle />} {...props}>
+      <TabbedForm>
+        <FormTab label="L'edition">
+            <TextInput fullWidth label="titre" source="title" validate={required()} />
+            <NumberInput label="numero" source="number" validate={required()} />
+            <ReferenceInput
+                label="Categorie"
+                source="categoryId"
+                reference="edition-categories"
+            >
+                <SelectInput optionText="label" validate={required()}/>
+            </ReferenceInput>
+            <ReferenceInput label="Mode" source="modeId" reference="edition-modes">
+                <SelectInput optionText="label" validate={required()}/>
+            </ReferenceInput>
+            <DateTimeInput source="startDateTime" Label="Date et heure de début" validate={required()}/>
+            <DateTimeInput source="endDateTime" Label="Date et heure de fin" />
+            <TextInput
+                fullWidth
+                multiline
+                label="Résumé"
+                source="shortDescription"
+                validate={required()}
+                multiline
+            />
+            <MarkdownInput
+                source="descriptionMarkdown"
+                label="Description"
+                validate={required()}
+                options={caenCampOptions}
+            />
+            <TextInput fullWidth label="Meetup" source="meetupId" />
+        </FormTab>
+        <FormTab label="Le lieux">
+            <ReferenceInput label="Lieu" source="placeId" reference="places">
+                <SelectInput optionText="name"/>
+            </ReferenceInput>
+        </FormTab>
+        <FormTab label="Les talks">
+          <h3>Talks</h3>
+        </FormTab>
+        <FormTab label="Les sponsors">
+          <h3>Sponsors</h3>
+        </FormTab>
+      </TabbedForm>
+    </Edit>
+  );
 };

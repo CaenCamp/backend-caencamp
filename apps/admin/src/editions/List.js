@@ -8,46 +8,18 @@ import {
     Filter,
     TextInput,
     Pagination,
+    ReferenceInput,
+    SelectInput,
+    ReferenceField,
+    ChipField,
 } from 'react-admin';
 
-const EditionLogo = ({ record }) => {
-    return record && record.image ? (
-        <img src={record.image} height="50" alt={record.name} />
-    ) : (
-        `Pas d'image pour "${record.name}"`
-    );
-};
-EditionLogo.propTypes = {
-    record: PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        image: PropTypes.string,
-    }),
-};
-
-const EditionAddress = ({ record: { address } }) => {
-    return address
-        ? `${address.streetAddress} ${address.postalCode} ${address.addressLocality}`
-        : "L'adresse n'est pas renseignée.";
-};
-
-// const EditionFilter = (props) => (
-//     <Filter {...props}>
-//         <TextInput source="name:%l%" label="Filtre par nom" alwaysOn />
-//         <TextInput
-//             source="addressLocality:l%"
-//             label="Filtre par ville"
-//             alwaysOn
-//         />
-//         <TextInput
-//             source="postalCode:l%"
-//             label="Filtre par code postal"
-//             alwaysOn
-//         />
-//     </Filter>
-// );
 const EditionFilter = (props) => (
     <Filter {...props}>
         <TextInput source="name:%l%" label="Filtre par nom" alwaysOn />
+        <ReferenceInput label="Mode" source="modeId" reference="edition-modes" alwaysOn>
+            <SelectInput optionText="label" />
+        </ReferenceInput>
     </Filter>
 );
 
@@ -60,7 +32,7 @@ export const EditionList = ({ permissions, ...props }) => {
         <List
             {...props}
             filters={<EditionFilter />}
-            sort={{ field: 'number', order: 'ASC' }}
+            sort={{ field: 'number', order: 'DESC' }}
             exporter={false}
             pagination={<EditionPagination />}
             bulkActionButtons={false}
@@ -68,7 +40,14 @@ export const EditionList = ({ permissions, ...props }) => {
         >
             <Datagrid>
                 <TextField source="title" label="Titre" />
-                {permissions === 'authenticated' && <EditButton />}
+                <TextField source="number" label="Numero" />
+                <ReferenceField label="Categorie" source="categoryId" reference="edition-categories">
+                    <ChipField source="label" />
+                </ReferenceField>
+                <ReferenceField label="Mode" source="modeId" reference="edition-modes">
+                    <ChipField source="label" />
+                </ReferenceField>
+                <EditButton />
             </Datagrid>
         </List>
     );
