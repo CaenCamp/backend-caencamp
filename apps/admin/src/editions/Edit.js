@@ -9,6 +9,8 @@ import {
   SelectInput,
   DateTimeInput,
   NumberInput,
+  ReferenceArrayInput,
+  SelectArrayInput,
 } from "react-admin";
 import {
     MarkdownInput,
@@ -59,10 +61,14 @@ export const EditionEdit = (props) => {
             </ReferenceInput>
         </FormTab>
         <FormTab label="Les talks">
-          <h3>Talks</h3>
+            <ReferenceArrayInput source="talks" reference="talks" perPage={100}>
+                <SelectArrayInput optionText="title" />
+            </ReferenceArrayInput>
         </FormTab>
         <FormTab label="Les sponsors">
-          <h3>Sponsors</h3>
+            <ReferenceInput label="Sponsor" source="sponsorId" reference="organizations">
+                <SelectInput optionText="name"/>
+            </ReferenceInput>
         </FormTab>
       </TabbedForm>
     </Edit>
