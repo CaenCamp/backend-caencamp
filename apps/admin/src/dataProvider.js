@@ -33,7 +33,7 @@ const formatFilters = (filters) => {
  * create      => POST http://my.api.url/posts
  * delete      => DELETE http://my.api.url/posts/123
  */
-export default (apiUrl, httpClient) => ({
+ export default (apiUrl, httpClient) => ({
     getList: (resource, params) => {
         const { page: currentPage, perPage } = params.pagination;
         const { field, order } = params.sort;
@@ -189,3 +189,5 @@ export default (apiUrl, httpClient) => ({
             )
         ).then((responses) => ({ data: responses.map(({ json }) => json.id) })),
 });
+
+// export default dataProvider;

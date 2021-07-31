@@ -13,7 +13,7 @@ export const OrganizationCreate = (props) => (
             <TextInput
                 fullWidth
                 label="Url du logo"
-                source="image"
+                source="logo"
                 validate={required()}
             />
             <TextInput

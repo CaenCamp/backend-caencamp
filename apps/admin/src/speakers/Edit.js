@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Datagrid,
   Edit,
@@ -11,10 +11,10 @@ import {
   TopToolbar,
   ReferenceManyField,
   ReferenceField,
-} from "react-admin";
+} from 'react-admin';
 
 import { MarkdownInput, caenCampOptions } from '../components/inputs/MarkdownInput';
-import { Breadcrumb, ResourceBreadcrumbItems } from "../components/menu";
+import { Breadcrumb, ResourceBreadcrumbItems } from '../components/menu';
 import { AddNewWebsiteButton } from './index';
 
 const SpeakerBreadcrumb = (props) => (
@@ -57,7 +57,7 @@ export const SpeakerEdit = (props) => (
             addLabel={false}
             reference="websites"
             target="speakerId"
-            sort={{ field: "typeId", order: "DESC" }}
+            sort={{ field: 'typeId', order: 'DESC' }}
           >
             <Datagrid>
               <TextField source="url" />

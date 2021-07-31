@@ -1,4 +1,4 @@
-import { fade, Theme } from '@material-ui/core';
+import { fade } from '@material-ui/core';
 import { grey } from '@material-ui/core/colors';
 import createPalette from '@material-ui/core/styles/createPalette';
 

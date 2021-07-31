@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getDeepestLocation = void 0;
 var getDeepestLocation = function (locations) {

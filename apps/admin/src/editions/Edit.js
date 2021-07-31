@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Edit,
   TextInput,
@@ -11,11 +11,11 @@ import {
   NumberInput,
   ReferenceArrayInput,
   SelectArrayInput,
-} from "react-admin";
+} from 'react-admin';
 import {
     MarkdownInput,
     caenCampOptions,
-  } from "../components/inputs/MarkdownInput";
+  } from '../components/inputs/MarkdownInput';
 
 const EditionTitle = ({ record }) =>
   record ? `Edition ${record.title}` : null;
@@ -45,7 +45,6 @@ export const EditionEdit = (props) => {
                 label="Résumé"
                 source="shortDescription"
                 validate={required()}
-                multiline
             />
             <MarkdownInput
                 source="descriptionMarkdown"

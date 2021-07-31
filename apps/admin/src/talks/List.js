@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Datagrid,
   EditButton,
@@ -14,7 +14,7 @@ import {
   ReferenceField,
   ReferenceInput,
   SelectInput,
-} from "react-admin";
+} from 'react-admin';
 
 const TalkFilters = (props) => (
   <Filter {...props}>
@@ -55,7 +55,7 @@ const TalkList = (props) => {
       {...props}
       filters={<TalkFilters />}
       filterDefaultValues={{}}
-      sort={{ field: "name", order: "ASC" }}
+      sort={{ field: 'name', order: 'ASC' }}
       exporter={false}
       pagination={<TalkPagination />}
       bulkActionButtons={false}

@@ -22,7 +22,7 @@ export const OrganizationEdit = (props) => {
                         label="Description"
                         fullWidth
                     />
-                    <TextInput source="image" label="Logo" fullWidth />
+                    <TextInput source="logo" label="Logo" fullWidth />
                     <TextInput source="url" label="Site web" fullWidth />
                     <TextInput
                         source="email"

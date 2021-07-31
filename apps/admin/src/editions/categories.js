@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import EditionCategoryIcon from '@material-ui/icons/Category';
 import {
   Datagrid,
@@ -12,7 +12,7 @@ import {
   TextField,
   TextInput,
   required,
-} from "react-admin";
+} from 'react-admin';
 
 
 const EditionCategoryPagination = (props) => (
@@ -31,7 +31,7 @@ const EditionCategoryList = (props) => {
       {...props}
       filters={<EditionCategoryFilters />}
       filterDefaultValues={{}}
-      sort={{ field: "label", order: "ASC" }}
+      sort={{ field: 'label', order: 'ASC' }}
       exporter={false}
       pagination={<EditionCategoryPagination />}
       bulkActionButtons={false}

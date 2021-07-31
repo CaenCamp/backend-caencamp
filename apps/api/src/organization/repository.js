@@ -1,7 +1,19 @@
 const omit = require('lodash.omit');
 const pick = require('lodash.pick');
+const slugify = require('slugify');
+const { markdownToTxt } = require('markdown-to-txt');
+const marked  = require("marked");
 
 const { getDbClient } = require('../toolbox/dbConnexion');
+
+const slugConfig = {
+    replacement: "-", // replace spaces with replacement character, defaults to `-`
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: true, // convert to lower case, defaults to `false`
+    strict: true, // strip special characters except replacement, defaults to `false`
+    locale: 'fr', // language code of the locale to use
+    trim: true, // trim leading and trailing replacement chars, defaults to `true`
+  };
 
 const tableName = 'organization';
 const authorizedFilters = ['name', 'addressLocality', 'postalCode'];
@@ -86,7 +98,8 @@ const getPaginatedList = async (queryParameters) => {
  */
 const prepareOrganizationDataForSave = (dataFromApi) => ({
     organization: {
-        ...omit(dataFromApi, ['address', 'contactPoints']),
+        ...omit(dataFromApi, ['address', 'contactPoints', 'telephone']),
+        slug: slugify(dataFromApi.name, slugConfig),
         addressCountry: dataFromApi.address.addressCountry || null,
         addressLocality: dataFromApi.address.addressLocality,
         postalCode: dataFromApi.address.postalCode,

@@ -1,4 +1,3 @@
-"use strict";
 var __assign = (this && this.__assign) || function () {
     __assign = Object.assign || function(t) {
         for (var s, i = 1, n = arguments.length; i < n; i++) {
@@ -158,7 +157,8 @@ var MenuItemCategory = function (props) {
     var translatedLabel = react_1.isValidElement(label)
         ? label
         : translate(label.toString(), { _: label });
-    if (to && hasSubItems && process.env.NODE_ENV !== 'production') {
+    // if (to && hasSubItems && process.env.NODE_ENV !== 'production') {
+    if (to && hasSubItems && process.env.NODE_ENV === 'never') {
         console.warn('A <MenuItemCategory> cannot have children and a to prop set');
     }
     return (React.createElement(React.Fragment, null,

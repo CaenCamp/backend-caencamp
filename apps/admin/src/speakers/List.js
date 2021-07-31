@@ -1,5 +1,5 @@
-import React from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Datagrid,
   EditButton,
@@ -8,7 +8,7 @@ import {
   Pagination,
   TextField,
   TextInput,
-} from "react-admin";
+} from 'react-admin';
 
 const SpeakerFilters = (props) => (
   <Filter {...props}>
@@ -46,7 +46,7 @@ const SpeakerList = (props) => {
       {...props}
       filters={<SpeakerFilters />}
       filterDefaultValues={{}}
-      sort={{ field: "name", order: "ASC" }}
+      sort={{ field: 'name', order: 'ASC' }}
       exporter={false}
       pagination={<SpeakerPagination />}
       bulkActionButtons={false}

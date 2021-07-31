@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Create,
   SimpleForm,
@@ -9,13 +9,13 @@ import {
   ReferenceArrayInput,
   SelectArrayInput,
   TopToolbar,
-} from "react-admin";
+} from 'react-admin';
 
-import { Breadcrumb, ResourceBreadcrumbItems } from "../components/menu";
+import { Breadcrumb, ResourceBreadcrumbItems } from '../components/menu';
 import {
   MarkdownInput,
   caenCampOptions,
-} from "../components/inputs/MarkdownInput";
+} from '../components/inputs/MarkdownInput';
 
 const TalkBreadcrumb = (props) => (
   <Breadcrumb {...props}>

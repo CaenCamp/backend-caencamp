@@ -1,12 +1,12 @@
-import React from "react";
+import React from 'react';
 import {
   Create,
   SimpleForm,
   TextInput,
   required,
   TopToolbar,
-} from "react-admin";
-import { Breadcrumb, ResourceBreadcrumbItems } from "../components/menu";
+} from 'react-admin';
+import { Breadcrumb, ResourceBreadcrumbItems } from '../components/menu';
 import { MarkdownInput, caenCampOptions } from '../components/inputs/MarkdownInput';
 
 const SpeakerBreadcrumb = (props) => (

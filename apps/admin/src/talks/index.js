@@ -2,7 +2,7 @@ import TalkIcon from '@material-ui/icons/Slideshow';
 
 import TalkList from './List';
 import TalkEdit from './Edit';
-import TalkCreate from "./Create";
+import TalkCreate from './Create';
 
 const talks = {
   icon: TalkIcon,

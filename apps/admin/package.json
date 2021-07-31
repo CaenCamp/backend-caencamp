@@ -29,7 +29,12 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "ignorePatterns": ["src/components/menu/**/*.js"],
+    "rules": {
+        "import/no-anonymous-default-export": 0,
+        "quotes": [2, "single", { "avoidEscape": true }]
+    }
   },
   "browserslist": {
     "production": [

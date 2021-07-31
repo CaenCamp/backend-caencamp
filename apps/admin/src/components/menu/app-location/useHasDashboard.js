@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useHasDashboard = void 0;
 var react_1 = require("react");
@@ -13,7 +12,7 @@ var AppBreadcrumbContext_1 = require("./AppBreadcrumbContext");
  */
 var useHasDashboard = function (props) {
     var context = react_1.useContext(AppBreadcrumbContext_1.AppBreadcrumbContext);
-    return props.hasDashboard != undefined
+    return props.hasDashboard != undefined  // eslint-disable-line
         ? props.hasDashboard
         : context.hasDashboard;
 };

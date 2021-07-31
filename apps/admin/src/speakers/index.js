@@ -1,11 +1,11 @@
-import SpeakerIcon from "@material-ui/icons/RecordVoiceOver";
-import WebSiteIcon from "@material-ui/icons/Language";
-import { Button, Link } from "react-admin";
-import { makeStyles } from "@material-ui/core/styles";
+import SpeakerIcon from '@material-ui/icons/RecordVoiceOver';
+import WebSiteIcon from '@material-ui/icons/Language';
+import { Button, Link } from 'react-admin';
+import { makeStyles } from '@material-ui/core/styles';
 
-import SpeakerCreate from "./Create";
-import SpeakerEdit from "./Edit";
-import SpeakerList from "./List";
+import SpeakerCreate from './Create';
+import SpeakerEdit from './Edit';
+import SpeakerList from './List';
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -23,7 +23,7 @@ export const AddNewWebsiteButton = ({ record }) => {
       variant="contained"
       component={Link}
       to={{
-        pathname: "/websites/create",
+        pathname: '/websites/create',
         state: { record: { speakerId: record.id } },
       }}
       label="Ajouter un site"

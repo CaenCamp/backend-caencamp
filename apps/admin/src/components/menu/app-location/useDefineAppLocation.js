@@ -1,4 +1,3 @@
-"use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.useDefineAppLocation = void 0;
 var react_1 = require("react");
@@ -53,7 +52,7 @@ var useAppLocationState_1 = require("./useAppLocationState");
  */
 var useDefineAppLocation = function (path, values) {
     if (values === void 0) { values = {}; }
-    var _a = useAppLocationState_1.useAppLocationState(), _ = _a[0], setLocation = _a[1];
+    var _a = useAppLocationState_1.useAppLocationState(), _ = _a[0], setLocation = _a[1]; // eslint-disable-line
     react_1.useEffect(function () {
         if (setLocation) {
             setLocation(path, values);

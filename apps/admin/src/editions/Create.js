@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   Create,
   SimpleForm,
@@ -8,11 +8,11 @@ import {
   SelectInput,
   DateTimeInput,
   NumberInput,
-} from "react-admin";
+} from 'react-admin';
 import {
   MarkdownInput,
   caenCampOptions,
-} from "../components/inputs/MarkdownInput";
+} from '../components/inputs/MarkdownInput';
 
 export const EditionCreate = (props) => (
   <Create {...props} title="Création d'une edition">
@@ -40,7 +40,6 @@ export const EditionCreate = (props) => (
         label="Résumé"
         source="shortDescription"
         validate={required()}
-        multiline
       />
       <MarkdownInput
         source="descriptionMarkdown"

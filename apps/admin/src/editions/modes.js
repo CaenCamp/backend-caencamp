@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import EditionModeIcon from '@material-ui/icons/DeveloperMode';
 import {
   Datagrid,
@@ -12,7 +12,7 @@ import {
   TextField,
   TextInput,
   required,
-} from "react-admin";
+} from 'react-admin';
 
 
 const EditionModePagination = (props) => (
@@ -31,7 +31,7 @@ const EditionModeList = (props) => {
       {...props}
       filters={<EditionModeFilters />}
       filterDefaultValues={{}}
-      sort={{ field: "label", order: "ASC" }}
+      sort={{ field: 'label', order: 'ASC' }}
       exporter={false}
       pagination={<EditionModePagination />}
       bulkActionButtons={false}

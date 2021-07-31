@@ -1,6 +1,6 @@
-import React from "react";
-import PropTypes from "prop-types";
-import PlaceIcon from "@material-ui/icons/Place";
+import React from 'react';
+import PropTypes from 'prop-types';
+import PlaceIcon from '@material-ui/icons/Place';
 import {
   Datagrid,
   Create,
@@ -15,7 +15,7 @@ import {
   required,
   TabbedForm,
   FormTab,
-} from "react-admin";
+} from 'react-admin';
 
 const PlaceFilters = (props) => (
   <Filter {...props}>
@@ -67,7 +67,7 @@ const PlaceList = (props) => {
       {...props}
       filters={<PlaceFilters />}
       filterDefaultValues={{}}
-      sort={{ field: "name", order: "ASC" }}
+      sort={{ field: 'name', order: 'ASC' }}
       exporter={false}
       pagination={<PlacePagination />}
       bulkActionButtons={false}

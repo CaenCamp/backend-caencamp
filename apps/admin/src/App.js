@@ -1,41 +1,41 @@
-import React from "react";
-import { fetchUtils, Admin, Resource } from "react-admin";
+import React from 'react';
+import { fetchUtils, Admin, Resource } from 'react-admin';
 import { useTheme } from '@material-ui/core';
 
-import dataProvider from "./dataProvider";
-import { authProvider } from "./authProvider";
+import dataProvider from './dataProvider';
+import { authProvider } from './authProvider';
 
-import Dashboard from "./components/Dashboard";
-import CaenCampLayout from "./components/Layout";
-import { getThemes } from "./components/theme";
+// import Dashboard from "./components/Dashboard";
+import CaenCampLayout from './components/Layout';
+import { getThemes } from './components/theme';
 
-import editions from "./editions";
-import editionCategories from "./editions/categories";
-import editionModes from "./editions/modes";
-import jobPostings from "./job-postings";
-import organizations from "./organizations";
-import places from "./places";
-import speakers from "./speakers";
-import tags from "./tags";
-import talks from "./talks";
-import talkTypes from "./talks/types";
-import webSites from "./websites";
-import webSiteTypes from "./websites/types";
+import editions from './editions';
+import editionCategories from './editions/categories';
+import editionModes from './editions/modes';
+import jobPostings from './job-postings';
+import organizations from './organizations';
+import places from './places';
+import speakers from './speakers';
+import tags from './tags';
+import talks from './talks';
+import talkTypes from './talks/types';
+import webSites from './websites';
+import webSiteTypes from './websites/types';
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
-    options.headers = new Headers({ Accept: "application/json" });
+    options.headers = new Headers({ Accept: 'application/json' });
   }
-  const { token } = JSON.parse(localStorage.getItem("auth"));
+  const { token } = JSON.parse(localStorage.getItem('auth'));
   if (token) {
-    options.headers.set("Authorization", `Bearer ${token}`);
+    options.headers.set('Authorization', `Bearer ${token}`);
   }
 
   return fetchUtils.fetchJson(url, options);
 };
 
 const caenCampDataProvider = dataProvider(
-  "http://localhost:3001/api-admin",
+  'http://localhost:3001/api-admin',
   httpClient
 );
 
@@ -45,7 +45,6 @@ const App = () => {
   return (
     <Admin
       authProvider={authProvider}
-      dashboard={Dashboard}
       dataProvider={caenCampDataProvider}
       disableTelemetry
       layout={CaenCampLayout}

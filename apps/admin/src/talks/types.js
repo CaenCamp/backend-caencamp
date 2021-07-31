@@ -1,11 +1,10 @@
-import React from "react";
+import React from 'react';
 import TalkTypeIcon from '@material-ui/icons/Label';
 import {
   Datagrid,
   Create,
   Edit,
   EditButton,
-  Filter,
   List,
   NumberInput,
   Pagination,
@@ -13,7 +12,7 @@ import {
   TextField,
   TextInput,
   required,
-} from "react-admin";
+} from 'react-admin';
 
 const TalkTypePagination = (props) => (
   <Pagination rowsPerPageOptions={[10, 25]} {...props} />
@@ -23,7 +22,7 @@ const TalkTypeList = (props) => {
   return (
     <List
       {...props}
-      sort={{ field: "label", order: "ASC" }}
+      sort={{ field: 'label', order: 'ASC' }}
       exporter={false}
       pagination={<TalkTypePagination />}
       bulkActionButtons={false}

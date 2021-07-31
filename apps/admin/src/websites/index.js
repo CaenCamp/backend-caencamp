@@ -1,5 +1,5 @@
-import React from "react";
-import WebSiteIcon from "@material-ui/icons/Language";
+import React from 'react';
+import WebSiteIcon from '@material-ui/icons/Language';
 import {
   Datagrid,
   Create,
@@ -14,7 +14,7 @@ import {
   ReferenceInput,
   SelectInput,
   useEditController,
-} from "react-admin";
+} from 'react-admin';
 import { useLocation } from 'react-router';
 
 const WebSitePagination = (props) => (
@@ -25,7 +25,7 @@ const WebSiteList = (props) => {
   return (
     <List
       {...props}
-      sort={{ field: "label", order: "ASC" }}
+      sort={{ field: 'label', order: 'ASC' }}
       exporter={false}
       pagination={<WebSitePagination />}
       bulkActionButtons={false}

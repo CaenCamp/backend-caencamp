@@ -1,4 +1,3 @@
-import { makeStyles } from '@material-ui/core/styles';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
@@ -15,16 +14,7 @@ import {
     MultiLevelMenu,
 } from './menu';
 
-const useStyles = makeStyles({
-    // Custom styles for the configuration item so that it appears at the very bottom of the sidebar
-    configuration: {
-        marginTop: 'auto',
-    },
-});
-
 const CaenCampMenu = () => {
-    const classes = useStyles();
-
     return (
         <MultiLevelMenu variant="categories">
             <MenuItemCategory

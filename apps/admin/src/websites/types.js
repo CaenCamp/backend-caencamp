@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import WebSiteTypeIcon from '@material-ui/icons/Language';
 import {
   Datagrid,
@@ -11,7 +11,7 @@ import {
   TextField,
   TextInput,
   required,
-} from "react-admin";
+} from 'react-admin';
 
 
 const WebSiteTypePagination = (props) => (
@@ -22,7 +22,7 @@ const WebSiteTypeList = (props) => {
   return (
     <List
       {...props}
-      sort={{ field: "label", order: "ASC" }}
+      sort={{ field: 'label', order: 'ASC' }}
       exporter={false}
       pagination={<WebSiteTypePagination />}
       bulkActionButtons={false}
