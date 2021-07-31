@@ -36,7 +36,14 @@ const authorizedFilters = [
  */
 const getFilteredQuery = (client) => {
     return client
-        .select('*')
+        .select(
+            `${tableName}.*`,
+            client.raw(`(SELECT ARRAY(
+            SELECT t.id
+            FROM talk t
+            WHERE  t.edition_id = ${tableName}.id
+            ) as talks)`),
+        )
         .from(tableName);
 };
 
@@ -111,7 +118,14 @@ const getPaginatedList = async (queryParameters) => {
  */
 const getOneByIdQuery = (client, id) => {
     return client
-        .first('*')
+        .first(
+            `${tableName}.*`,
+            client.raw(`(SELECT ARRAY(
+            SELECT t.id
+            FROM talk t
+            WHERE  t.edition_id = ${tableName}.id
+            ) as talks)`),
+        )
         .from(tableName)
         .where({ [`${tableName}.id`]: id });
 };
@@ -186,18 +200,34 @@ const updateOne = async (id, apiData) => {
         return {};
     }
 
+    const { talks, ...data } = apiData;
+
+    // @todo make a transaction
     // update the Oject
     const updatedObject = await client(tableName)
         .where({ id })
         .update({
-            ...apiData,
-            slug: slugify(apiData.title, slugConfig),
-            descriptionHtml: marked(apiData.descriptionMarkdown),
-            description: markdownToTxt(apiData.descriptionMarkdown),
+            ...data,
+            slug: slugify(data.title, slugConfig),
+            descriptionHtml: marked(data.descriptionMarkdown),
+            description: markdownToTxt(data.descriptionMarkdown),
         })
         .catch((error) => ({ error }));
     if (updatedObject.error) {
         return updatedObject;
+    }
+
+    await client('talk')
+        .where({ editionId: id })
+        .update({ editionId: null });
+    
+    if (talks && talks.length) {
+        const talksUpdates = talks.map(talkId => {
+            return client('talk')
+            .where({ id: talkId })
+            .update({ editionId: id });
+        });
+        await Promise.all(talksUpdates);
     }
 
     // return the complete Object from db
