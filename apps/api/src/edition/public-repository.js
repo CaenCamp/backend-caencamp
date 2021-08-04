@@ -8,6 +8,7 @@ const authorizedSort = [
 ];
 
 const authorizedFilters = [
+    'edition_category.label',
     'number',
     'start_date_time',
 ];
@@ -23,7 +24,10 @@ const getFilteredQuery = (client) => {
         .select(
             `${tableName}.*`,
         )
-        .from(tableName);
+        .from(tableName)
+        .join('edition_category', {
+            'edition_category.id': `${tableName}.category_id`,
+        });
 };
 
 /**
@@ -38,7 +42,9 @@ const getFilteredQuery = (client) => {
  * @return {Object} Query parameters renamed as db row name
  */
 const renameFiltersFromAPI = (queryParameters) => {
-    const filterNamesToChange = {};
+    const filterNamesToChange = {
+        category: 'edition_category.label',
+    };
 
     return Object.keys(queryParameters).reduce((acc, filter) => {
         if (filter === 'sortBy') {
@@ -53,6 +59,24 @@ const renameFiltersFromAPI = (queryParameters) => {
                 ...acc,
                 sortBy: sortName,
             };
+        }
+
+        if (filter === 'when') {
+            const now = new Date();
+            switch (queryParameters.when) {
+                case 'upcomming':
+                    return {
+                        ...acc,
+                        'start_date_time': `${now.toDateString()}:gte`,
+                    };
+                case 'past':
+                    return {
+                        ...acc,
+                        'start_date_time': `${now.toDateString()}:lt`,
+                    };
+                default: // all so no filter
+                    return acc;
+            }
         }
 
         const filterName = Object.prototype.hasOwnProperty.call(

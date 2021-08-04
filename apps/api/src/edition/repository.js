@@ -228,6 +228,25 @@ const updateOne = async (id, apiData) => {
             .update({ editionId: id });
         });
         await Promise.all(talksUpdates);
+        
+        const tagsFromDb = await client('talk_tag')
+            .select('tag.slug')
+            .join('tag', {
+                'tag.id': 'talk_tag.tag_id',
+            })
+            .whereIn('talk_id', talks);
+        if (tagsFromDb.length) {
+            const tags = [...new Set(tagsFromDb.map(tfdb => tfdb.slug))];
+            const tagsData = tags.map(tag => ({
+                editionId: id,
+                tag,
+            }));
+            await client('edition_tag')
+                .where({ editionId: id })
+                .del();
+            await client('edition_tag')
+                .insert(tagsData);
+        }
     }
 
     // return the complete Object from db

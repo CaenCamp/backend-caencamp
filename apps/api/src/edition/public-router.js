@@ -12,11 +12,19 @@ const router = new Router({
     prefix: '/events',
 });
 
+const defaultQueryParameters = {
+    category: 'CaenCamp',
+    currentPage: 1,
+    orderBy: 'DESC',
+    perPage: 200,
+    sortBy: 'number',
+    when: 'all',
+};
+
 router.get('/', async (ctx) => {
     const { editions, pagination } = await getPaginatedList({
+        ...defaultQueryParameters,
         ...ctx.query,
-        currentPage: ctx.query.currentPage || 1,
-        perPage: ctx.query.perPage || 100,
     });
 
     const linkHeaderValue = formatPaginationToLinkHeader({
