@@ -39,6 +39,11 @@ const getFilteredQuery = (client) => {
   .from(tableName);
 };
 
+const getPublicFilteredQuery = (client) => {
+  return client.select(`${tableName}.slug`)
+  .from(tableName);
+};
+
 /**
  * Return queryParameters with name as real row db name
  *
@@ -98,6 +103,20 @@ const getPaginatedList = async (queryParameters) => {
     })
     .then(({ data, pagination }) => ({
       tags: data,
+      pagination,
+    }));
+};
+
+const getPublicPaginatedList = async (queryParameters) => {
+  const client = getDbClient();
+  return getPublicFilteredQuery(client)
+    .paginateRestList({
+      queryParameters: renameFiltersFromAPI(queryParameters),
+      authorizedFilters,
+      authorizedSort,
+    })
+    .then(({ data, pagination }) => ({
+      tags: data.reduce((acc, tag) => ([...acc, tag.slug]), []),
       pagination,
     }));
 };
@@ -207,6 +226,7 @@ module.exports = {
   deleteOne,
   getOne,
   getPaginatedList,
+  getPublicPaginatedList,
   renameFiltersFromAPI,
   updateOne,
 };

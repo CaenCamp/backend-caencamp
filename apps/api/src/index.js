@@ -13,6 +13,7 @@ const dbMiddleware = require('./toolbox/middleware/db');
 const jwtMiddleware = require('./toolbox/authentication/jwtMiddleware');
 
 const adminRouter = require('./admin-router');
+const publicRouter = require('./public-router');
 
 const app = new Koa();
 
@@ -93,12 +94,12 @@ if (env === 'development') {
 } else {
     app.use(serve(`${__dirname}/../admin`));
 }
-
-router.get('/api-public', (ctx) => {
-    ctx.body = { message: 'CaenCamp Jobboard API' };
-});
 app.use(router.routes()).use(router.allowedMethods());
+
 app.use(dbMiddleware);
+
+app.use(publicRouter.routes()).use(publicRouter.allowedMethods());
+
 app.use(authenticationRouter.routes()).use(
     authenticationRouter.allowedMethods()
 );
