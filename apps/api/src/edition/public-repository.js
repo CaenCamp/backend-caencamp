@@ -11,6 +11,7 @@ const authorizedFilters = [
     'edition_category.label',
     'number',
     'start_date_time',
+    'edition_tag.tag',
 ];
 
 /**
@@ -21,13 +22,19 @@ const authorizedFilters = [
  */
 const getFilteredQuery = (client) => {
     return client
+        .distinct(`${tableName}.id`)
         .select(
             `${tableName}.*`,
+            client.raw(`array_agg(DISTINCT edition_tag.tag ) as tags`),
         )
         .from(tableName)
+        .innerJoin('edition_tag', {
+            'edition_tag.edition_id': `${tableName}.id`,
+        })
         .join('edition_category', {
             'edition_category.id': `${tableName}.category_id`,
-        });
+        })
+        .groupBy(`${tableName}.id`);
 };
 
 /**
@@ -44,6 +51,7 @@ const getFilteredQuery = (client) => {
 const renameFiltersFromAPI = (queryParameters) => {
     const filterNamesToChange = {
         category: 'edition_category.label',
+        tag: 'edition_tag.tag',
     };
 
     return Object.keys(queryParameters).reduce((acc, filter) => {
