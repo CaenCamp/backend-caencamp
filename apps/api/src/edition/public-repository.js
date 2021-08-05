@@ -25,7 +25,12 @@ const getFilteredQuery = (client) => {
         .distinct(`${tableName}.id`)
         .select(
             `${tableName}.*`,
-            client.raw(`array_agg(DISTINCT edition_tag.tag ) as tags`),
+            // client.raw(`array_agg(DISTINCT edition_tag.tag ) as tags`),
+            client.raw(`(SELECT ARRAY(
+                SELECT et.tag
+                FROM edition_tag et
+                WHERE  et.edition_id = ${tableName}.id
+            ) as tags)`),
         )
         .from(tableName)
         .innerJoin('edition_tag', {
