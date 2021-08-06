@@ -25,6 +25,7 @@ router.get('/', async (ctx) => {
     const { editions, pagination } = await getPaginatedList({
         ...defaultQueryParameters,
         ...ctx.query,
+        published: 'true',
     });
 
     const linkHeaderValue = formatPaginationToLinkHeader({
@@ -39,12 +40,12 @@ router.get('/', async (ctx) => {
     ctx.body = editions;
 });
 
-router.get('/:eventId', async (ctx) => {
-    const edition = await getOne(ctx.params.eventId);
+router.get('/:eventSlug', async (ctx) => {
+    const edition = await getOne(ctx.params.eventSlug);
 
-    if (!edition.id) {
+    if (!edition) {
         const explainedError = new Error(
-            `The event of id ${ctx.params.eventId} does not exist.`
+            `The event of id ${ctx.params.eventSlug} does not exist.`
         );
         explainedError.status = 404;
 

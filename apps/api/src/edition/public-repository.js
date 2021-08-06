@@ -1,3 +1,5 @@
+const omit = require('lodash.omit');
+
 const { getDbClient } = require('../toolbox/dbConnexion');
 
 const tableName = 'edition';
@@ -12,6 +14,7 @@ const authorizedFilters = [
     'number',
     'start_date_time',
     'edition_tag.tag',
+    'published',
 ];
 
 /**
@@ -25,7 +28,6 @@ const getFilteredQuery = (client) => {
         .distinct(`${tableName}.id`)
         .select(
             `${tableName}.*`,
-            // client.raw(`array_agg(DISTINCT edition_tag.tag ) as tags`),
             client.raw(`(SELECT ARRAY(
                 SELECT et.tag
                 FROM edition_tag et
@@ -132,13 +134,54 @@ const getPaginatedList = async (queryParameters) => {
  * @param {string} ObjectId - Object Id
  * @returns {Promise} - Knew query for single Object
  */
-const getOneByIdQuery = (client, id) => {
+const getOneBySlugQuery = (client, slug) => {
     return client
         .first(
             `${tableName}.*`,
+            'edition_category.label as category',
+            'edition_mode.label as mode',
+            'place.address1',
+            'place.address2',
+            'place.postal_code',
+            'place.city',
+            'place.country',
+            'place.name as place',
+            client.raw(`(SELECT jsonb_build_object(
+                'identifier',
+                organization.slug,
+                'name',
+                organization.name
+            )
+            FROM organization WHERE organization.id = ${tableName}.sponsor_id) as sponsor`),
+            client.raw(`(SELECT ARRAY(
+                SELECT et.tag
+                FROM edition_tag et
+                WHERE  et.edition_id = ${tableName}.id
+            ) as tags)`),
         )
         .from(tableName)
-        .where({ [`${tableName}.id`]: id });
+        .join('edition_category', {
+            'edition_category.id': `${tableName}.category_id`,
+        })
+        .join('edition_mode', {
+            'edition_mode.id': `${tableName}.mode_id`,
+        })
+        .join('place', {
+            'place.id': `${tableName}.place_id`,
+        })
+        .where({ [`${tableName}.slug`]: slug, published: true });
+};
+
+const formatEvent = event => {
+    return omit(event, [
+        'id',
+        'modeId',
+        'placeId',
+        'categoryId',
+        'organizerId',
+        'sponsorId',
+        'published',
+    ]);
 };
 
 /**
@@ -147,14 +190,14 @@ const getOneByIdQuery = (client, id) => {
  * @param {object} organizationId - The Object identifier
  * @returns {Promise} - the Object
  */
-const getOne = async (id) => {
+const getOne = async (slug) => {
     const client = getDbClient();
-    return getOneByIdQuery(client, id)
+    return getOneBySlugQuery(client, slug)
+        .then(formatEvent)
         .catch((error) => ({ error }));
 };
 
 module.exports = {
     getOne,
     getPaginatedList,
-    renameFiltersFromAPI,
 };

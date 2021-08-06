@@ -1,4 +1,3 @@
-const omit = require('lodash.omit');
 const slugify = require('slugify');
 const { getDbClient } = require('../toolbox/dbConnexion');
 const { markdownToTxt } = require('markdown-to-txt');
