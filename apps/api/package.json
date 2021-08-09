@@ -17,6 +17,7 @@
     "dependencies": {
         "bcrypt": "5.0.1",
         "convict": "6.2.0",
+        "date-fns": "2.23.0",
         "jsonwebtoken": "8.5.1",
         "knex": "0.95.9",
         "knex-stringcase": "1.4.5",

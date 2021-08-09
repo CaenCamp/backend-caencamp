@@ -25,7 +25,6 @@ router.get('/', async (ctx) => {
     const { editions, pagination } = await getPaginatedList({
         ...defaultQueryParameters,
         ...ctx.query,
-        published: 'true',
     });
 
     const linkHeaderValue = formatPaginationToLinkHeader({
