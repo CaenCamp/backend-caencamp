@@ -14,6 +14,7 @@ const jwtMiddleware = require('./toolbox/authentication/jwtMiddleware');
 
 const adminRouter = require('./admin-router');
 const publicRouter = require('./public-router');
+const signale = require('signale');
 
 const app = new Koa();
 
@@ -42,20 +43,21 @@ const env = process.env.NODE_ENV;
  * @param {object} error - oas error
  * @throw {Error} reformated oas error
  */
-// const errorHandler = (error) => {
-//     let errorDetails = false;
-//     if (error.meta && error.meta.rawErrors) {
-//         errorDetails = error.meta.rawErrors.reduce((acc, rawError) => {
-//             return [...acc, rawError.error];
-//         }, []);
-//     }
-//     const updatedError = new Error(
-//         `${error.message}${errorDetails ? ` (${errorDetails.join(', ')})` : ''}`
-//     );
-//     updatedError.status = 400;
+const errorHandler = (error) => {
+    signale.debug(error);
+    let errorDetails = false;
+    if (error.meta && error.meta.rawErrors) {
+        errorDetails = error.meta.rawErrors.reduce((acc, rawError) => {
+            return [...acc, rawError.error];
+        }, []);
+    }
+    const updatedError = new Error(
+        `${error.message}${errorDetails ? ` (${errorDetails.join(', ')})` : ''}`
+    );
+    updatedError.status = 400;
 
-//     throw updatedError;
-// };
+    throw updatedError;
+};
 
 /**
  * This method is used to format message return by the global error middleware
@@ -64,28 +66,30 @@ const env = process.env.NODE_ENV;
  * @return {object} the content of the json error return
  */
 const formatError = (error) => {
+    signale.debug(error);
     return {
         status: error.status,
         message: error.message,
     };
 };
 
+
 app.use(jwtMiddleware);
 app.use(bodyParser());
 app.use(error(formatError));
-// app.use(
-//     oas({
-//         file: `${__dirname}/../openapi/openapi.yaml`,
-//         endpoint: '/openapi.json',
-//         uiEndpoint: '/documentation',
-//         validateResponse: true,
-//         validatePaths: ['/api'],
-//         errorHandler,
-//     })
-// );
+app.use(async(ctx, next) => {
+    const mw = await oas({
+        file: `${__dirname}/../openapi/openapi.json`,
+        uiEndpoint: '/documentation',
+        validatePaths: ['/api'],
+        errorHandler,
+        validationOptions: {requestBodyAjvOptions: {allErrors: true}}
+    });
+    return mw(ctx, next);
+});
 
 if (env === 'development') {
-    router.get('/', (ctx) => {
+    router.get('/admin', (ctx) => {
         ctx.body = {
             message:
                 'Front is not serve here in dev environment. See documentation. API is available on /api endpoint',
