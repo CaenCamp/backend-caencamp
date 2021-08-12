@@ -40,7 +40,7 @@ const getFilteredQuery = (client) => {
 };
 
 const getPublicFilteredQuery = (client) => {
-  return client.select(`${tableName}.slug`)
+  return client.select(`${tableName}.slug`, `${tableName}.label`)
   .from(tableName);
 };
 
@@ -116,7 +116,7 @@ const getPublicPaginatedList = async (queryParameters) => {
       authorizedSort,
     })
     .then(({ data, pagination }) => ({
-      tags: data.reduce((acc, tag) => ([...acc, tag.slug]), []),
+      tags: data.reduce((acc, tag) => ([...acc, { identifier: tag.slug, label: tag.label }]), []),
       pagination,
     }));
 };

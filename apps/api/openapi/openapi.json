@@ -3,293 +3,59 @@
   "info": {
     "version": "0.1.0",
     "title": "API des CaenCamp",
+    "description": "L'API publique des CaenCamp.",
     "license": {
       "name": "GNU General Public License v3.0"
+    },
+    "contact": {
+      "name": "CaenCamp",
+      "url": "https://caen.camp",
+      "email": "contact@caen.camp"
     }
   },
   "servers": [
     {
-      "url": "http://petstore.swagger.io/v1"
+      "url": "http://localhost:3001/api"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Tags",
+      "description": "Les tags associés aux évènements."
     }
   ],
   "paths": {
-    "/pets": {
+    "/tags": {
       "get": {
-        "summary": "List all pets",
-        "operationId": "listPets",
+        "summary": "La liste paginée des tags associés aux évènements.",
+        "description": "La liste paginée des tags associés aux évènements.",
+        "operationId": "listTags",
         "tags": [
-          "pets"
+          "Tags"
         ],
         "parameters": [
           {
-            "name": "fields",
-            "in": "query",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "enum": [
-                  "name",
-                  "breed",
-                  "age",
-                  "weight"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/currentPage"
           },
           {
-            "name": "type",
-            "in": "query",
-            "schema": {
-              "type": "object",
-              "additionalProperties": false,
-              "properties": {
-                "color": {
-                  "type": "string",
-                  "enum": [
-                    "red",
-                    "green",
-                    "black",
-                    "white"
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "How many items to return at one time (max 100)",
-            "required": false,
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          },
-          {
-            "name": "breed",
-            "in": "query",
-            "description": "Filter result with specified breed",
-            "required": false,
-            "schema": {
-              "type": "array",
-              "maxItems": 3,
-              "items": {
-                "type": "string",
-                "enum": [
-                  "bichon",
-                  "chowchow",
-                  "jack russel",
-                  "labrador"
-                ]
-              }
-            }
+            "$ref": "#/components/parameters/perPage"
           }
         ],
         "responses": {
           "200": {
-            "description": "An paged array of pets",
+            "description": "Une liste paginée de tags",
             "headers": {
-              "x-next": {
-                "description": "A link to the next page of responses",
-                "schema": {
-                  "type": "string"
-                }
+              "X-Total-Count": {
+                "$ref": "#/components/headers/X-Total-Count"
+              },
+              "Link": {
+                "$ref": "#/components/headers/Link"
               }
             },
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Pets"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Create a pet",
-        "operationId": "createPets",
-        "tags": [
-          "pets"
-        ],
-        "requestBody": {
-          "description": "The pet information",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Pet"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Null response"
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Create an empty pet",
-        "operationId": "createEmptyPets",
-        "tags": [
-          "pets"
-        ],
-        "responses": {
-          "201": {
-            "description": "Null response"
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/pets/{petId}": {
-      "get": {
-        "summary": "Info for a specific pet",
-        "operationId": "showPetById",
-        "tags": [
-          "pets"
-        ],
-        "parameters": [
-          {
-            "name": "petId",
-            "in": "path",
-            "required": true,
-            "description": "The id of the pet to retrieve",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Expected response to a valid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Pets"
-                }
-              }
-            }
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post": {
-        "summary": "Update a pet",
-        "operationId": "updatePets",
-        "tags": [
-          "pets"
-        ],
-        "parameters": [
-          {
-            "name": "petId",
-            "in": "path",
-            "required": true,
-            "description": "The id of the pet to retrieve",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "requestBody": {
-          "description": "The pet information",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Pet"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Null response"
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "streaming a pet",
-        "parameters": [
-          {
-            "name": "petId",
-            "in": "path",
-            "required": true,
-            "description": "The id of the pet to retrieve",
-            "schema": {
-              "type": "integer"
-            }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "audio/aac": {
-              "schema": {
-                "type": "string",
-                "format": "binary"
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": {
-            "description": "Null response"
-          },
-          "default": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/Tags"
                 }
               }
             }
@@ -300,28 +66,24 @@
   },
   "components": {
     "schemas": {
-      "Pet": {
+      "Tag": {
         "required": [
-          "id",
-          "name"
+          "identifer",
+          "label"
         ],
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
+          "identifer": {
             "type": "string"
           },
-          "tag": {
+          "label": {
             "type": "string"
           }
         }
       },
-      "Pets": {
+      "Tags": {
         "type": "array",
         "items": {
-          "$ref": "#/components/schemas/Pet"
+          "$ref": "#/components/schemas/Tag"
         }
       },
       "Error": {
@@ -339,6 +101,51 @@
           }
         }
       }
-    }
+    },
+    "headers": {
+      "X-Total-Count": {
+        "description": "Return information about total items to paginate",
+        "schema": {
+          "type": "integer"
+        },
+        "example": 42,
+        "required": false
+      },
+      "Link": {
+        "description": "Return information about pagination actions",
+        "schema": {
+          "type": "string"
+        },
+        "example": "</resources?currentPage=3&perPage=10>; rel=\"self\",\n</resources?currentPage=1&perPage=10>; rel=\"first\",\n</resources?currentPage=2&perPage=10>; rel=\"prev\",\n</resources?currentPage=4&perPage=10>; rel=\"next\",\n</resources?currentPage=5&perPage=10>; rel=\"last\",\n",
+        "required": false
+      }
+    },
+    "parameters": {
+      "perPage": {
+        "name": "perPage",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "example": 25,
+          "format": "int32",
+          "minimum": 1
+        },
+        "description": "Le paramètre de pagination pour définir le nombre d'éléments par page."
+      },
+      "currentPage": {
+        "name": "currentPage",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "example": 1,
+          "format": "int32",
+          "minimum": 1
+        },
+        "description": "Le paramètre de pagination pour définir la page courrante"
+      }
+    },
+    "securitySchemes": {}
   }
 }

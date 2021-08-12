@@ -81,7 +81,7 @@ app.use(async(ctx, next) => {
     const mw = await oas({
         file: `${__dirname}/../openapi/openapi.json`,
         uiEndpoint: '/documentation',
-        validatePaths: ['/api'],
+        validatePaths: ['/api-plop'],
         errorHandler,
         validationOptions: {requestBodyAjvOptions: {allErrors: true}}
     });
