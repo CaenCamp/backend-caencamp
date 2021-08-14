@@ -1,5 +1,4 @@
-var addHours = require('date-fns/addHours')
-
+const { formatEvent } = require('./schemaOrgTransformer');
 const { getDbClient } = require("../toolbox/dbConnexion");
 
 const tableName = "edition";
@@ -13,8 +12,6 @@ const authorizedFilters = [
   "edition_tag.tag",
   "published",
 ];
-
-const API_URL = 'https://api.caen.camp/api';
 
 /**
  * Knex query for filtrated Oject list
@@ -248,99 +245,6 @@ const getOneBySlugQuery = (client, slug) => {
         "place.id": `${tableName}.place_id`,
         })
         .where({ [`${tableName}.slug`]: slug, published: true });
-};
-
-const formatEvent = (event) => {
-  return {
-    "@context": "https://schema.org",
-    "@type": "Event",
-    identifier: event.slug,
-    url: `${API_URL}/events/${event.slug}`,
-    name: event.title,
-    startDate: event.startDateTime,
-    endDate: event.endDateTime || addHours(new Date(event.startDateTime), 2),
-    eventAttendanceMode: getSchemaOrgAttendanceMode(event.mode),
-    eventStatus: "https://schema.org/EventScheduled",
-    isAccessibleForFree: true,
-    description: event.description,
-    descriptionHtml: event.descriptionHtml,
-    disambiguatingDescription: event.shortDescription,
-    inLanguage: {
-        '@type': 'Language',
-        'name': 'French'
-    },
-    tags: event.tags,
-    number: event.number,
-    meetupId: event.meetupId,
-    image: [
-        'https://caen.camp/static/logoFondBlanc-278da657a83902f7d21083ade8e9ce7a.png'
-    ],
-    location: event.mode === 'online' ? {
-        '@type': 'VirtualLocation',
-        url: 'https://somewhere.com/'
-    } : {
-      '@type': 'Place',
-      identifier: event.placeSlug,
-      url: `${API_URL}/places/${event.placeSlug}`,
-      name: event.place,
-      address: {
-        '@type': 'PostalAddress',
-        streetAddress: [event.address1, event.address2].join(', '),
-        addressLocality: event.city,
-        postalCode: event.postalCode,
-        addressCountry: event.country,
-      },
-    },
-    organizer: {
-        '@type': 'Organization',
-        identifier: event.organizer.identifier,
-        url: `${API_URL}/organizations/${event.organizer.identifier}`,
-        name: event.category,
-    },
-    sponsor: event.sponsor ? {
-        '@type': 'Organization',
-        identifier: event.sponsor.identifier,
-        url: `${API_URL}/organizations/${event.sponsor.identifier}`,
-        name: event.sponsor.name,
-    } : null,
-    workPerformed: event.talks.map(talk => ({
-        '@type': 'CreativeWork',
-        identifier: talk.slug,
-        url: `${API_URL}/creative-works/${talk.slug}`,
-        name: talk.title,
-        description: talk.description,
-        descriptionHtml: talk.descriptionHtml,
-        abstract: talk.shortDescription,
-        maintainers: talk.speakers.map(speaker => ({
-            '@type': 'Person',
-            url: `${API_URL}/persons/${speaker.slug}`,
-            identifier: speaker.slug,
-            name: speaker.name,
-            knowsAbout: speaker.shortBiography,
-        }))
-    })),
-    performers: event.talks.reduce((acc,talk) => ([
-        ...acc,
-        ...talk.speakers,
-    ]), []).map(speaker => ({
-        '@type': 'Person',
-        identifier: speaker.slug,
-        url: `${API_URL}/persons/${speaker.slug}`,
-        name: speaker.name,
-        knowsAbout: speaker.shortBiography,
-    }))
-  };
-};
-
-const getSchemaOrgAttendanceMode = mode => {
-    switch (mode) {
-        case 'online':
-            return 'https://schema.org/OnlineEventAttendanceMode';
-        case 'mixed':
-            return 'https://schema.org/MixedEventAttendanceMode';
-        default:
-            return 'https://schema.org/OfflineEventAttendanceMode';
-    }
 };
 
 /**
