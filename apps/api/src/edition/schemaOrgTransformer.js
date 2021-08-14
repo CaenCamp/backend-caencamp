@@ -29,10 +29,14 @@ const formatEvent = (event) => {
       meetupId: event.meetupId,
       location: event.mode === 'online' ? {
           '@type': 'VirtualLocation',
-          url: 'https://somewhere.com/'
+          '@id': 'youtube',
+          identifier: 'youtube',
+          url: 'https://somewhere.com/',
+          name: 'YouTube',
       } : {
         '@type': 'Place',
         '@id': event.placeSlug,
+        identifier: event.placeSlug,
         url: `${API_URL}/places/${event.placeSlug}`,
         name: event.place,
         address: {
@@ -46,18 +50,21 @@ const formatEvent = (event) => {
       organizer: {
           '@type': 'Organization',
           '@id': event.organizer.identifier,
+          identifier: event.organizer.identifier,
           url: `${API_URL}/organizations/${event.organizer.identifier}`,
           name: event.category,
       },
       sponsor: event.sponsor ? {
           '@type': 'Organization',
           '@id': event.sponsor.identifier,
+          identifier: event.sponsor.identifier,
           url: `${API_URL}/organizations/${event.sponsor.identifier}`,
           name: event.sponsor.name,
       } : null,
       workPerformed: event.talks.map(talk => ({
           '@type': 'CreativeWork',
           '@id': talk.slug,
+          identifier: talk.slug,
           url: `${API_URL}/creative-works/${talk.slug}`,
           name: talk.title,
           description: talk.description,
@@ -65,10 +72,11 @@ const formatEvent = (event) => {
           abstract: talk.shortDescription,
           maintainers: talk.speakers.map(speaker => ({
               '@type': 'Person',
-              url: `${API_URL}/persons/${speaker.slug}`,
               '@id': speaker.slug,
+              identifier: speaker.slug,
+              url: `${API_URL}/persons/${speaker.slug}`,
               name: speaker.name,
-              knowsAbout: speaker.shortBiography,
+              disambiguatingDescription: speaker.shortBiography,
           }))
       })),
       performers: event.talks.reduce((acc,talk) => ([
@@ -77,9 +85,10 @@ const formatEvent = (event) => {
       ]), []).map(speaker => ({
           '@type': 'Person',
           '@id': speaker.slug,
+          identifier: speaker.slug,
           url: `${API_URL}/persons/${speaker.slug}`,
           name: speaker.name,
-          knowsAbout: speaker.shortBiography,
+          disambiguatingDescription: speaker.shortBiography,
       }))
     };
   };

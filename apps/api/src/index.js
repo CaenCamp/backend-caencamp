@@ -44,7 +44,6 @@ const env = process.env.NODE_ENV;
  * @throw {Error} reformated oas error
  */
 const errorHandler = (error) => {
-    signale.debug(error);
     let errorDetails = false;
     if (error.meta && error.meta.rawErrors) {
         errorDetails = error.meta.rawErrors.reduce((acc, rawError) => {
@@ -66,7 +65,6 @@ const errorHandler = (error) => {
  * @return {object} the content of the json error return
  */
 const formatError = (error) => {
-    signale.debug(error);
     return {
         status: error.status,
         message: error.message,
@@ -81,7 +79,7 @@ app.use(async(ctx, next) => {
     const mw = await oas({
         file: `${__dirname}/../openapi/openapi.json`,
         uiEndpoint: '/documentation',
-        validatePaths: ['/api-plop'],
+        validatePaths: ['/api'],
         errorHandler,
         validationOptions: {requestBodyAjvOptions: {allErrors: true}}
     });
