@@ -5,8 +5,6 @@
 -- Dumped from database version 12.5 (Debian 12.5-1.pgdg100+1)
 -- Dumped by pg_dump version 12.5 (Debian 12.5-1.pgdg100+1)
 
--- Started on 2021-08-14 17:14:53 UTC
-
 SET statement_timeout = 0;
 SET lock_timeout = 0;
 SET idle_in_transaction_session_timeout = 0;
@@ -19,7 +17,6 @@ SET client_min_messages = warning;
 SET row_security = off;
 
 --
--- TOC entry 2 (class 3079 OID 16798)
 -- Name: uuid-ossp; Type: EXTENSION; Schema: -; Owner: -
 --
 
@@ -27,17 +24,14 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp" WITH SCHEMA public;
 
 
 --
--- TOC entry 3177 (class 0 OID 0)
--- Dependencies: 2
--- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: -
+-- Name: EXTENSION "uuid-ossp"; Type: COMMENT; Schema: -; Owner: 
 --
 
 COMMENT ON EXTENSION "uuid-ossp" IS 'generate universally unique identifiers (UUIDs)';
 
 
 --
--- TOC entry 203 (class 1259 OID 16391)
--- Name: admin_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: admin_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.admin_id_seq
@@ -48,13 +42,14 @@ CREATE SEQUENCE public.admin_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.admin_id_seq OWNER TO "backend-local-user";
+
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
 
 --
--- TOC entry 232 (class 1259 OID 16809)
--- Name: contact_point; Type: TABLE; Schema: public; Owner: -
+-- Name: contact_point; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.contact_point (
@@ -67,9 +62,10 @@ CREATE TABLE public.contact_point (
 );
 
 
+ALTER TABLE public.contact_point OWNER TO "backend-local-user";
+
 --
--- TOC entry 204 (class 1259 OID 16397)
--- Name: edition; Type: TABLE; Schema: public; Owner: -
+-- Name: edition; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.edition (
@@ -93,9 +89,10 @@ CREATE TABLE public.edition (
 );
 
 
+ALTER TABLE public.edition OWNER TO "backend-local-user";
+
 --
--- TOC entry 205 (class 1259 OID 16405)
--- Name: edition_category; Type: TABLE; Schema: public; Owner: -
+-- Name: edition_category; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.edition_category (
@@ -105,9 +102,10 @@ CREATE TABLE public.edition_category (
 );
 
 
+ALTER TABLE public.edition_category OWNER TO "backend-local-user";
+
 --
--- TOC entry 206 (class 1259 OID 16409)
--- Name: edition_category_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: edition_category_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.edition_category_id_seq
@@ -118,9 +116,10 @@ CREATE SEQUENCE public.edition_category_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.edition_category_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 207 (class 1259 OID 16411)
--- Name: edition_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: edition_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.edition_id_seq
@@ -131,9 +130,10 @@ CREATE SEQUENCE public.edition_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.edition_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 208 (class 1259 OID 16413)
--- Name: edition_mode; Type: TABLE; Schema: public; Owner: -
+-- Name: edition_mode; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.edition_mode (
@@ -142,9 +142,10 @@ CREATE TABLE public.edition_mode (
 );
 
 
+ALTER TABLE public.edition_mode OWNER TO "backend-local-user";
+
 --
--- TOC entry 209 (class 1259 OID 16416)
--- Name: edition_mode_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: edition_mode_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.edition_mode_id_seq
@@ -155,9 +156,10 @@ CREATE SEQUENCE public.edition_mode_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.edition_mode_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 236 (class 1259 OID 17471)
--- Name: edition_tag; Type: TABLE; Schema: public; Owner: -
+-- Name: edition_tag; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.edition_tag (
@@ -166,9 +168,10 @@ CREATE TABLE public.edition_tag (
 );
 
 
+ALTER TABLE public.edition_tag OWNER TO "backend-local-user";
+
 --
--- TOC entry 233 (class 1259 OID 16825)
--- Name: job_posting; Type: TABLE; Schema: public; Owner: -
+-- Name: job_posting; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.job_posting (
@@ -192,9 +195,10 @@ CREATE TABLE public.job_posting (
 );
 
 
+ALTER TABLE public.job_posting OWNER TO "backend-local-user";
+
 --
--- TOC entry 229 (class 1259 OID 16784)
--- Name: migrations; Type: TABLE; Schema: public; Owner: -
+-- Name: migrations; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.migrations (
@@ -205,9 +209,10 @@ CREATE TABLE public.migrations (
 );
 
 
+ALTER TABLE public.migrations OWNER TO "backend-local-user";
+
 --
--- TOC entry 228 (class 1259 OID 16782)
--- Name: migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: migrations_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.migrations_id_seq
@@ -219,18 +224,17 @@ CREATE SEQUENCE public.migrations_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.migrations_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 3178 (class 0 OID 0)
--- Dependencies: 228
--- Name: migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: migrations_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: backend-local-user
 --
 
 ALTER SEQUENCE public.migrations_id_seq OWNED BY public.migrations.id;
 
 
 --
--- TOC entry 231 (class 1259 OID 16792)
--- Name: migrations_lock; Type: TABLE; Schema: public; Owner: -
+-- Name: migrations_lock; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.migrations_lock (
@@ -239,9 +243,10 @@ CREATE TABLE public.migrations_lock (
 );
 
 
+ALTER TABLE public.migrations_lock OWNER TO "backend-local-user";
+
 --
--- TOC entry 230 (class 1259 OID 16790)
--- Name: migrations_lock_index_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: migrations_lock_index_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.migrations_lock_index_seq
@@ -253,18 +258,17 @@ CREATE SEQUENCE public.migrations_lock_index_seq
     CACHE 1;
 
 
+ALTER TABLE public.migrations_lock_index_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 3179 (class 0 OID 0)
--- Dependencies: 230
--- Name: migrations_lock_index_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+-- Name: migrations_lock_index_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: backend-local-user
 --
 
 ALTER SEQUENCE public.migrations_lock_index_seq OWNED BY public.migrations_lock.index;
 
 
 --
--- TOC entry 210 (class 1259 OID 16418)
--- Name: organization; Type: TABLE; Schema: public; Owner: -
+-- Name: organization; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.organization (
@@ -284,9 +288,10 @@ CREATE TABLE public.organization (
 );
 
 
+ALTER TABLE public.organization OWNER TO "backend-local-user";
+
 --
--- TOC entry 211 (class 1259 OID 16426)
--- Name: organization_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: organization_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.organization_id_seq
@@ -297,9 +302,10 @@ CREATE SEQUENCE public.organization_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.organization_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 212 (class 1259 OID 16428)
--- Name: place; Type: TABLE; Schema: public; Owner: -
+-- Name: place; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.place (
@@ -319,9 +325,10 @@ CREATE TABLE public.place (
 );
 
 
+ALTER TABLE public.place OWNER TO "backend-local-user";
+
 --
--- TOC entry 213 (class 1259 OID 16437)
--- Name: place_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: place_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.place_id_seq
@@ -332,9 +339,10 @@ CREATE SEQUENCE public.place_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.place_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 235 (class 1259 OID 16853)
--- Name: refresh_token; Type: TABLE; Schema: public; Owner: -
+-- Name: refresh_token; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.refresh_token (
@@ -346,9 +354,10 @@ CREATE TABLE public.refresh_token (
 );
 
 
+ALTER TABLE public.refresh_token OWNER TO "backend-local-user";
+
 --
--- TOC entry 214 (class 1259 OID 16439)
--- Name: speaker; Type: TABLE; Schema: public; Owner: -
+-- Name: speaker; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.speaker (
@@ -362,9 +371,10 @@ CREATE TABLE public.speaker (
 );
 
 
+ALTER TABLE public.speaker OWNER TO "backend-local-user";
+
 --
--- TOC entry 215 (class 1259 OID 16445)
--- Name: speaker_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: speaker_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.speaker_id_seq
@@ -375,9 +385,10 @@ CREATE SEQUENCE public.speaker_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.speaker_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 216 (class 1259 OID 16447)
--- Name: tag; Type: TABLE; Schema: public; Owner: -
+-- Name: tag; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.tag (
@@ -387,9 +398,10 @@ CREATE TABLE public.tag (
 );
 
 
+ALTER TABLE public.tag OWNER TO "backend-local-user";
+
 --
--- TOC entry 217 (class 1259 OID 16453)
--- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: tag_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.tag_id_seq
@@ -400,9 +412,10 @@ CREATE SEQUENCE public.tag_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.tag_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 218 (class 1259 OID 16455)
--- Name: talk; Type: TABLE; Schema: public; Owner: -
+-- Name: talk; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.talk (
@@ -419,9 +432,10 @@ CREATE TABLE public.talk (
 );
 
 
+ALTER TABLE public.talk OWNER TO "backend-local-user";
+
 --
--- TOC entry 219 (class 1259 OID 16462)
--- Name: talk_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: talk_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.talk_id_seq
@@ -432,9 +446,10 @@ CREATE SEQUENCE public.talk_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.talk_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 220 (class 1259 OID 16464)
--- Name: talk_speaker; Type: TABLE; Schema: public; Owner: -
+-- Name: talk_speaker; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.talk_speaker (
@@ -443,9 +458,10 @@ CREATE TABLE public.talk_speaker (
 );
 
 
+ALTER TABLE public.talk_speaker OWNER TO "backend-local-user";
+
 --
--- TOC entry 221 (class 1259 OID 16467)
--- Name: talk_tag; Type: TABLE; Schema: public; Owner: -
+-- Name: talk_tag; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.talk_tag (
@@ -454,9 +470,10 @@ CREATE TABLE public.talk_tag (
 );
 
 
+ALTER TABLE public.talk_tag OWNER TO "backend-local-user";
+
 --
--- TOC entry 222 (class 1259 OID 16470)
--- Name: talk_type; Type: TABLE; Schema: public; Owner: -
+-- Name: talk_type; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.talk_type (
@@ -467,9 +484,10 @@ CREATE TABLE public.talk_type (
 );
 
 
+ALTER TABLE public.talk_type OWNER TO "backend-local-user";
+
 --
--- TOC entry 223 (class 1259 OID 16477)
--- Name: talk_type_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: talk_type_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.talk_type_id_seq
@@ -480,9 +498,10 @@ CREATE SEQUENCE public.talk_type_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.talk_type_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 234 (class 1259 OID 16844)
--- Name: user_account; Type: TABLE; Schema: public; Owner: -
+-- Name: user_account; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.user_account (
@@ -493,9 +512,10 @@ CREATE TABLE public.user_account (
 );
 
 
+ALTER TABLE public.user_account OWNER TO "backend-local-user";
+
 --
--- TOC entry 224 (class 1259 OID 16479)
--- Name: web_site; Type: TABLE; Schema: public; Owner: -
+-- Name: web_site; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.web_site (
@@ -506,9 +526,10 @@ CREATE TABLE public.web_site (
 );
 
 
+ALTER TABLE public.web_site OWNER TO "backend-local-user";
+
 --
--- TOC entry 225 (class 1259 OID 16485)
--- Name: web_site_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: web_site_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.web_site_id_seq
@@ -519,9 +540,10 @@ CREATE SEQUENCE public.web_site_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.web_site_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 226 (class 1259 OID 16487)
--- Name: web_site_type; Type: TABLE; Schema: public; Owner: -
+-- Name: web_site_type; Type: TABLE; Schema: public; Owner: backend-local-user
 --
 
 CREATE TABLE public.web_site_type (
@@ -530,9 +552,10 @@ CREATE TABLE public.web_site_type (
 );
 
 
+ALTER TABLE public.web_site_type OWNER TO "backend-local-user";
+
 --
--- TOC entry 227 (class 1259 OID 16490)
--- Name: web_site_type_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+-- Name: web_site_type_id_seq; Type: SEQUENCE; Schema: public; Owner: backend-local-user
 --
 
 CREATE SEQUENCE public.web_site_type_id_seq
@@ -543,26 +566,24 @@ CREATE SEQUENCE public.web_site_type_id_seq
     CACHE 1;
 
 
+ALTER TABLE public.web_site_type_id_seq OWNER TO "backend-local-user";
+
 --
--- TOC entry 2924 (class 2604 OID 16787)
--- Name: migrations id; Type: DEFAULT; Schema: public; Owner: -
+-- Name: migrations id; Type: DEFAULT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.migrations ALTER COLUMN id SET DEFAULT nextval('public.migrations_id_seq'::regclass);
 
 
 --
--- TOC entry 2925 (class 2604 OID 16795)
--- Name: migrations_lock index; Type: DEFAULT; Schema: public; Owner: -
+-- Name: migrations_lock index; Type: DEFAULT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.migrations_lock ALTER COLUMN index SET DEFAULT nextval('public.migrations_lock_index_seq'::regclass);
 
 
 --
--- TOC entry 3167 (class 0 OID 16809)
--- Dependencies: 232
--- Data for Name: contact_point; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: contact_point; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.contact_point (id, email, telephone, name, contact_type, organization_id) FROM stdin;
@@ -571,9 +592,7 @@ COPY public.contact_point (id, email, telephone, name, contact_type, organizatio
 
 
 --
--- TOC entry 3139 (class 0 OID 16397)
--- Dependencies: 204
--- Data for Name: edition; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: edition; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.edition (title, slug, number, description, published, meetup_id, short_description, start_date_time, end_date_time, description_html, description_markdown, mode_id, place_id, organizer_id, sponsor_id, category_id, id) FROM stdin;
@@ -640,9 +659,7 @@ Pas de stress, y'a Cypress	pas-de-stress-ya-cypress	50	Pour sa 50ème édition, 
 
 
 --
--- TOC entry 3140 (class 0 OID 16405)
--- Dependencies: 205
--- Data for Name: edition_category; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: edition_category; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.edition_category (label, description, id) FROM stdin;
@@ -654,9 +671,7 @@ Dojo CaenCamp	Le Coding Dojo des CaenCamp.s	ce495717-895b-4fa5-befd-c1989a90c59b
 
 
 --
--- TOC entry 3143 (class 0 OID 16413)
--- Dependencies: 208
--- Data for Name: edition_mode; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: edition_mode; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.edition_mode (label, id) FROM stdin;
@@ -667,9 +682,7 @@ mixed	c407357e-524f-4552-8197-006b7f69cf77
 
 
 --
--- TOC entry 3171 (class 0 OID 17471)
--- Dependencies: 236
--- Data for Name: edition_tag; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: edition_tag; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.edition_tag (edition_id, tag) FROM stdin;
@@ -769,9 +782,7 @@ be9273ad-5a5c-4692-b2e2-93f58bb31f6a	moteur-de-recherche
 
 
 --
--- TOC entry 3168 (class 0 OID 16825)
--- Dependencies: 233
--- Data for Name: job_posting; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: job_posting; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.job_posting (id, title, url, date_posted, employer_overview, employment_type, experience_requirements, job_start_date, skills, valid_through, base_salary, job_location_type, job_immediate_start, published, hiring_organization_id) FROM stdin;
@@ -781,9 +792,7 @@ f2370cea-069e-490a-805b-df9ca1b9339e	seconde offre	https://alexisjanvier.net/	20
 
 
 --
--- TOC entry 3164 (class 0 OID 16784)
--- Dependencies: 229
--- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: migrations; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.migrations (id, name, batch, migration_time) FROM stdin;
@@ -809,9 +818,7 @@ COPY public.migrations (id, name, batch, migration_time) FROM stdin;
 
 
 --
--- TOC entry 3166 (class 0 OID 16792)
--- Dependencies: 231
--- Data for Name: migrations_lock; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: migrations_lock; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.migrations_lock (index, is_locked) FROM stdin;
@@ -820,9 +827,7 @@ COPY public.migrations_lock (index, is_locked) FROM stdin;
 
 
 --
--- TOC entry 3145 (class 0 OID 16418)
--- Dependencies: 210
--- Data for Name: organization; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: organization; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.organization (name, slug, description, url, logo, description_html, description_markdown, email, address_country, address_locality, postal_code, street_address, id) FROM stdin;
@@ -834,9 +839,7 @@ Incaya	incaya	Coopérative de services du numérique	https://www.incaya.fr/	http
 
 
 --
--- TOC entry 3147 (class 0 OID 16428)
--- Dependencies: 212
--- Data for Name: place; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: place; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.place (name, slug, description, url, address1, address2, city, logo, description_html, description_markdown, postal_code, country, id) FROM stdin;
@@ -849,9 +852,7 @@ Normandie Incubation	normandie-incubation	Incubateur de projets innovants depuis
 
 
 --
--- TOC entry 3170 (class 0 OID 16853)
--- Dependencies: 235
--- Data for Name: refresh_token; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: refresh_token; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.refresh_token (id, user_id, remember_me, created_at, validity_timestamp) FROM stdin;
@@ -860,9 +861,7 @@ c6f7b1ab-0316-4acc-bdad-e0cadf911aee	fb6c0fa2-b5d2-44fd-905d-362b3dc11211	f	2021
 
 
 --
--- TOC entry 3149 (class 0 OID 16439)
--- Dependencies: 214
--- Data for Name: speaker; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: speaker; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.speaker (name, slug, biography, short_biography, biography_html, biography_markdown, id) FROM stdin;
@@ -903,9 +902,7 @@ Alexis Janvier	alexis-janvier	Donc\nWhy ?\n\nSensibilisé très tôt à l’info
 
 
 --
--- TOC entry 3151 (class 0 OID 16447)
--- Dependencies: 216
--- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: tag; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.tag (label, slug, id) FROM stdin;
@@ -962,9 +959,7 @@ wordpress	wordpress	c5471d9d-5783-4264-90d6-475f037c8b87
 
 
 --
--- TOC entry 3153 (class 0 OID 16455)
--- Dependencies: 218
--- Data for Name: talk; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: talk; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.talk (title, slug, description, video, short_description, description_html, description_markdown, type_id, id, edition_id) FROM stdin;
@@ -1038,9 +1033,7 @@ OpenAPI: un contrat pour vos API.s	openapi-un-contrat-pour-vos-api-s	Après avoi
 
 
 --
--- TOC entry 3155 (class 0 OID 16464)
--- Dependencies: 220
--- Data for Name: talk_speaker; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: talk_speaker; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.talk_speaker (speaker_id, talk_id) FROM stdin;
@@ -1115,9 +1108,7 @@ b73bec0c-0a58-40fc-90cb-3d819c32bfc3	d01bf5e3-44ed-4be4-af5d-7c66026f662f
 
 
 --
--- TOC entry 3156 (class 0 OID 16467)
--- Dependencies: 221
--- Data for Name: talk_tag; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: talk_tag; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.talk_tag (tag_id, talk_id) FROM stdin;
@@ -1219,9 +1210,7 @@ a190e93f-5f9f-44d2-9cb8-19b16b43938a	7733a79c-2bf5-4045-ae08-37280ee60fe4
 
 
 --
--- TOC entry 3157 (class 0 OID 16470)
--- Dependencies: 222
--- Data for Name: talk_type; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: talk_type; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.talk_type (label, description, duration_in_minutes, id) FROM stdin;
@@ -1232,9 +1221,7 @@ Dojo	Une séance de code	180	8b6857b9-1ea7-4d6d-9bb0-e5d0de1d0663
 
 
 --
--- TOC entry 3169 (class 0 OID 16844)
--- Dependencies: 234
--- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: user_account; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.user_account (id, username, password, created_at) FROM stdin;
@@ -1243,9 +1230,7 @@ fb6c0fa2-b5d2-44fd-905d-362b3dc11211	alexis	$2b$10$TTj/pE.zkV8Cxa4AnijDlurqnXgWf
 
 
 --
--- TOC entry 3159 (class 0 OID 16479)
--- Dependencies: 224
--- Data for Name: web_site; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: web_site; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.web_site (url, type_id, id, speaker_id) FROM stdin;
@@ -1349,9 +1334,7 @@ https://ryuran.info/	3dd05356-87c2-480e-ada9-d8f47d9d7ad6	267106a4-40f4-439a-b77
 
 
 --
--- TOC entry 3161 (class 0 OID 16487)
--- Dependencies: 226
--- Data for Name: web_site_type; Type: TABLE DATA; Schema: public; Owner: -
+-- Data for Name: web_site_type; Type: TABLE DATA; Schema: public; Owner: backend-local-user
 --
 
 COPY public.web_site_type (label, id) FROM stdin;
@@ -1363,134 +1346,105 @@ github	81807f73-c1c7-4d19-b628-b65ed4d5bc59
 
 
 --
--- TOC entry 3180 (class 0 OID 0)
--- Dependencies: 203
--- Name: admin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: admin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.admin_id_seq', 1, false);
 
 
 --
--- TOC entry 3181 (class 0 OID 0)
--- Dependencies: 206
--- Name: edition_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: edition_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.edition_category_id_seq', 12, true);
 
 
 --
--- TOC entry 3182 (class 0 OID 0)
--- Dependencies: 207
--- Name: edition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: edition_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.edition_id_seq', 59, true);
 
 
 --
--- TOC entry 3183 (class 0 OID 0)
--- Dependencies: 209
--- Name: edition_mode_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: edition_mode_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.edition_mode_id_seq', 9, true);
 
 
 --
--- TOC entry 3184 (class 0 OID 0)
--- Dependencies: 228
--- Name: migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: migrations_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.migrations_id_seq', 19, true);
 
 
 --
--- TOC entry 3185 (class 0 OID 0)
--- Dependencies: 230
--- Name: migrations_lock_index_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: migrations_lock_index_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.migrations_lock_index_seq', 1, true);
 
 
 --
--- TOC entry 3186 (class 0 OID 0)
--- Dependencies: 211
--- Name: organization_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: organization_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.organization_id_seq', 10, true);
 
 
 --
--- TOC entry 3187 (class 0 OID 0)
--- Dependencies: 213
--- Name: place_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: place_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.place_id_seq', 15, true);
 
 
 --
--- TOC entry 3188 (class 0 OID 0)
--- Dependencies: 215
--- Name: speaker_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: speaker_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.speaker_id_seq', 33, true);
 
 
 --
--- TOC entry 3189 (class 0 OID 0)
--- Dependencies: 217
--- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: tag_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.tag_id_seq', 49, true);
 
 
 --
--- TOC entry 3190 (class 0 OID 0)
--- Dependencies: 219
--- Name: talk_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: talk_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.talk_id_seq', 68, true);
 
 
 --
--- TOC entry 3191 (class 0 OID 0)
--- Dependencies: 223
--- Name: talk_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: talk_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.talk_type_id_seq', 9, true);
 
 
 --
--- TOC entry 3192 (class 0 OID 0)
--- Dependencies: 225
--- Name: web_site_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: web_site_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.web_site_id_seq', 98, true);
 
 
 --
--- TOC entry 3193 (class 0 OID 0)
--- Dependencies: 227
--- Name: web_site_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: -
+-- Name: web_site_type_id_seq; Type: SEQUENCE SET; Schema: public; Owner: backend-local-user
 --
 
 SELECT pg_catalog.setval('public.web_site_type_id_seq', 12, true);
 
 
 --
--- TOC entry 2981 (class 2606 OID 16817)
--- Name: contact_point contact_point_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: contact_point contact_point_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.contact_point
@@ -1498,8 +1452,7 @@ ALTER TABLE ONLY public.contact_point
 
 
 --
--- TOC entry 2947 (class 2606 OID 17315)
--- Name: edition_category edition_category_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: edition_category edition_category_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.edition_category
@@ -1507,8 +1460,7 @@ ALTER TABLE ONLY public.edition_category
 
 
 --
--- TOC entry 2949 (class 2606 OID 17155)
--- Name: edition_mode edition_mode_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: edition_mode edition_mode_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.edition_mode
@@ -1516,8 +1468,7 @@ ALTER TABLE ONLY public.edition_mode
 
 
 --
--- TOC entry 2939 (class 2606 OID 17452)
--- Name: edition edition_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: edition edition_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.edition
@@ -1525,8 +1476,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 2985 (class 2606 OID 16838)
--- Name: job_posting job_posting_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: job_posting job_posting_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.job_posting
@@ -1534,8 +1484,7 @@ ALTER TABLE ONLY public.job_posting
 
 
 --
--- TOC entry 2979 (class 2606 OID 16797)
--- Name: migrations_lock migrations_lock_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: migrations_lock migrations_lock_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.migrations_lock
@@ -1543,8 +1492,7 @@ ALTER TABLE ONLY public.migrations_lock
 
 
 --
--- TOC entry 2977 (class 2606 OID 16789)
--- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.migrations
@@ -1552,8 +1500,7 @@ ALTER TABLE ONLY public.migrations
 
 
 --
--- TOC entry 2951 (class 2606 OID 17287)
--- Name: organization organization_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: organization organization_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.organization
@@ -1561,8 +1508,7 @@ ALTER TABLE ONLY public.organization
 
 
 --
--- TOC entry 2954 (class 2606 OID 17216)
--- Name: place place_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: place place_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.place
@@ -1570,8 +1516,7 @@ ALTER TABLE ONLY public.place
 
 
 --
--- TOC entry 2991 (class 2606 OID 16860)
--- Name: refresh_token refresh_token_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: refresh_token refresh_token_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.refresh_token
@@ -1579,8 +1524,7 @@ ALTER TABLE ONLY public.refresh_token
 
 
 --
--- TOC entry 2993 (class 2606 OID 16867)
--- Name: refresh_token refresh_token_user_id_unique; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: refresh_token refresh_token_user_id_unique; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.refresh_token
@@ -1588,8 +1532,7 @@ ALTER TABLE ONLY public.refresh_token
 
 
 --
--- TOC entry 2957 (class 2606 OID 16981)
--- Name: speaker speaker_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: speaker speaker_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.speaker
@@ -1597,8 +1540,7 @@ ALTER TABLE ONLY public.speaker
 
 
 --
--- TOC entry 2960 (class 2606 OID 17032)
--- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: tag tag_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.tag
@@ -1606,8 +1548,7 @@ ALTER TABLE ONLY public.tag
 
 
 --
--- TOC entry 2964 (class 2606 OID 17135)
--- Name: talk talk_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: talk talk_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.talk
@@ -1615,8 +1556,7 @@ ALTER TABLE ONLY public.talk
 
 
 --
--- TOC entry 2969 (class 2606 OID 17009)
--- Name: talk_type talk_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: talk_type talk_type_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.talk_type
@@ -1624,8 +1564,7 @@ ALTER TABLE ONLY public.talk_type
 
 
 --
--- TOC entry 2987 (class 2606 OID 16850)
--- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_account user_account_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.user_account
@@ -1633,8 +1572,7 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- TOC entry 2989 (class 2606 OID 16852)
--- Name: user_account user_account_username_unique; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: user_account user_account_username_unique; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.user_account
@@ -1642,8 +1580,7 @@ ALTER TABLE ONLY public.user_account
 
 
 --
--- TOC entry 2973 (class 2606 OID 16963)
--- Name: web_site web_site_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: web_site web_site_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.web_site
@@ -1651,8 +1588,7 @@ ALTER TABLE ONLY public.web_site
 
 
 --
--- TOC entry 2975 (class 2606 OID 16878)
--- Name: web_site_type web_site_type_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+-- Name: web_site_type web_site_type_pkey; Type: CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.web_site_type
@@ -1660,152 +1596,133 @@ ALTER TABLE ONLY public.web_site_type
 
 
 --
--- TOC entry 2940 (class 1259 OID 17313)
--- Name: idx_category_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_category_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_category_id ON public.edition USING btree (category_id);
 
 
 --
--- TOC entry 2962 (class 1259 OID 17450)
--- Name: idx_edition_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_edition_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_edition_id ON public.talk USING btree (edition_id);
 
 
 --
--- TOC entry 2983 (class 1259 OID 17285)
--- Name: idx_hiring_organization_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_hiring_organization_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_hiring_organization_id ON public.job_posting USING btree (hiring_organization_id);
 
 
 --
--- TOC entry 2941 (class 1259 OID 17153)
--- Name: idx_mode_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_mode_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_mode_id ON public.edition USING btree (mode_id);
 
 
 --
--- TOC entry 2982 (class 1259 OID 17284)
--- Name: idx_organization_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_organization_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_organization_id ON public.contact_point USING btree (organization_id);
 
 
 --
--- TOC entry 2942 (class 1259 OID 17282)
--- Name: idx_organizer_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_organizer_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_organizer_id ON public.edition USING btree (organizer_id);
 
 
 --
--- TOC entry 2943 (class 1259 OID 17214)
--- Name: idx_place_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_place_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_place_id ON public.edition USING btree (place_id);
 
 
 --
--- TOC entry 2970 (class 1259 OID 16979)
--- Name: idx_speaker_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_speaker_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_speaker_id ON public.web_site USING btree (speaker_id);
 
 
 --
--- TOC entry 2944 (class 1259 OID 17283)
--- Name: idx_sponsor_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_sponsor_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_sponsor_id ON public.edition USING btree (sponsor_id);
 
 
 --
--- TOC entry 2966 (class 1259 OID 17030)
--- Name: idx_tag_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_tag_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_tag_id ON public.talk_tag USING btree (tag_id);
 
 
 --
--- TOC entry 2967 (class 1259 OID 17133)
--- Name: idx_talk_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_talk_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_talk_id ON public.talk_tag USING btree (talk_id);
 
 
 --
--- TOC entry 2971 (class 1259 OID 16876)
--- Name: idx_type_id; Type: INDEX; Schema: public; Owner: -
+-- Name: idx_type_id; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE INDEX idx_type_id ON public.web_site USING btree (type_id);
 
 
 --
--- TOC entry 2961 (class 1259 OID 16710)
--- Name: uniq_389b783989d9b62; Type: INDEX; Schema: public; Owner: -
+-- Name: uniq_389b783989d9b62; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE UNIQUE INDEX uniq_389b783989d9b62 ON public.tag USING btree (slug);
 
 
 --
--- TOC entry 2955 (class 1259 OID 16711)
--- Name: uniq_741d53cd989d9b62; Type: INDEX; Schema: public; Owner: -
+-- Name: uniq_741d53cd989d9b62; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE UNIQUE INDEX uniq_741d53cd989d9b62 ON public.place USING btree (slug);
 
 
 --
--- TOC entry 2958 (class 1259 OID 16712)
--- Name: uniq_7b85db61989d9b62; Type: INDEX; Schema: public; Owner: -
+-- Name: uniq_7b85db61989d9b62; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE UNIQUE INDEX uniq_7b85db61989d9b62 ON public.speaker USING btree (slug);
 
 
 --
--- TOC entry 2965 (class 1259 OID 16714)
--- Name: uniq_9f24d5bb989d9b62; Type: INDEX; Schema: public; Owner: -
+-- Name: uniq_9f24d5bb989d9b62; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE UNIQUE INDEX uniq_9f24d5bb989d9b62 ON public.talk USING btree (slug);
 
 
 --
--- TOC entry 2945 (class 1259 OID 16715)
--- Name: uniq_a891181f989d9b62; Type: INDEX; Schema: public; Owner: -
+-- Name: uniq_a891181f989d9b62; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE UNIQUE INDEX uniq_a891181f989d9b62 ON public.edition USING btree (slug);
 
 
 --
--- TOC entry 2952 (class 1259 OID 16716)
--- Name: uniq_c1ee637c989d9b62; Type: INDEX; Schema: public; Owner: -
+-- Name: uniq_c1ee637c989d9b62; Type: INDEX; Schema: public; Owner: backend-local-user
 --
 
 CREATE UNIQUE INDEX uniq_c1ee637c989d9b62 ON public.organization USING btree (slug);
 
 
 --
--- TOC entry 2998 (class 2606 OID 17316)
--- Name: edition category_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: edition category_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.edition
@@ -1813,8 +1730,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 3000 (class 2606 OID 17453)
--- Name: talk edition_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: talk edition_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.talk
@@ -1822,8 +1738,7 @@ ALTER TABLE ONLY public.talk
 
 
 --
--- TOC entry 3010 (class 2606 OID 17474)
--- Name: edition_tag edition_tag_edition_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: edition_tag edition_tag_edition_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.edition_tag
@@ -1831,8 +1746,7 @@ ALTER TABLE ONLY public.edition_tag
 
 
 --
--- TOC entry 3011 (class 2606 OID 17479)
--- Name: edition_tag edition_tag_tag_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: edition_tag edition_tag_tag_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.edition_tag
@@ -1840,8 +1754,7 @@ ALTER TABLE ONLY public.edition_tag
 
 
 --
--- TOC entry 3008 (class 2606 OID 17326)
--- Name: job_posting hiring_organization_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: job_posting hiring_organization_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.job_posting
@@ -1849,8 +1762,7 @@ ALTER TABLE ONLY public.job_posting
 
 
 --
--- TOC entry 2994 (class 2606 OID 17156)
--- Name: edition mode_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: edition mode_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.edition
@@ -1858,8 +1770,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 3007 (class 2606 OID 17298)
--- Name: contact_point organization_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: contact_point organization_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.contact_point
@@ -1867,8 +1778,7 @@ ALTER TABLE ONLY public.contact_point
 
 
 --
--- TOC entry 2996 (class 2606 OID 17288)
--- Name: edition organizer_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: edition organizer_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.edition
@@ -1876,8 +1786,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 2995 (class 2606 OID 17217)
--- Name: edition place_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: edition place_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.edition
@@ -1885,8 +1794,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 3009 (class 2606 OID 16861)
--- Name: refresh_token refresh_token_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: refresh_token refresh_token_user_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.refresh_token
@@ -1894,8 +1802,7 @@ ALTER TABLE ONLY public.refresh_token
 
 
 --
--- TOC entry 2997 (class 2606 OID 17293)
--- Name: edition sponsor_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: edition sponsor_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.edition
@@ -1903,8 +1810,7 @@ ALTER TABLE ONLY public.edition
 
 
 --
--- TOC entry 3003 (class 2606 OID 17033)
--- Name: talk_tag tag_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: talk_tag tag_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.talk_tag
@@ -1912,8 +1818,7 @@ ALTER TABLE ONLY public.talk_tag
 
 
 --
--- TOC entry 3001 (class 2606 OID 16987)
--- Name: talk_speaker talk_speaker_speaker_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: talk_speaker talk_speaker_speaker_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.talk_speaker
@@ -1921,8 +1826,7 @@ ALTER TABLE ONLY public.talk_speaker
 
 
 --
--- TOC entry 3002 (class 2606 OID 17141)
--- Name: talk_speaker talk_speaker_talk_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: talk_speaker talk_speaker_talk_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.talk_speaker
@@ -1930,8 +1834,7 @@ ALTER TABLE ONLY public.talk_speaker
 
 
 --
--- TOC entry 3004 (class 2606 OID 17136)
--- Name: talk_tag talk_tag_talk_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: talk_tag talk_tag_talk_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.talk_tag
@@ -1939,8 +1842,7 @@ ALTER TABLE ONLY public.talk_tag
 
 
 --
--- TOC entry 2999 (class 2606 OID 17010)
--- Name: talk talk_type_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: talk talk_type_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.talk
@@ -1948,8 +1850,7 @@ ALTER TABLE ONLY public.talk
 
 
 --
--- TOC entry 3006 (class 2606 OID 16982)
--- Name: web_site web_site_speaker_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: web_site web_site_speaker_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.web_site
@@ -1957,15 +1858,12 @@ ALTER TABLE ONLY public.web_site
 
 
 --
--- TOC entry 3005 (class 2606 OID 16879)
--- Name: web_site web_site_type_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: web_site web_site_type_id_foreign; Type: FK CONSTRAINT; Schema: public; Owner: backend-local-user
 --
 
 ALTER TABLE ONLY public.web_site
     ADD CONSTRAINT web_site_type_id_foreign FOREIGN KEY (type_id) REFERENCES public.web_site_type(id) ON DELETE SET NULL;
 
-
--- Completed on 2021-08-14 17:14:53 UTC
 
 --
 -- PostgreSQL database dump complete
