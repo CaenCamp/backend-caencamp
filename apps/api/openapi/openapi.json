@@ -15,7 +15,12 @@
   },
   "servers": [
     {
-      "url": "http://localhost:3001/api"
+      "url": "https://api.caen.camp/api",
+      "description": "Serveur de production (live data)"
+    },
+    {
+      "url": "http://localhost:3001/api",
+      "description": "Serveur local (données de dev.)"
     }
   ],
   "tags": [
