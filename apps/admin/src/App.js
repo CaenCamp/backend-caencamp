@@ -34,8 +34,12 @@ const httpClient = (url, options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
+export const getApiUrl = () => process.env.NODE_ENV === 'production' ? '/' : 'http://localhost:3001/';
+
+const host = `${getApiUrl()}api-admin`;
+
 const caenCampDataProvider = dataProvider(
-  'http://localhost:3001/api-admin',
+  host,
   httpClient
 );
 

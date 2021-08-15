@@ -1,6 +1,9 @@
+import { getApiUrl } from './App';
+
 export const authProvider = {
     login: ({ username, password }) =>  {
-        const request = new Request('http://localhost:3001/authenticate', {
+        const host = `${getApiUrl()}authenticate`;
+        const request = new Request(host, {
             method: 'POST',
             body: JSON.stringify({ username, password }),
             headers: new Headers({ 'Content-Type': 'application/json' }),

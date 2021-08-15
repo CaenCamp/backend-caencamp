@@ -3,6 +3,7 @@ const cors = require('koa2-cors');
 const Router = require('koa-router');
 const bodyParser = require('koa-bodyparser');
 const serve = require('koa-static');
+const mount = require('koa-mount');
 const { oas } = require('koa-oas3');
 const error = require('koa-json-error');
 
@@ -14,7 +15,6 @@ const jwtMiddleware = require('./toolbox/authentication/jwtMiddleware');
 
 const adminRouter = require('./admin-router');
 const publicRouter = require('./public-router');
-const signale = require('signale');
 
 const app = new Koa();
 
@@ -75,37 +75,35 @@ const formatError = (error) => {
 app.use(jwtMiddleware);
 app.use(bodyParser());
 app.use(error(formatError));
-app.use(async(ctx, next) => {
-    const mw = await oas({
-        file: `${__dirname}/../openapi/openapi.json`,
-        uiEndpoint: '/documentation',
-        validatePaths: ['/api'],
-        errorHandler,
-        validationOptions: {requestBodyAjvOptions: {allErrors: true}}
-    });
-    return mw(ctx, next);
-});
 
 if (env === 'development') {
     router.get('/admin', (ctx) => {
         ctx.body = {
             message:
-                'Front is not serve here in dev environment. See documentation. API is available on /api endpoint',
+                'Front is not serve here in dev environment. See documentation. API is available on /api endpoint.',
         };
     });
 } else {
-    app.use(serve(`${__dirname}/../admin`));
+    app.use(mount('/admin', serve(`${__dirname}/../admin`)));
 }
 app.use(router.routes()).use(router.allowedMethods());
 
 app.use(dbMiddleware);
 
-app.use(publicRouter.routes()).use(publicRouter.allowedMethods());
-
 app.use(authenticationRouter.routes()).use(
     authenticationRouter.allowedMethods()
 );
-
 app.use(adminRouter.routes()).use(adminRouter.allowedMethods());
 
-app.listen(3001, () => global.console.log('API started on port 3001'));
+app.use(async(ctx, next) => {
+    const mw = await oas({
+        file: `${__dirname}/../openapi/openapi.json`,
+        uiEndpoint: '/documentation',
+        validatePaths: ['/api'],
+        errorHandler
+    });
+    return mw(ctx, next);
+});
+app.use(publicRouter.routes()).use(publicRouter.allowedMethods());
+
+app.listen(config.port, () => global.console.log(`API started on port ${config.port}`));

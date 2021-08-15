@@ -1,0 +1,14 @@
+module.exports = {
+  apps : [{
+    name   : "backend-caencamp",
+    script : "./src/index.js",
+    watch : ["./src", "./admin", "./node_modules"],
+    env: {
+      NODE_ENV: "production",
+      API_PORT: 3333,
+      POSTGRES_PASSWORD: 'secret',
+      POSTGRES_USER: 'secret',
+      POSTGRES_DB: 'secret',
+    }
+  }]
+}

@@ -13,7 +13,7 @@ help: ## Display available commands
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 # ===============================================================
-# Database ======================================================
+# Dockerized Database ===========================================
 # ===============================================================
 
 db-start: ## start PostgreSQL in Docker Compose
@@ -29,8 +29,7 @@ db-init: ## Create dump and replace the last one. Environment must be started
 	docker-compose exec postgres bash -ci 'psql -U backend-local-user --file /db-init/initdb.sql cc_backend_db'
 
 db-dump: ## Create dump and replace the last one. Environment must be started
-	docker-compose exec postgres bash -ci 'pg_dump -U backend-local-user -v -x -O cc_backend_db > /db-dump/backend.sql'
-
+	docker-compose exec postgres bash -ci 'pg_dump -U backend-local-user cc_backend_db > /db-dump/backend.sql'
 
 
 # =====================================================================
@@ -38,42 +37,8 @@ db-dump: ## Create dump and replace the last one. Environment must be started
 # =====================================================================
 
 install: ## Install all js deps
-	$(shell cp -n ./config/development.dist ./config/development.env)
-	@${DC_DEV} run --rm --no-deps api bash -ci '\
-		cd ../../ && \
-		yarn \
-	'
-
-install-cypress: ## Install cypress.io bin on local environment, not in Docker !
-	@node_modules/.bin/cypress install
-
-# =====================================================================
-# Operating recipies ==================================================
-# =====================================================================
-
-start: ## Start all service in containers
-	${DC_DEV} up -d
-
-stop: ## Stop all containers
-	${DC_DEV} down
-
-logs: ## Display all logs
-	${DC_DEV} logs -f
-
-logs-api: ## Display api logs
-	${DC_DEV} logs -f api
-
-logs-db: ## Display postgres logs
-	${DC_DEV} logs -f postgres
-
-logs-admin: ## Display admin logs
-	${DC_DEV} logs -f admin
-
-connect-api: ## Start cli in api container
-	${DC_DEV} exec api bash
-
-connect-admin: ## Start cli in admin container
-	${DC_DEV} exec admin bash
+	cd apps/admin && npm install
+	cd apps/api && npm install
 
 # =====================================================================
 # OpenAPI =============================================================
@@ -98,105 +63,10 @@ adr-list: ## List all ADR
 	@${DOCKER} yarn adr:list
 
 # =====================================================================
-# DATABASE ============================================================
-# =====================================================================
-
-import-fixed-fixtures: ## Import fixtures from a json file create by hand
-	$(DC_DEV) exec api bash -ci 'node cli/load-fixed-fixtures'
-
-migrate-create: ## Create a new migration file, ie make migrate-create name=whatever-title
-	$(DC_DEV) exec api bash -ci 'yarn migrate:create -- ${name}'
-
-migrate-latest: ## Apply Migrations up to the last one
-	$(DC_DEV) exec api bash -ci 'yarn migrate:latest'
-
-migrate-rollback: ## Apply Migrations down to last state
-	$(DC_DEV) exec api bash -ci 'yarn migrate:rollback'
-
-migrate-down: ## Apply Migrations down one step
-	$(DC_DEV) exec api bash -ci 'yarn migrate:down'
-
-migrate-up: ## Apply Migrations up one step
-	$(DC_DEV) exec api bash -ci 'yarn migrate:up'
-
-migrate-list: ## Apply Migrations list
-	$(DC_DEV) exec api bash -ci 'yarn migrate:list'
-
-# =====================================================================
-# Testing =============================================================
-# =====================================================================
-
-test: test-unit test-e2e ## launch all tests in docker
-
-test-unit: ## launch only tests unit (front and api)
-	@${DC_TEST} run --rm --no-deps api bash -ci '\
-		cd ../../ && \
-		yarn test \
-	'
-
-test-unit-watch: ## launch only tests unit in watch mode
-	@${DC_TEST} run --rm --no-deps api bash -ci '\
-		cd ../../ && \
-		yarn test:watch \
-	'
-test-e2e: ## Run whole e2e tests suite
-	@${MAKE} --quiet test-env-start
-	@($(MAKE) --quiet test-env-run && $(MAKE) --quiet test-env-stop) || ($(MAKE) --quiet test-env-stop && exit 1)
-
-# Manual recipes for e2e test (api with frisby and front with cypress)
-test-env-start: build-front
-	@${DC_TEST} up -d
-	@$(DC_TEST) run --rm api bash -ci 'yarn migrate:latest'
-	@$(DC_TEST) run --rm api bash -ci 'node cli/load-fixed-fixtures'
-	@$(DC_TEST) run --rm api bash -ci 'USERNAME=testUser PASSWORD=n33dToB3+Str0ng node cli/create-user.js'
-test-env-stop:
-	@${DC_TEST} down
-test-env-logs:
-	@${DC_TEST} logs -f
-test-env-run:
-	@${DC_TEST} run --rm api bash -ci '\
-		cd ../../tests-e2e && \
-		yarn test \
-	'
-test-env-watch:
-	@${DC_TEST} run --rm api bash -ci '\
-		cd ../../tests-e2e && \
-		yarn test:watch \
-	'
-cypress:
-	@cd tests-e2e && yarn cypress:open
-
-# =====================================================================
 # Build ===============================================================
 # =====================================================================
 
-build-front: ## Build the front
-	@${DC_DEV} run --rm --no-deps front bash -ci '\
-		rm -f public/bundle.* && \
-		yarn build \
-	'
-
-storybook: ## Start the storybook
-	yarn workspace cc-jobboard-front storybook
-
-# =====================================================================
-# Others ==============================================================
-# =====================================================================
-
-lint: ## Lint apps and tests-e2e files
-	@${DC_DEV} run --rm --no-deps api bash -ci '\
-		cd ../../ && \
-		yarn run lint \
-	'
-
-format: ## Format apps and tests-e2e files
-	@${DC_DEV} run --rm --no-deps api bash -ci '\
-		cd ../../ && \
-		yarn run format \
-	'
-
-format-ci: ## Check format apps and tests-e2e files
-	@${DC_DEV} run --rm --no-deps api bash -ci '\
-		cd ../../ && \
-		yarn run format:ci \
-	'
+build: ## Build the front
+	rm -rf apps/api/admin/*
+	cd apps/admin && npm run build
+	cp -R apps/admin/build/* apps/api/admin/

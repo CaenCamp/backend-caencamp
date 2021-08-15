@@ -1,1 +1,3 @@
 data/db/dump/backend.sql
+apps/api/admin/*
+apps/api/ecosystem.config.js
