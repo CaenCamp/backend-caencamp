@@ -358,6 +358,9 @@
               },
               {
                 "$ref": "#/components/schemas/Place"
+              },
+              {
+                "type": "object"
               }
             ]
           },
@@ -570,6 +573,9 @@
             },
             "type": "string",
             "nullable": false
+          },
+          "format": {
+            "$ref": "#/components/schemas/TalkType"
           },
           "abstract": {
             "description": "Le résumé du talk au format texte.",
@@ -813,6 +819,21 @@
             "type": "string"
           }
         }
+      },
+      "TalkType": {
+        "required": [
+          "label",
+          "durationInMinutes"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "durationInMinutes": {
+            "type": "integer"
+          }
+        },
+        "description": "Le type de talk (normal, lightning de 5 min...)"
       },
       "Tags": {
         "type": "array",

@@ -155,6 +155,14 @@ const getPaginatedList = async (queryParameters) => {
                             FROM talk_speaker, speaker
                             WHERE talk_speaker.talk_id = talk.id
                             AND talk_speaker.speaker_id = speaker.id
+                        ),
+                        'format', (
+                          SELECT jsonb_build_object(
+                              'label', talk_type.label,
+                              'durationInMinute', talk_type.duration_in_minutes
+                          )
+                          FROM talk_type, talk
+                          WHERE talk_speaker.id = talk.type_id
                         )
                     ) ORDER BY talk.title))
                     FROM talk WHERE talk.edition_id = ${tableName}.id) as talks`)
@@ -218,6 +226,8 @@ const getOneBySlugQuery = (client, slug) => {
             client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
                     'slug', talk.slug,
                     'title', talk.title,
+                    'type', talk_type.label,
+                    'durationInMinutes', talk_type.duration_in_minutes,
                     'description', talk.description,
                     'descriptionHtml', talk.description_html,
                     'shortDescription', talk.short_description,
@@ -232,7 +242,9 @@ const getOneBySlugQuery = (client, slug) => {
                         AND talk_speaker.speaker_id = speaker.id
                     )
                 ) ORDER BY talk.title))
-                FROM talk WHERE talk.edition_id = ${tableName}.id) as talks`)
+                FROM talk, talk_type
+                WHERE talk.edition_id = ${tableName}.id
+                AND talk_type.id = talk.type_id) as talks`)
         )
         .from(tableName)
         .join("edition_category", {

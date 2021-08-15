@@ -67,6 +67,10 @@ const formatEvent = (event) => {
           identifier: talk.slug,
           url: `${API_URL}/creative-works/${talk.slug}`,
           name: talk.title,
+          format: {
+              label: talk.type,
+              durationInMinutes: talk.durationInMinutes,
+          },
           description: talk.description,
           descriptionHtml: talk.descriptionHtml,
           abstract: talk.shortDescription,
