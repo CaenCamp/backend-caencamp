@@ -1,3 +1,5 @@
+.envrc
+apps/api/node_modules/
 data/db/dump/backend.sql
 apps/api/admin/*
 apps/api/ecosystem.config.js
