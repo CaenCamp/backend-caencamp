@@ -81,6 +81,14 @@
             "in": "query",
             "name": "tag",
             "description": "Filtre sur un tag"
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "hasVideo",
+            "description": "Filtre sur l'existance d'une vidéo de l'événement."
           }
         ],
         "responses": {
@@ -343,6 +351,10 @@
               "type": "string"
             }
           },
+          "hasVideo": {
+            "description": "La rencontre a-t-elle une vidéo ?",
+            "type": "boolean"
+          },
           "meetupId": {
             "description": "L'identifiant de la rencontre sur meetup.com, pour les inscriptions.",
             "type": "string",
@@ -393,6 +405,7 @@
           "eventAttendanceMode",
           "disambiguatingDescription",
           "tags",
+          "hasVideo",
           "performers",
           "location",
           "organizer",
@@ -577,6 +590,15 @@
           "format": {
             "$ref": "#/components/schemas/TalkType"
           },
+          "video": {
+            "type": "string",
+            "description": "Url de la video du talk.",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "format": "uri",
+            "nullable": true
+          },
           "abstract": {
             "description": "Le résumé du talk au format texte.",
             "externalDocs": {
@@ -613,6 +635,7 @@
           "identifier",
           "url",
           "name",
+          "video",
           "abstract",
           "descriptionHtml"
         ]

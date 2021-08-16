@@ -11,6 +11,7 @@ const authorizedFilters = [
   "start_date_time",
   "edition_tag.tag",
   "published",
+  "has_video"
 ];
 
 /**
@@ -48,6 +49,7 @@ const renameFiltersFromAPI = (queryParameters) => {
   const filterNamesToChange = {
     category: "edition_category.label",
     tag: "edition_tag.tag",
+    hasVideo: "has_video", 
   };
 
   return Object.keys(queryParameters).reduce((acc, filter) => {
@@ -143,9 +145,12 @@ const getPaginatedList = async (queryParameters) => {
                 client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
                         'slug', talk.slug,
                         'title', talk.title,
+                        'type', talk_type.label,
+                        'durationInMinutes', talk_type.duration_in_minutes,
                         'description', talk.description,
                         'descriptionHtml', talk.description_html,
                         'shortDescription', talk.short_description,
+                        'video', talk.video,
                         'speakers', (
                             SELECT array_to_json(array_agg(jsonb_build_object(
                                 'slug', speaker.slug,
@@ -155,17 +160,11 @@ const getPaginatedList = async (queryParameters) => {
                             FROM talk_speaker, speaker
                             WHERE talk_speaker.talk_id = talk.id
                             AND talk_speaker.speaker_id = speaker.id
-                        ),
-                        'format', (
-                          SELECT jsonb_build_object(
-                              'label', talk_type.label,
-                              'durationInMinute', talk_type.duration_in_minutes
-                          )
-                          FROM talk_type, talk
-                          WHERE talk_speaker.id = talk.type_id
                         )
                     ) ORDER BY talk.title))
-                    FROM talk WHERE talk.edition_id = ${tableName}.id) as talks`)
+                    FROM talk, talk_type
+                    WHERE talk.edition_id = ${tableName}.id
+                    AND talk_type.id = talk.type_id) as talks`)
             )
             .from(tableName)
             .join("edition_category", {
@@ -231,6 +230,7 @@ const getOneBySlugQuery = (client, slug) => {
                     'description', talk.description,
                     'descriptionHtml', talk.description_html,
                     'shortDescription', talk.short_description,
+                    'video', talk.video,
                     'speakers', (
                         SELECT array_to_json(array_agg(jsonb_build_object(
                             'slug', speaker.slug,

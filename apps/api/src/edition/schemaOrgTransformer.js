@@ -26,6 +26,7 @@ const formatEvent = (event) => {
       },
       image: 'https://caen.camp/static/logoFondBlanc-278da657a83902f7d21083ade8e9ce7a.png',
       tags: event.tags,
+      hasVideo: event.hasVideo,
       meetupId: event.meetupId,
       location: event.mode === 'online' ? {
           '@type': 'VirtualLocation',
@@ -81,7 +82,8 @@ const formatEvent = (event) => {
               url: `${API_URL}/persons/${speaker.slug}`,
               name: speaker.name,
               disambiguatingDescription: speaker.shortBiography,
-          }))
+          })),
+          video: talk.video,
       })),
       performers: event.talks.reduce((acc,talk) => ([
           ...acc,

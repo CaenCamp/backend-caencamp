@@ -235,6 +235,12 @@ const updateOne = async (id, apiData) => {
         await client(tableName)
             .where({ id })
             .update(talkData);
+
+        if (talkData.video && talkData.editionId) {
+            await client('edition')
+                .where({ id: talkData.editionId })
+                .update({ hasVideo: true });
+        }
         
         const speakersData = speakers.map(speaker => ({
             speakerId: speaker,
