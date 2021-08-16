@@ -5,7 +5,8 @@
     "title": "API des CaenCamp",
     "description": "L'API publique des CaenCamp.",
     "license": {
-      "name": "GNU General Public License v3.0"
+      "name": "Attribution - Partage dans les Mêmes Conditions 4.0 International (CC BY-SA 4.0)",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.fr"
     },
     "contact": {
       "name": "CaenCamp",
