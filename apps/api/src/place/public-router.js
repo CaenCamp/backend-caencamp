@@ -8,12 +8,22 @@ const {
     formatPaginationToLinkHeader,
 } = require('../toolbox/rest-list/pagination-helpers');
 
+const defaultQueryParameters = {
+    currentPage: 1,
+    orderBy: 'DESC',
+    perPage: 10,
+    sortBy: 'name',
+};
+
 const router = new Router({
     prefix: '/places',
 });
 
 router.get('/', async (ctx) => {
-    const { places, pagination } = await getPaginatedList(ctx.query);
+    const { places, pagination } = await getPaginatedList({
+        ...defaultQueryParameters,
+        ...ctx.query,
+    });
 
     const linkHeaderValue = formatPaginationToLinkHeader({
         resourceURI: '/api/places',
@@ -30,7 +40,7 @@ router.get('/', async (ctx) => {
 router.get('/:placeSlug', async (ctx) => {
     const place = await getOne(ctx.params.placeSlug);
 
-    if (!place.id) {
+    if (!place.identifier) {
         const explainedError = new Error(
             `The place of identifier ${ctx.params.placeSlug} does not exist.`
         );

@@ -1,18 +1,10 @@
-const omit = require("lodash.omit");
+const { formatPlace } = require('./schemaOrgTransformer');
 
 const { getDbClient } = require("../toolbox/dbConnexion");
 
 const tableName = "place";
-const authorizedSort = [
-  'name',
-  'city',
-  'postalCode',
-];
-const authorizedFilters = [
-  'name',
-  'city',
-  'postalCode',
-];
+const authorizedSort = ['name'];
+const authorizedFilters = [];
 
 /**
  * Knex query for filtrated Oject list
@@ -21,7 +13,20 @@ const authorizedFilters = [
  * @returns {Promise} - Knew query for filtrated Oject list
  */
 const getFilteredQuery = (client) => {
-  return client.select("*").from(tableName);
+  return client.select(
+    `${tableName}.*`,
+      client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
+          'slug', edition.slug,
+          'name', edition.title,
+          'number', edition.number,
+          'startDate', edition.start_date_time,
+          'disambiguatingDescription', edition.short_description,
+          'category', edition_category.label
+      ) ORDER BY edition.start_date_time DESC))
+      FROM edition, edition_category
+      WHERE edition.place_id = ${tableName}.id
+      AND edition_category.id = edition.category_id) as events`)
+  ).from(tableName);
 };
 
 /**
@@ -82,7 +87,7 @@ const getPaginatedList = async (queryParameters) => {
       authorizedSort,
     })
     .then(({ data, pagination }) => ({
-      places: data,
+      places: data.map(formatPlace),
       pagination,
     }));
 };
@@ -95,9 +100,23 @@ const getPaginatedList = async (queryParameters) => {
  */
 const getOneBySlugQuery = (client, slug) => {
   return client
-    .first("*")
+    .first(
+      `${tableName}.*`,
+      client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
+          'slug', edition.slug,
+          'name', edition.title,
+          'number', edition.number,
+          'startDate', edition.start_date_time,
+          'disambiguatingDescription', edition.short_description,
+          'category', edition_category.label
+      ) ORDER BY edition.start_date_time DESC))
+      FROM edition, edition_category
+      WHERE edition.place_id = ${tableName}.id
+      AND edition_category.id = edition.category_id) as events`)
+    )
     .from(tableName)
-    .where({ [`${tableName}.slug`]: slug });
+    .where({ [`${tableName}.slug`]: slug })
+    .then(formatPlace);
 };
 
 /**

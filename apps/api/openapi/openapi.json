@@ -205,7 +205,10 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Place"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Place"
+                  }
                 }
               }
             }
@@ -564,7 +567,8 @@
             "enum": [
               "CaenCamp",
               "Coding CaenCamp",
-              "Devops CaenCamp"
+              "Devops CaenCamp",
+              "Dojo CaenCamp"
             ],
             "nullable": false
           },
@@ -581,15 +585,6 @@
             "type": "string",
             "format": "date-time",
             "nullable": false
-          },
-          "endDate": {
-            "description": "La date et l'heure de fin au format [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601).",
-            "externalDocs": {
-              "url": "https://schema.org/endDate"
-            },
-            "type": "string",
-            "format": "date-time",
-            "nullable": true
           },
           "disambiguatingDescription": {
             "description": "Le résumé de la rencontre au format texte.",
@@ -609,7 +604,6 @@
           "category",
           "number",
           "startDate",
-          "endDate",
           "disambiguatingDescription"
         ]
       },
@@ -926,12 +920,12 @@
               "url": "https://schema.org/description"
             },
             "type": "string",
-            "nullable": false
+            "nullable": true
           },
           "descriptionHtml": {
             "description": "La description complète du lieu au format html",
             "type": "string",
-            "nullable": false
+            "nullable": true
           },
           "image": {
             "description": "L'url de l'image du lieu.",
