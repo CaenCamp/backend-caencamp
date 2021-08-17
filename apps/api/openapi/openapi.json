@@ -30,6 +30,10 @@
       "description": "Les événements des CaenCamp."
     },
     {
+      "name": "Places",
+      "description": "Les lieux oú se déroulent des événements des CaenCamp."
+    },
+    {
       "name": "Tags",
       "description": "Les tags associés aux événements."
     }
@@ -169,6 +173,101 @@
         },
         "operationId": "get-api-events-id",
         "description": "Un événement"
+      }
+    },
+    "/api/places": {
+      "get": {
+        "summary": "La liste paginée des lieux.",
+        "description": "La liste paginée des lieux.",
+        "operationId": "listPlaces",
+        "tags": [
+          "Places"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPage"
+          },
+          {
+            "$ref": "#/components/parameters/perPage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste paginée de lieux",
+            "headers": {
+              "X-Total-Count": {
+                "$ref": "#/components/headers/X-Total-Count"
+              },
+              "Link": {
+                "$ref": "#/components/headers/Link"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Place"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/places/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/id"
+        }
+      ],
+      "get": {
+        "summary": "Obtenir les détails d'un lieu",
+        "tags": [
+          "Places"
+        ],
+        "responses": {
+          "200": {
+            "description": "Le lieu demandé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Place"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getPlace",
+        "description": "Un lieu"
       }
     },
     "/api/tags": {
@@ -365,12 +464,12 @@
             "$ref": "#/components/schemas/Performers"
           },
           "location": {
-            "oneOf": [
+            "anyOf": [
               {
                 "$ref": "#/components/schemas/VirtualLocation"
               },
               {
-                "$ref": "#/components/schemas/Place"
+                "$ref": "#/components/schemas/PlaceEvent"
               },
               {
                 "type": "object"
@@ -419,17 +518,109 @@
           "$ref": "#/components/schemas/Event"
         }
       },
+      "EventResume": {
+        "type": "object",
+        "description": "Un résumé d'évènement des CaenCamp.",
+        "externalDocs": {
+          "url": "https://schema.org/Event"
+        },
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique de l'évènement.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur l'évènement depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le titre de l'évènement.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "category": {
+            "type": "string",
+            "description": "La catégorie de rencontre des CaenCamp",
+            "enum": [
+              "CaenCamp",
+              "Coding CaenCamp",
+              "Devops CaenCamp"
+            ],
+            "nullable": false
+          },
+          "number": {
+            "description": "Le numéro de l'édition au sein de la catégorie.",
+            "type": "integer",
+            "nullable": true
+          },
+          "startDate": {
+            "description": "La date et l'heure de début au format [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601).",
+            "externalDocs": {
+              "url": "https://schema.org/startDate"
+            },
+            "type": "string",
+            "format": "date-time",
+            "nullable": false
+          },
+          "endDate": {
+            "description": "La date et l'heure de fin au format [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601).",
+            "externalDocs": {
+              "url": "https://schema.org/endDate"
+            },
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "disambiguatingDescription": {
+            "description": "Le résumé de la rencontre au format texte.",
+            "externalDocs": {
+              "url": "https://schema.org/disambiguatingDescription"
+            },
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "category",
+          "number",
+          "startDate",
+          "endDate",
+          "disambiguatingDescription"
+        ]
+      },
       "Person": {
         "type": "object",
         "description": "Une personne intervenant un moment ou un autre aux CaenCamp. Par exemple un speaker",
         "externalDocs": {
           "url": "https://schema.org/Person"
         },
+        "title": "",
         "properties": {
-          "@context": {
-            "type": "string",
-            "readOnly": true
-          },
           "@type": {
             "type": "string",
             "readOnly": true
@@ -479,8 +670,7 @@
           "url",
           "name",
           "disambiguatingDescription"
-        ],
-        "title": ""
+        ]
       },
       "Performers": {
         "type": "array",
@@ -498,10 +688,6 @@
         "title": "",
         "nullable": true,
         "properties": {
-          "@context": {
-            "type": "string",
-            "readOnly": true
-          },
           "@type": {
             "type": "string",
             "readOnly": true
@@ -551,10 +737,6 @@
           "url": "https://schema.org/CreativeWork"
         },
         "properties": {
-          "@context": {
-            "type": "string",
-            "readOnly": true
-          },
           "@type": {
             "type": "string",
             "readOnly": true
@@ -630,7 +812,6 @@
           }
         },
         "required": [
-          "@context",
           "@type",
           "@id",
           "identifier",
@@ -700,11 +881,97 @@
         "externalDocs": {
           "url": "https://schema.org/Place"
         },
+        "title": "",
         "properties": {
           "@context": {
             "type": "string",
             "readOnly": true
           },
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique du lieu.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur le lieux depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le nom du lieu.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "description": {
+            "description": "La description complète du lieu au format texte avec saut de ligne",
+            "externalDocs": {
+              "url": "https://schema.org/description"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "descriptionHtml": {
+            "description": "La description complète du lieu au format html",
+            "type": "string",
+            "nullable": false
+          },
+          "image": {
+            "description": "L'url de l'image du lieu.",
+            "externalDocs": {
+              "url": "http://schema.org/image"
+            },
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/PostalAddress"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventResume"
+            }
+          }
+        },
+        "required": [
+          "@context",
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "description",
+          "descriptionHtml",
+          "image",
+          "address"
+        ]
+      },
+      "PlaceEvent": {
+        "type": "object",
+        "description": "Informations minimales sur le lieu oú se déroule un événement.",
+        "externalDocs": {
+          "url": "https://schema.org/Place"
+        },
+        "properties": {
           "@type": {
             "type": "string",
             "readOnly": true
@@ -747,8 +1014,7 @@
           "@id",
           "identifier",
           "url",
-          "name",
-          "address"
+          "name"
         ]
       },
       "PostalAddress": {
@@ -886,9 +1152,9 @@
       "X-Total-Count": {
         "description": "Return information about total items to paginate",
         "schema": {
-          "type": "integer"
+          "type": "string"
         },
-        "example": 42,
+        "example": "42",
         "required": false
       },
       "Link": {

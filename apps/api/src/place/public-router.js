@@ -9,26 +9,14 @@ const {
 } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
-    prefix: '/events',
+    prefix: '/places',
 });
 
-const defaultQueryParameters = {
-    category: 'CaenCamp',
-    currentPage: 1,
-    orderBy: 'DESC',
-    perPage: 200,
-    sortBy: 'number',
-    when: 'all',
-};
-
 router.get('/', async (ctx) => {
-    const { editions, pagination } = await getPaginatedList({
-        ...defaultQueryParameters,
-        ...ctx.query,
-    });
+    const { places, pagination } = await getPaginatedList(ctx.query);
 
     const linkHeaderValue = formatPaginationToLinkHeader({
-        resourceURI: '/api/events',
+        resourceURI: '/api/places',
         pagination,
     });
 
@@ -36,29 +24,29 @@ router.get('/', async (ctx) => {
     if (linkHeaderValue) {
         ctx.set('Link', linkHeaderValue);
     }
-    ctx.body = editions;
+    ctx.body = places;
 });
 
-router.get('/:eventSlug', async (ctx) => {
-    const edition = await getOne(ctx.params.eventSlug);
+router.get('/:placeSlug', async (ctx) => {
+    const place = await getOne(ctx.params.placeSlug);
 
-    if (!edition) {
+    if (!place.id) {
         const explainedError = new Error(
-            `The event of id ${ctx.params.eventSlug} does not exist.`
+            `The place of identifier ${ctx.params.placeSlug} does not exist.`
         );
         explainedError.status = 404;
 
         throw explainedError;
     }
 
-    if (edition.error) {
-        const explainedError = new Error(edition.error.message);
+    if (place.error) {
+        const explainedError = new Error(place.error.message);
         explainedError.status = 400;
 
         throw explainedError;
     }
 
-    ctx.body = edition;
+    ctx.body = place;
 });
 
 module.exports = router;

@@ -100,7 +100,8 @@ app.use(async(ctx, next) => {
         file: `${__dirname}/../openapi/openapi.json`,
         uiEndpoint: '/documentation',
         validatePaths: ['/api'],
-        errorHandler
+        errorHandler,
+        validateResponse: true,
     });
     return mw(ctx, next);
 });

@@ -1,4 +1,5 @@
 const addHours = require('date-fns/addHours');
+const formatISO = require('date-fns/formatISO');
 
 const API_URL = 'http://localhost:3001/api';
 
@@ -12,8 +13,8 @@ const formatEvent = (event) => {
       name: event.title,
       category: event.category,
       number: event.number,
-      startDate: event.startDateTime,
-      endDate: event.endDateTime || addHours(new Date(event.startDateTime), 2),
+      startDate: formatISO(new Date(event.startDateTime)),
+      endDate: formatISO(new Date(event.endDateTime)) || formatISO(addHours(new Date(event.startDateTime), 2)),
       eventAttendanceMode: getSchemaOrgAttendanceMode(event.mode),
       eventStatus: "https://schema.org/EventScheduled",
       isAccessibleForFree: true,
