@@ -30,6 +30,10 @@
       "description": "Les événements des CaenCamp."
     },
     {
+      "name": "Speakers",
+      "description": "Les speakers des CaenCamp."
+    },
+    {
       "name": "Places",
       "description": "Les lieux oú se déroulent des événements des CaenCamp."
     },
@@ -271,6 +275,104 @@
         },
         "operationId": "getPlace",
         "description": "Un lieu"
+      }
+    },
+    "/api/speakers": {
+      "get": {
+        "summary": "La liste paginée des speakers.",
+        "description": "La liste paginée des speakers.",
+        "operationId": "listSpeakers",
+        "tags": [
+          "Speakers"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPage"
+          },
+          {
+            "$ref": "#/components/parameters/perPage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste paginée de speakers",
+            "headers": {
+              "X-Total-Count": {
+                "$ref": "#/components/headers/X-Total-Count"
+              },
+              "Link": {
+                "$ref": "#/components/headers/Link"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Speaker"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/speakers/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/id"
+        }
+      ],
+      "get": {
+        "summary": "Obtenir les détails d'un speaker",
+        "tags": [
+          "Speakers"
+        ],
+        "responses": {
+          "200": {
+            "description": "Le speaker demandé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Speaker"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getSpeaker",
+        "description": "Un speaker"
       }
     },
     "/api/tags": {
@@ -607,9 +709,111 @@
           "disambiguatingDescription"
         ]
       },
-      "Person": {
+      "Speaker": {
         "type": "object",
-        "description": "Une personne intervenant un moment ou un autre aux CaenCamp. Par exemple un speaker",
+        "description": "Une personne ayant donné un ou plusieurs talks aux CaenCamp",
+        "externalDocs": {
+          "url": "https://schema.org/Person"
+        },
+        "title": "",
+        "properties": {
+          "@context": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique de le speaker.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur le speaker depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le nom de le speaker.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "disambiguatingDescription": {
+            "description": "Une présentation rapide du speaker au format texte.",
+            "externalDocs": {
+              "url": "https://schema.org/knowsAbout"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "description": {
+            "description": "La description complète du speakers au format texte avec saut de ligne",
+            "externalDocs": {
+              "url": "https://schema.org/description"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "descriptionHtml": {
+            "description": "La description complète du speakers au format html",
+            "type": "string",
+            "nullable": false
+          },
+          "image": {
+            "description": "L'url de l'image de l'évènenement.",
+            "externalDocs": {
+              "url": "http://schema.org/image"
+            },
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "websites": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebSite"
+            }
+          },
+          "talks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreativeWork"
+            }
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "disambiguatingDescription",
+          "description",
+          "descriptionHtml",
+          "image",
+          "websites",
+          "talks"
+        ]
+      },
+      "SpeakerMaintainer": {
+        "type": "object",
+        "description": "Les informations sur le speaker d'un talk.",
         "externalDocs": {
           "url": "https://schema.org/Person"
         },
@@ -624,7 +828,7 @@
             "readOnly": true
           },
           "identifier": {
-            "description": "L'identifiant unique de la personne.",
+            "description": "L'identifiant unique de le speaker.",
             "externalDocs": {
               "url": "https://schema.org/identifier"
             },
@@ -633,7 +837,7 @@
           },
           "url": {
             "type": "string",
-            "description": "Url permettant d'obtenir les informations sur la personne depuis l'api",
+            "description": "Url permettant d'obtenir les informations sur le speaker depuis l'api",
             "externalDocs": {
               "url": "http://schema.org/url"
             },
@@ -641,7 +845,7 @@
             "format": "uri"
           },
           "name": {
-            "description": "Le nom de la personne.",
+            "description": "Le nom de le speaker.",
             "externalDocs": {
               "url": "http://schema.org/name"
             },
@@ -649,7 +853,7 @@
             "nullable": false
           },
           "disambiguatingDescription": {
-            "description": "Le résumé de la personne au format texte.",
+            "description": "Une présentation rapide du speaker au format texte.",
             "externalDocs": {
               "url": "https://schema.org/knowsAbout"
             },
@@ -669,7 +873,7 @@
       "Performers": {
         "type": "array",
         "items": {
-          "$ref": "#/components/schemas/Person"
+          "$ref": "#/components/schemas/SpeakerMaintainer"
         },
         "description": "L'ensemble des speakers d'une rencontre."
       },
@@ -801,7 +1005,7 @@
             "description": "La liste des speakers du talk",
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/Person"
+              "$ref": "#/components/schemas/SpeakerMaintainer"
             }
           }
         },
@@ -811,9 +1015,10 @@
           "identifier",
           "url",
           "name",
+          "format",
           "video",
           "abstract",
-          "descriptionHtml"
+          "description"
         ]
       },
       "VirtualLocation": {
@@ -1124,6 +1329,30 @@
         "items": {
           "$ref": "#/components/schemas/Tag"
         }
+      },
+      "WebSite": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "github",
+              "twitter",
+              "linkedin",
+              "perso",
+              "autre"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "type",
+          "url"
+        ],
+        "description": "Un site web associé à un speaker."
       },
       "Error": {
         "type": "object",
