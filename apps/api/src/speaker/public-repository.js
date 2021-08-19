@@ -18,21 +18,27 @@ const authorizedFilters = [
 const getFilteredQuery = (client) => {
   return client.select(
         `${tableName}.*`,
-        client.raw(`(SELECT ARRAY(
-          SELECT ts.talk_id
-          FROM talk_speaker ts
-          WHERE  ts.speaker_id = ${tableName}.id
-        ) as talks)`),
-        client.raw(`(
-          SELECT count(*)
-          FROM talk_speaker ts
-          WHERE  ts.speaker_id = ${tableName}.id
-        ) as nb_talks`),
-        client.raw(`(SELECT ARRAY(
-          SELECT ws.id
-          FROM web_site ws
-          WHERE  ws.speaker_id = ${tableName}.id
-        ) as websites)`),
+        client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
+            'type', web_site_type.label,
+            'url', web_site.url
+        ) ORDER BY web_site_type.label))
+        FROM web_site, web_site_type
+        WHERE web_site.speaker_id = ${tableName}.id
+        AND web_site.type_id = web_site_type.id) as websites`),
+        client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
+            'slug', talk.slug,
+            'title', talk.title,
+            'type', talk_type.label,
+            'durationInMinutes', talk_type.duration_in_minutes,
+            'shortDescription', talk.short_description,
+            'video', talk.video,
+            'edition', edition.slug
+        ) ORDER BY edition.start_date_time DESC))
+        FROM talk_speaker, talk, talk_type, edition
+        WHERE talk_speaker.speaker_id = ${tableName}.id
+        AND talk_speaker.talk_id = talk.id
+        AND talk.edition_id = edition.id
+        AND talk_type.id = talk.type_id) as talks`)
     ).from(tableName);
 };
 

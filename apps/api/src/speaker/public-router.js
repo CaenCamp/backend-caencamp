@@ -10,7 +10,7 @@ const {
 
 const defaultQueryParameters = {
     currentPage: 1,
-    orderBy: 'DESC',
+    orderBy: 'ASC',
     perPage: 50,
     sortBy: 'name',
 };

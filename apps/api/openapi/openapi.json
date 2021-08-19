@@ -786,12 +786,14 @@
           },
           "websites": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/WebSite"
             }
           },
           "talks": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/CreativeWorkResume"
             }
@@ -806,9 +808,7 @@
           "disambiguatingDescription",
           "description",
           "descriptionHtml",
-          "image",
-          "websites",
-          "talks"
+          "image"
         ]
       },
       "SpeakerMaintainer": {
