@@ -793,7 +793,7 @@
           "talks": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/CreativeWork"
+              "$ref": "#/components/schemas/CreativeWorkResume"
             }
           }
         },
@@ -1019,6 +1019,78 @@
           "video",
           "abstract",
           "description"
+        ]
+      },
+      "CreativeWorkResume": {
+        "type": "object",
+        "description": "Un résumé de talk.",
+        "externalDocs": {
+          "url": "https://schema.org/CreativeWork"
+        },
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique du talk.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur le talk depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le titre du talk.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "format": {
+            "$ref": "#/components/schemas/TalkType"
+          },
+          "video": {
+            "type": "string",
+            "description": "Url de la video du talk.",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "format": "uri",
+            "nullable": true
+          },
+          "abstract": {
+            "description": "Le résumé du talk au format texte.",
+            "externalDocs": {
+              "url": "https://schema.org/abstract"
+            },
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "format",
+          "video",
+          "abstract"
         ]
       },
       "VirtualLocation": {

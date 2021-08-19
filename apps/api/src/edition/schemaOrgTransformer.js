@@ -80,7 +80,7 @@ const formatEvent = (event) => {
               '@type': 'Person',
               '@id': speaker.slug,
               identifier: speaker.slug,
-              url: `${API_URL}/persons/${speaker.slug}`,
+              url: `${API_URL}/speakers/${speaker.slug}`,
               name: speaker.name,
               disambiguatingDescription: speaker.shortBiography,
           })),
@@ -93,7 +93,7 @@ const formatEvent = (event) => {
           '@type': 'Person',
           '@id': speaker.slug,
           identifier: speaker.slug,
-          url: `${API_URL}/persons/${speaker.slug}`,
+          url: `${API_URL}/speakers/${speaker.slug}`,
           name: speaker.name,
           disambiguatingDescription: speaker.shortBiography,
       }))
