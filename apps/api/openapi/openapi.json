@@ -1022,6 +1022,15 @@
             "type": "string",
             "nullable": false
           },
+          "email": {
+            "type": "string",
+            "description": "l'email principal de contact de l'organisation",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": true,
+            "format": "uri"
+          },
           "logo": {
             "type": "string",
             "nullable": true
