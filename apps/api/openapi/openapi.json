@@ -30,6 +30,10 @@
       "description": "Les événements des CaenCamp."
     },
     {
+      "name": "Organizations",
+      "description": "Les organisations liées aux numérique dans le Calvados."
+    },
+    {
       "name": "Speakers",
       "description": "Les speakers des CaenCamp."
     },
@@ -176,6 +180,104 @@
           }
         },
         "operationId": "get-api-events-id",
+        "description": "Un événement"
+      }
+    },
+    "/api/organizations": {
+      "get": {
+        "summary": "La liste paginée des organisations.",
+        "description": "La liste paginée des organisations.",
+        "operationId": "listOrganizations",
+        "tags": [
+          "Organizations"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPage"
+          },
+          {
+            "$ref": "#/components/parameters/perPage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste paginée d'organisations.",
+            "headers": {
+              "X-Total-Count": {
+                "$ref": "#/components/headers/X-Total-Count"
+              },
+              "Link": {
+                "$ref": "#/components/headers/Link"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Organization"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/organizations/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/id"
+        }
+      ],
+      "get": {
+        "summary": "Obtenir les détails d'une organisation.",
+        "tags": [
+          "Organizations"
+        ],
+        "responses": {
+          "200": {
+            "description": "L'organisation demandée",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organization"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getOrganization",
         "description": "Un événement"
       }
     },
@@ -575,17 +677,14 @@
               },
               {
                 "$ref": "#/components/schemas/PlaceEvent"
-              },
-              {
-                "type": "object"
               }
             ]
           },
           "organizer": {
-            "$ref": "#/components/schemas/Organization"
+            "$ref": "#/components/schemas/OrganizationResume"
           },
           "sponsor": {
-            "$ref": "#/components/schemas/Organization"
+            "$ref": "#/components/schemas/EventResume"
           },
           "workPerformed": {
             "description": "La liste des talks présentés durant l'événement.",
@@ -878,6 +977,97 @@
         "description": "L'ensemble des speakers d'une rencontre."
       },
       "Organization": {
+        "type": "object",
+        "description": "Une structure liée au numérique.",
+        "externalDocs": {
+          "url": "https://schema.org/Organization"
+        },
+        "title": "",
+        "nullable": true,
+        "properties": {
+          "@context": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique de l'organisation.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur l'organisation depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le nom de l'organisation.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "$ref": "#/components/schemas/PostalAddress"
+          },
+          "description": {
+            "description": "La description complète de l'évènement au format texte avec saut de ligne",
+            "externalDocs": {
+              "url": "https://schema.org/description"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "descriptionHtml": {
+            "description": "La description complète de l'évènement au format html",
+            "type": "string",
+            "nullable": false
+          },
+          "contactPoints": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ContactPoint"
+            }
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventResume"
+            }
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "logo",
+          "location",
+          "description",
+          "descriptionHtml"
+        ]
+      },
+      "OrganizationResume": {
         "type": "object",
         "description": "Une structure liée au numérique.",
         "externalDocs": {
@@ -1294,6 +1484,7 @@
         "externalDocs": {
           "url": "http://schema.org/PostalAddress"
         },
+        "x-internal": false,
         "properties": {
           "@type": {
             "type": "string",
@@ -1312,24 +1503,21 @@
             "externalDocs": {
               "url": "http://schema.org/postalCode"
             },
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "addressLocality": {
             "description": "La ville.",
             "externalDocs": {
               "url": "http://schema.org/addressLocality"
             },
-            "type": "string",
-            "nullable": true
+            "type": "string"
           },
           "addressCountry": {
             "description": "Le pays au format [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1).",
             "externalDocs": {
               "url": "http://schema.org/addressCountry"
             },
-            "type": "string",
-            "nullable": true
+            "type": "string"
           }
         },
         "required": [
@@ -1338,14 +1526,13 @@
           "postalCode",
           "addressLocality",
           "addressCountry"
-        ],
-        "x-internal": false
+        ]
       },
       "Language": {
         "type": "object",
         "description": "Langues naturelles telles que le français, le tamoul, l'hindi, l'anglais, etc.",
         "externalDocs": {
-          "url": "https://schema.org/Language"
+          "url": "https://schema.org/ContactPoint"
         },
         "properties": {
           "@type": {
@@ -1366,6 +1553,46 @@
           "name"
         ],
         "x-internal": false
+      },
+      "ContactPoint": {
+        "type": "object",
+        "description": "Un contact au sein d'une organisation.",
+        "externalDocs": {
+          "url": "https://schema.org/Language"
+        },
+        "x-internal": false,
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "contactType": {
+            "description": "Le langue.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "nullable": true
+          },
+          "telephone": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "@type",
+          "contactType",
+          "email",
+          "telephone"
+        ]
       },
       "Tag": {
         "required": [
