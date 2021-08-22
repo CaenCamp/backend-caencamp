@@ -34,6 +34,10 @@
       "description": "Les organisations liées aux numérique dans le Calvados."
     },
     {
+      "name": "JobPostings",
+      "description": "Les offres d'emploie liées aux numérique dans le Calvados."
+    },
+    {
       "name": "Speakers",
       "description": "Les speakers des CaenCamp."
     },
@@ -215,7 +219,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Organization"
+                    "$ref": "#/components/schemas/JobPosting"
                   }
                 }
               }
@@ -278,7 +282,105 @@
           }
         },
         "operationId": "getOrganization",
-        "description": "Un événement"
+        "description": "Une organization"
+      }
+    },
+    "/api/jobpostings": {
+      "get": {
+        "summary": "La liste paginée des offres d'emploie.",
+        "description": "La liste paginée des offres d'emploie.",
+        "operationId": "listJobposting",
+        "tags": [
+          "JobPostings"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPage"
+          },
+          {
+            "$ref": "#/components/parameters/perPage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste paginée d'offres d'emploie.",
+            "headers": {
+              "X-Total-Count": {
+                "$ref": "#/components/headers/X-Total-Count"
+              },
+              "Link": {
+                "$ref": "#/components/headers/Link"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Organization"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/jobpostings/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/id"
+        }
+      ],
+      "get": {
+        "summary": "Obtenir les détails d'une offre d'emploie.",
+        "tags": [
+          "JobPostings"
+        ],
+        "responses": {
+          "200": {
+            "description": "L'offre d'emploie demandée",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPosting"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getJobPosting",
+        "description": "Une offre d'emploie"
       }
     },
     "/api/places": {
@@ -1125,6 +1227,111 @@
           "identifier",
           "url",
           "name"
+        ]
+      },
+      "JobPosting": {
+        "description": "Une offre d'emploi",
+        "type": "object",
+        "x-examples": {
+          "example-devReact": {
+            "title": "Developpeur Javascript",
+            "url": "https://jobs.caen.camp",
+            "datePosted": "2010-03-02",
+            "employerOverview": "Au sein d'une équipe DSI composée de juniors et de séniors",
+            "employmentType": "CDD",
+            "experienceRequirements": "3 ans d'experience sur un projet Javascript",
+            "jobStartDate": "2020-05-02",
+            "skills": "JavaScript, Devops, Php, ...",
+            "validThrough": "2010-05-05"
+          }
+        },
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique de l'organisation.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur l'organisation depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "title": {
+            "type": "string",
+            "example": "Developpeur Cobol"
+          },
+          "datePosted": {
+            "type": "string",
+            "format": "date",
+            "example": "2010-03-02"
+          },
+          "employerOverview": {
+            "type": "string",
+            "example": "Au sein d'une équipe DSI composée de juniors et de séniors"
+          },
+          "employmentType": {
+            "type": "string",
+            "enum": [
+              "CDI",
+              "CDD",
+              "Alternance",
+              "Autre"
+            ],
+            "example": "CDD"
+          },
+          "experienceRequirements": {
+            "type": "string",
+            "example": "3 ans d'experience sur un projet Javascript",
+            "minLength": 20
+          },
+          "jobStartDate": {
+            "type": "string",
+            "format": "date",
+            "example": "2020-05-02",
+            "nullable": true
+          },
+          "skills": {
+            "type": "string",
+            "example": "JavaScript, Devops, Php, ..."
+          },
+          "validThrough": {
+            "type": "string",
+            "format": "date",
+            "example": "2010-05-05",
+            "nullable": true
+          },
+          "hiringOrganization": {
+            "$ref": "#/components/schemas/OrganizationResume"
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "title",
+          "datePosted",
+          "employerOverview",
+          "employmentType",
+          "experienceRequirements",
+          "jobStartDate",
+          "skills",
+          "validThrough"
         ]
       },
       "CreativeWork": {
