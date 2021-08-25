@@ -34,7 +34,7 @@
       "description": "Les organisations liées aux numérique dans le Calvados."
     },
     {
-      "name": "JobPostings",
+      "name": "Job-Postings",
       "description": "Les offres d'emploie liées aux numérique dans le Calvados."
     },
     {
@@ -219,7 +219,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/JobPosting"
+                    "$ref": "#/components/schemas/Organization"
                   }
                 }
               }
@@ -285,13 +285,13 @@
         "description": "Une organization"
       }
     },
-    "/api/jobpostings": {
+    "/api/job-postings": {
       "get": {
         "summary": "La liste paginée des offres d'emploie.",
         "description": "La liste paginée des offres d'emploie.",
         "operationId": "listJobposting",
         "tags": [
-          "JobPostings"
+          "Job-Postings"
         ],
         "parameters": [
           {
@@ -317,7 +317,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Organization"
+                    "$ref": "#/components/schemas/JobPosting"
                   }
                 }
               }
@@ -334,18 +334,25 @@
             }
           }
         }
-      }
+      },
+      "parameters": []
     },
-    "/api/jobpostings/{id}": {
+    "/api/job-postings/{id}": {
       "parameters": [
         {
-          "$ref": "#/components/parameters/id"
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "L'identifiant unique d'un objet"
         }
       ],
       "get": {
-        "summary": "Obtenir les détails d'une offre d'emploie.",
+        "summary": "Obtenir les détails d'une offre d'emploi.",
         "tags": [
-          "JobPostings"
+          "Job-Postings"
         ],
         "responses": {
           "200": {
@@ -380,7 +387,7 @@
           }
         },
         "operationId": "getJobPosting",
-        "description": "Une offre d'emploie"
+        "description": "Une offre d'emploi"
       }
     },
     "/api/places": {
@@ -1130,8 +1137,8 @@
             "externalDocs": {
               "url": "http://schema.org/url"
             },
-            "nullable": true,
-            "format": "uri"
+            "format": "email",
+            "nullable": true
           },
           "logo": {
             "type": "string",
@@ -1151,16 +1158,18 @@
           "descriptionHtml": {
             "description": "La description complète de l'évènement au format html",
             "type": "string",
-            "nullable": false
+            "nullable": true
           },
           "contactPoints": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/ContactPoint"
             }
           },
           "events": {
             "type": "array",
+            "nullable": true,
             "items": {
               "$ref": "#/components/schemas/EventResume"
             }
@@ -1173,7 +1182,6 @@
           "url",
           "name",
           "logo",
-          "location",
           "description",
           "descriptionHtml"
         ]
@@ -1246,6 +1254,10 @@
           }
         },
         "properties": {
+          "@context": {
+            "type": "string",
+            "readOnly": true
+          },
           "@type": {
             "type": "string",
             "readOnly": true
@@ -1277,7 +1289,7 @@
           },
           "datePosted": {
             "type": "string",
-            "format": "date",
+            "format": "date-time",
             "example": "2010-03-02"
           },
           "employerOverview": {
@@ -1296,12 +1308,11 @@
           },
           "experienceRequirements": {
             "type": "string",
-            "example": "3 ans d'experience sur un projet Javascript",
-            "minLength": 20
+            "example": "3 ans d'experience sur un projet Javascript"
           },
           "jobStartDate": {
             "type": "string",
-            "format": "date",
+            "format": "date-time",
             "example": "2020-05-02",
             "nullable": true
           },
@@ -1311,7 +1322,7 @@
           },
           "validThrough": {
             "type": "string",
-            "format": "date",
+            "format": "date-time",
             "example": "2010-05-05",
             "nullable": true
           },
