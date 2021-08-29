@@ -793,7 +793,7 @@
             "$ref": "#/components/schemas/OrganizationResume"
           },
           "sponsor": {
-            "$ref": "#/components/schemas/EventResume"
+            "$ref": "#/components/schemas/OrganizationResume"
           },
           "workPerformed": {
             "description": "La liste des talks présentés durant l'événement.",
