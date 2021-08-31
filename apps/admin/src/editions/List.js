@@ -22,6 +22,9 @@ const EditionFilter = (props) => (
         <ReferenceInput label="Mode" source="modeId" reference="edition-modes" alwaysOn>
             <SelectInput optionText="label" />
         </ReferenceInput>
+        <ReferenceInput label="Serie" source="categoryId" reference="edition-categories" alwaysOn>
+            <SelectInput optionText="label" />
+        </ReferenceInput>
     </Filter>
 );
 
@@ -34,6 +37,7 @@ export const EditionList = ({ permissions, ...props }) => {
         <List
             {...props}
             filters={<EditionFilter />}
+            filterDefaultValues={{ categoryId: '26311f0a-6846-4c90-af26-74ec95479886' }}
             sort={{ field: 'number', order: 'DESC' }}
             exporter={false}
             pagination={<EditionPagination />}

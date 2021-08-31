@@ -9,33 +9,17 @@ import {
   SelectInput,
   ReferenceArrayInput,
   SelectArrayInput,
-  TopToolbar,
 } from 'react-admin';
 
-import { Breadcrumb, ResourceBreadcrumbItems } from '../components/menu';
 import {
   MarkdownInput,
   caenCampOptions,
 } from '../components/inputs/MarkdownInput';
 
-const TalkBreadcrumb = (props) => (
-  <Breadcrumb {...props}>
-    <ResourceBreadcrumbItems />
-  </Breadcrumb>
-);
-
-const TalkActions = () => (
-  <TopToolbar>
-    <Breadcrumb variant="actions" />
-  </TopToolbar>
-);
-
 const TalkTitle = ({ record }) => (record ? `Talk "${record.title}"` : null);
 
 const TalkEdit = (props) => (
-  <>
-    <TalkBreadcrumb />
-    <Edit title={<TalkTitle />} actions={<TalkActions />} {...props}>
+    <Edit title={<TalkTitle />} {...props}>
       <TabbedForm>
         <FormTab label="Content">
           <TextInput fullWidth source="title" validate={required()} />
@@ -63,11 +47,10 @@ const TalkEdit = (props) => (
           />
         </FormTab>
         <FormTab label="Supports">
-          <p>Les slides, repo, videos, ...</p>
+          <TextInput fullWidth source="video" />
         </FormTab>
       </TabbedForm>
     </Edit>
-  </>
 );
 
 export default TalkEdit;

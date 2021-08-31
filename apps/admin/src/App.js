@@ -1,13 +1,10 @@
 import React from 'react';
 import { fetchUtils, Admin, Resource } from 'react-admin';
-import { useTheme } from '@material-ui/core';
 
 import dataProvider from './dataProvider';
 import { authProvider } from './authProvider';
 
 // import Dashboard from "./components/Dashboard";
-import CaenCampLayout from './components/Layout';
-import { getThemes } from './components/theme';
 
 import editions from './editions';
 import editionCategories from './editions/categories';
@@ -44,29 +41,25 @@ const caenCampDataProvider = dataProvider(
 );
 
 const App = () => {
-  const theme = useTheme();
-  const { lightTheme } = getThemes(theme);
   return (
     <Admin
       authProvider={authProvider}
       dataProvider={caenCampDataProvider}
       disableTelemetry
-      layout={CaenCampLayout}
-      // Ra-enterprise confirguration
-      theme={lightTheme}
     >
       <Resource name="organizations" {...organizations} />
       <Resource name="job-postings" {...jobPostings} />
-      <Resource name="website-types" {...webSiteTypes} />
-      <Resource name="websites" {...webSites} />
-      <Resource name="tags" {...tags} />
-      <Resource name="talk-types" {...talkTypes} />
-      <Resource name="speakers" {...speakers} />
+      <Resource name="editions" {...editions} />
       <Resource name="talks" {...talks} />
+      <Resource name="speakers" {...speakers} />
+      <Resource name="tags" {...tags} />
       <Resource name="places" {...places} />
+      <Resource name="websites" {...webSites} />
+      <Resource name="website-types" {...webSiteTypes} />
+      <Resource name="talk-types" {...talkTypes} /> 
       <Resource name="edition-categories" {...editionCategories} />
       <Resource name="edition-modes" {...editionModes} />
-      <Resource name="editions" {...editions} />
+      
     </Admin>
   );
 };

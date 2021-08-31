@@ -16,17 +16,8 @@ import {
   ChipField,
   ReferenceArrayField,
   SingleFieldList,
-  TopToolbar,
 } from 'react-admin';
 import PropTypes from 'prop-types';
-
-import { Breadcrumb, ResourceBreadcrumbItems } from '../components/menu';
-
-const TagBreadcrumb = (props) => (
-  <Breadcrumb {...props}>
-    <ResourceBreadcrumbItems />
-  </Breadcrumb>
-);
 
 const TalksField = ({ record = {} }) => <span>{record.talks.length}</span>;
 
@@ -72,30 +63,21 @@ const TagList = (props) => {
 const TagTitle = ({ record }) =>
   record ? `Edition du tag "${record.label}"` : null;
 
-const TagEditActions = ({ basePath, data, resource }) => (
-  <TopToolbar>
-    <Breadcrumb variant="actions" />
-  </TopToolbar>
-);
-
 export const TagEdit = (props) => (
-  <>
-    <TagBreadcrumb />
-    <Edit actions={<TagEditActions />} title={<TagTitle />} {...props}>
-      <SimpleForm>
-        <TextInput fullWidth source="label" validate={required()} />
-        <ReferenceArrayField
-          label="Talks associés"
-          reference="talks"
-          source="talks"
-        >
-          <SingleFieldList>
-            <ChipField source="title" />
-          </SingleFieldList>
-        </ReferenceArrayField>
-      </SimpleForm>
-    </Edit>
-  </>
+  <Edit title={<TagTitle />} {...props}>
+    <SimpleForm>
+      <TextInput fullWidth source="label" validate={required()} />
+      <ReferenceArrayField
+        label="Talks associés"
+        reference="talks"
+        source="talks"
+      >
+        <SingleFieldList>
+          <ChipField source="title" />
+        </SingleFieldList>
+      </ReferenceArrayField>
+    </SimpleForm>
+  </Edit>
 );
 
 export const TagCreate = (props) => (

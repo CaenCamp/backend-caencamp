@@ -8,6 +8,7 @@ import {
   SelectInput,
   DateTimeInput,
   NumberInput,
+  BooleanInput,
 } from 'react-admin';
 import {
   MarkdownInput,
@@ -29,11 +30,15 @@ export const EditionCreate = (props) => (
       <ReferenceInput label="Mode" source="modeId" reference="edition-modes">
         <SelectInput optionText="label" validate={required()}/>
       </ReferenceInput>
+      <ReferenceInput label="Organisateur" source="organizerId" reference="organizations">
+        <SelectInput optionText="name"/>
+      </ReferenceInput>
       <ReferenceInput label="Lieu" source="placeId" reference="places">
         <SelectInput optionText="name"/>
       </ReferenceInput>
       <DateTimeInput source="startDateTime" Label="Date et heure de début" validate={required()}/>
       <DateTimeInput source="endDateTime" Label="Date et heure de fin" />
+      <BooleanInput source="published" Label="Publié ?" />
       <TextInput
         fullWidth
         multiline
