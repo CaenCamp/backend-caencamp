@@ -12,6 +12,7 @@
     - [Installer le projet](#installer-le-projet)
     - [Démarrer le projet](#démarrer-le-projet)
   - [La convention de codage (coding style)](#la-convention-de-codage-coding-style)
+    - [Commits Conventionnels](#commits-conventionnels)
   - [La documentation](#la-documentation)
     - [Le contrat OpenApi](#le-contrat-openapi)
     - [Les ADR.s](#les-adrs)
@@ -127,7 +128,31 @@ cd apps/admin && npm start
 
 ## La convention de codage (coding style)
 
-@todo
+Les deux bases de code (`app` et `api`) utilisent eslint et prettier pour s'assurer du respect des conventions de codage.
+
+Le projet utilise aussi un hook de pre-commit pour s'assurer que le code commité respecte ces conventions.
+
+### Commits Conventionnels
+
+Nous avons aussi forcé une convention de formatage des messages de commits : le [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
+
+Le message du commit doit être structuré comme suit:
+
+* * *
+    <type>[optional scope]: <description>
+    
+    [optional body]
+    
+    [optional footer(s)]
+* * *
+
+Vous pouvez d'ailleur configurer un template de commit sur le projet en partant du [template d'exemple](../doc/commit.template.txt) présent dans la documentation.
+
+```bash
+git config commit.template doc/commit.template.txt
+```
+
+Nous utilisons un [hook de pre-commit](https://commitlint.js.org/) pour valider le format des messages de commit.
 
 ## La documentation
 
