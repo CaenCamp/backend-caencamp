@@ -1,15 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    deleteOne,
-    createOne,
-    getOne,
-    getPaginatedList,
-    updateOne,
-} = require('./type-repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { deleteOne, createOne, getOne, getPaginatedList, updateOne } = require('./type-repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
     prefix: '/talk-types',
@@ -47,9 +39,7 @@ router.get('/:typeId', async (ctx) => {
     const type = await getOne(ctx.params.typeId);
 
     if (!type.id) {
-        const explainedError = new Error(
-            `The type of id ${ctx.params.typeId} does not exist.`
-        );
+        const explainedError = new Error(`The type of id ${ctx.params.typeId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -69,9 +59,7 @@ router.delete('/:typeId', async (ctx) => {
     const deletedType = await deleteOne(ctx.params.typeId);
 
     if (!deletedType.id) {
-        const explainedError = new Error(
-            `The talk types of id ${ctx.params.typeId} does not exist.`
-        );
+        const explainedError = new Error(`The talk types of id ${ctx.params.typeId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -88,10 +76,7 @@ router.delete('/:typeId', async (ctx) => {
 });
 
 router.put('/:typeId', async (ctx) => {
-    const updatedType = await updateOne(
-        ctx.params.typeId,
-        ctx.request.body
-    );
+    const updatedType = await updateOne(ctx.params.typeId, ctx.request.body);
 
     if (updatedType.error) {
         const explainedError = new Error(updatedType.error.message);
@@ -102,7 +87,7 @@ router.put('/:typeId', async (ctx) => {
 
     if (!updatedType.id) {
         const explainedError = new Error(
-            `The type of id ${ctx.params.typeId} does not exist, so it could not be updated`
+            `The type of id ${ctx.params.typeId} does not exist, so it could not be updated`,
         );
         explainedError.status = 404;
 

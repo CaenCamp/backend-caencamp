@@ -1,11 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    getPublicPaginatedList,
-} = require('./repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { getPublicPaginatedList } = require('./repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
     prefix: '/tags',

@@ -1,27 +1,20 @@
-const omit = require('lodash.omit');
 const slugify = require('slugify');
 const { getDbClient } = require('../toolbox/dbConnexion');
 const { markdownToTxt } = require('markdown-to-txt');
-const marked  = require("marked");
+const marked = require('marked');
 
 const slugConfig = {
-    replacement: "-", // replace spaces with replacement character, defaults to `-`
+    replacement: '-', // replace spaces with replacement character, defaults to `-`
     remove: undefined, // remove characters that match regex, defaults to `undefined`
     lower: true, // convert to lower case, defaults to `false`
     strict: true, // strip special characters except replacement, defaults to `false`
     locale: 'fr', // language code of the locale to use
     trim: true, // trim leading and trailing replacement chars, defaults to `true`
-  };
+};
 
 const tableName = 'talk';
-const authorizedSort = [
-    'title',
-    'typeId',
-];
-const authorizedFilters = [
-    'title',
-    'typeId',
-];
+const authorizedSort = ['title', 'typeId'];
+const authorizedFilters = ['title', 'typeId'];
 
 /**
  * Knex query for filtrated Oject list
@@ -62,10 +55,7 @@ const renameFiltersFromAPI = (queryParameters) => {
     const filterNamesToChange = {};
 
     return Object.keys(queryParameters).reduce((acc, filter) => {
-        const filterName = Object.prototype.hasOwnProperty.call(
-            filterNamesToChange,
-            filter
-        )
+        const filterName = Object.prototype.hasOwnProperty.call(filterNamesToChange, filter)
             ? filterNamesToChange[filter]
             : filter;
 
@@ -129,8 +119,7 @@ const getOneByIdQuery = (client, id) => {
  */
 const getOne = async (id) => {
     const client = getDbClient();
-    return getOneByIdQuery(client, id)
-        .catch((error) => ({ error }));
+    return getOneByIdQuery(client, id).catch((error) => ({ error }));
 };
 
 /**
@@ -142,10 +131,7 @@ const getOne = async (id) => {
 const createOne = async (apiData) => {
     const client = getDbClient();
 
-    const type = await client
-        .first('id')
-        .from('talk_type')
-        .where({ id: apiData.typeId });
+    const type = await client.first('id').from('talk_type').where({ id: apiData.typeId });
 
     if (!type) {
         return { error: new Error('this type does not exist') };
@@ -158,27 +144,23 @@ const createOne = async (apiData) => {
         slug: slugify(data.title, slugConfig),
         descriptionHtml: marked(data.descriptionMarkdown),
         description: markdownToTxt(data.descriptionMarkdown),
-      }
+    };
 
     // @todo Add transaction
     try {
-        const [newTalkId] = await client(tableName)
-            .returning('id')
-            .insert(talkData);
-        
-        const speakersData = speakers.map(speaker => ({
+        const [newTalkId] = await client(tableName).returning('id').insert(talkData);
+
+        const speakersData = speakers.map((speaker) => ({
             speakerId: speaker,
             talkId: newTalkId,
         }));
-        await client('talk_speaker')
-            .insert(speakersData);
+        await client('talk_speaker').insert(speakersData);
 
-        const tagsData = tags.map(tag => ({
+        const tagsData = tags.map((tag) => ({
             tagId: tag,
             talkId: newTalkId,
         }));
-        await client('talk_tag')
-            .insert(tagsData);
+        await client('talk_tag').insert(tagsData);
 
         return getOneByIdQuery(client, newTalkId);
     } catch (error) {
@@ -213,10 +195,7 @@ const deleteOne = async (id) => {
 const updateOne = async (id, apiData) => {
     const client = getDbClient();
     // check that jobPosting exist
-    const currentObject = await client
-        .first('id')
-        .from(tableName)
-        .where({ id });
+    const currentObject = await client.first('id').from(tableName).where({ id });
     if (!currentObject) {
         return {};
     }
@@ -228,57 +207,46 @@ const updateOne = async (id, apiData) => {
         slug: slugify(data.title, slugConfig),
         descriptionHtml: marked(data.descriptionMarkdown),
         description: markdownToTxt(data.descriptionMarkdown),
-      }
+    };
 
     // @todo Add transaction
     try {
-        await client(tableName)
-            .where({ id })
-            .update(talkData);
+        await client(tableName).where({ id }).update(talkData);
 
         if (talkData.video && talkData.editionId) {
-            await client('edition')
-                .where({ id: talkData.editionId })
-                .update({ hasVideo: true });
+            await client('edition').where({ id: talkData.editionId }).update({ hasVideo: true });
         }
-        
-        const speakersData = speakers.map(speaker => ({
+
+        const speakersData = speakers.map((speaker) => ({
             speakerId: speaker,
             talkId: id,
         }));
-        await client('talk_speaker')
-            .where({ talkId: id })
-            .del();
-        await client('talk_speaker')
-            .insert(speakersData);
+        await client('talk_speaker').where({ talkId: id }).del();
+        await client('talk_speaker').insert(speakersData);
 
-        const tagsData = tags.map(tag => ({
+        const tagsData = tags.map((tag) => ({
             tagId: tag,
             talkId: id,
         }));
-        await client('talk_tag')
-            .where({ talkId: id })
-            .del();
-        await client('talk_tag')
-            .insert(tagsData);
+        await client('talk_tag').where({ talkId: id }).del();
+        await client('talk_tag').insert(tagsData);
 
         return getOneByIdQuery(client, id);
     } catch (error) {
         return { error };
     }
 
-    // update the Oject
-    const updatedObject = await client(tableName)
-        .where({ id })
-        .update(apiData)
-        .catch((error) => ({ error }));
-    if (updatedObject.error) {
-        return updatedObject;
-    }
+    // // update the Oject
+    // const updatedObject = await client(tableName)
+    //     .where({ id })
+    //     .update(apiData)
+    //     .catch((error) => ({ error }));
+    // if (updatedObject.error) {
+    //     return updatedObject;
+    // }
 
-    // return the complete Object from db
-    return getOneByIdQuery(client, id)
-        .catch((error) => ({ error }));
+    // // return the complete Object from db
+    // return getOneByIdQuery(client, id).catch((error) => ({ error }));
 };
 
 module.exports = {

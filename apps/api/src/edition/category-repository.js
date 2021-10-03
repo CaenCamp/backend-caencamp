@@ -1,13 +1,8 @@
-const omit = require('lodash.omit');
 const { getDbClient } = require('../toolbox/dbConnexion');
 
 const tableName = 'edition_category';
-const authorizedSort = [
-    'label',
-];
-const authorizedFilters = [
-    'label',
-];
+const authorizedSort = ['label'];
+const authorizedFilters = ['label'];
 
 /**
  * Knex query for filtrated Oject list
@@ -16,9 +11,7 @@ const authorizedFilters = [
  * @returns {Promise} - Knew query for filtrated Oject list
  */
 const getFilteredQuery = (client) => {
-    return client
-        .select('*')
-        .from(tableName);
+    return client.select('*').from(tableName);
 };
 
 /**
@@ -37,10 +30,7 @@ const renameFiltersFromAPI = (queryParameters) => {
 
     return Object.keys(queryParameters).reduce((acc, filter) => {
         if (filter === 'sortBy') {
-            const sortName = Object.prototype.hasOwnProperty.call(
-                filterNamesToChange,
-                queryParameters.sortBy
-            )
+            const sortName = Object.prototype.hasOwnProperty.call(filterNamesToChange, queryParameters.sortBy)
                 ? filterNamesToChange[queryParameters.sortBy]
                 : queryParameters.sortBy;
 
@@ -50,10 +40,7 @@ const renameFiltersFromAPI = (queryParameters) => {
             };
         }
 
-        const filterName = Object.prototype.hasOwnProperty.call(
-            filterNamesToChange,
-            filter
-        )
+        const filterName = Object.prototype.hasOwnProperty.call(filterNamesToChange, filter)
             ? filterNamesToChange[filter]
             : filter;
 
@@ -105,8 +92,7 @@ const getOneByIdQuery = (client, id) => {
  */
 const getOne = async (id) => {
     const client = getDbClient();
-    return getOneByIdQuery(client, id)
-        .catch((error) => ({ error }));
+    return getOneByIdQuery(client, id).catch((error) => ({ error }));
 };
 
 /**
@@ -154,10 +140,7 @@ const deleteOne = async (id) => {
 const updateOne = async (id, apiData) => {
     const client = getDbClient();
     // check that jobPosting exist
-    const currentObject = await client
-        .first('id')
-        .from(tableName)
-        .where({ id });
+    const currentObject = await client.first('id').from(tableName).where({ id });
     if (!currentObject) {
         return {};
     }
@@ -172,8 +155,7 @@ const updateOne = async (id, apiData) => {
     }
 
     // return the complete Object from db
-    return getOneByIdQuery(client, id)
-        .catch((error) => ({ error }));
+    return getOneByIdQuery(client, id).catch((error) => ({ error }));
 };
 
 module.exports = {

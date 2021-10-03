@@ -1,12 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    getOne,
-    getPaginatedList,
-} = require('./public-repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { getOne, getPaginatedList } = require('./public-repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const defaultQueryParameters = {
     currentPage: 1,
@@ -41,9 +36,7 @@ router.get('/:placeSlug', async (ctx) => {
     const place = await getOne(ctx.params.placeSlug);
 
     if (!place.identifier) {
-        const explainedError = new Error(
-            `The place of identifier ${ctx.params.placeSlug} does not exist.`
-        );
+        const explainedError = new Error(`The place of identifier ${ctx.params.placeSlug} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;

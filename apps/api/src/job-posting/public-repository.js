@@ -37,7 +37,7 @@ const getFilteredJobPostingsQuery = (client) => {
             'organization.address_locality as hiringOrganizationAddressLocality',
             'organization.address_country as hiringOrganizationAddressCountry',
             'organization.logo as hiringOrganizationImage',
-            'organization.url as hiringOrganizationUrl'
+            'organization.url as hiringOrganizationUrl',
         )
         .from(tableName)
         .join('organization', {
@@ -65,10 +65,7 @@ const renameFiltersFromAPI = (queryParameters) => {
 
     return Object.keys(queryParameters).reduce((acc, filter) => {
         if (filter === 'sortBy') {
-            const sortName = Object.prototype.hasOwnProperty.call(
-                filterNamesToChange,
-                queryParameters.sortBy
-            )
+            const sortName = Object.prototype.hasOwnProperty.call(filterNamesToChange, queryParameters.sortBy)
                 ? filterNamesToChange[queryParameters.sortBy]
                 : queryParameters.sortBy;
 
@@ -78,10 +75,7 @@ const renameFiltersFromAPI = (queryParameters) => {
             };
         }
 
-        const filterName = Object.prototype.hasOwnProperty.call(
-            filterNamesToChange,
-            filter
-        )
+        const filterName = Object.prototype.hasOwnProperty.call(filterNamesToChange, filter)
             ? filterNamesToChange[filter]
             : filter;
 
@@ -127,7 +121,7 @@ const getOneByIdQuery = (client, id) => {
             'organization.address_locality as hiringOrganizationAddressLocality',
             'organization.address_country as hiringOrganizationAddressCountry',
             'organization.logo as hiringOrganizationImage',
-            'organization.url as hiringOrganizationUrl'
+            'organization.url as hiringOrganizationUrl',
         )
         .from(tableName)
         .join('organization', {

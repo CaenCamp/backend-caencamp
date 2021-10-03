@@ -1,15 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    deleteOne,
-    createOne,
-    getOne,
-    getPaginatedList,
-    updateOne,
-} = require('./repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { deleteOne, createOne, getOne, getPaginatedList, updateOne } = require('./repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
     prefix: '/tags',
@@ -47,9 +39,7 @@ router.get('/:tagId', async (ctx) => {
     const tag = await getOne(ctx.params.tagId);
 
     if (!tag.id) {
-        const explainedError = new Error(
-            `The tag of id ${ctx.params.tagId} does not exist.`
-        );
+        const explainedError = new Error(`The tag of id ${ctx.params.tagId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -69,9 +59,7 @@ router.delete('/:tagId', async (ctx) => {
     const deletedTag = await deleteOne(ctx.params.tagId);
 
     if (!deletedTag.id) {
-        const explainedError = new Error(
-            `The organization of id ${ctx.params.tagId} does not exist.`
-        );
+        const explainedError = new Error(`The organization of id ${ctx.params.tagId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -88,10 +76,7 @@ router.delete('/:tagId', async (ctx) => {
 });
 
 router.put('/:tagId', async (ctx) => {
-    const updatedTag = await updateOne(
-        ctx.params.tagId,
-        ctx.request.body
-    );
+    const updatedTag = await updateOne(ctx.params.tagId, ctx.request.body);
 
     if (updatedTag.error) {
         const explainedError = new Error(updatedTag.error.message);
@@ -102,7 +87,7 @@ router.put('/:tagId', async (ctx) => {
 
     if (!updatedTag.id) {
         const explainedError = new Error(
-            `The tag of id ${ctx.params.tagId} does not exist, so it could not be updated`
+            `The tag of id ${ctx.params.tagId} does not exist, so it could not be updated`,
         );
         explainedError.status = 404;
 

@@ -1,15 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    deleteOne,
-    createOne,
-    getOne,
-    getPaginatedList,
-    updateOne,
-} = require('./repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { deleteOne, createOne, getOne, getPaginatedList, updateOne } = require('./repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
     prefix: '/organizations',
@@ -47,9 +39,7 @@ router.get('/:organizationId', async (ctx) => {
     const organization = await getOne(ctx.params.organizationId);
 
     if (!organization.id) {
-        const explainedError = new Error(
-            `The organization of id ${ctx.params.organizationId} does not exist.`
-        );
+        const explainedError = new Error(`The organization of id ${ctx.params.organizationId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -69,9 +59,7 @@ router.delete('/:organizationId', async (ctx) => {
     const deletedOrganization = await deleteOne(ctx.params.organizationId);
 
     if (!deletedOrganization.id) {
-        const explainedError = new Error(
-            `The organization of id ${ctx.params.organizationId} does not exist.`
-        );
+        const explainedError = new Error(`The organization of id ${ctx.params.organizationId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -88,10 +76,7 @@ router.delete('/:organizationId', async (ctx) => {
 });
 
 router.put('/:organizationId', async (ctx) => {
-    const updatedOrganization = await updateOne(
-        ctx.params.organizationId,
-        ctx.request.body
-    );
+    const updatedOrganization = await updateOne(ctx.params.organizationId, ctx.request.body);
 
     if (updatedOrganization.error) {
         const explainedError = new Error(updatedOrganization.error.message);
@@ -102,7 +87,7 @@ router.put('/:organizationId', async (ctx) => {
 
     if (!updatedOrganization.id) {
         const explainedError = new Error(
-            `The organization of id ${ctx.params.organizationId} does not exist, so it could not be updated`
+            `The organization of id ${ctx.params.organizationId} does not exist, so it could not be updated`,
         );
         explainedError.status = 404;
 

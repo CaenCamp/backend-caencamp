@@ -19,10 +19,7 @@ const publicRouter = require('./public-router');
 const app = new Koa();
 
 // Add keys for signed cookies
-app.keys = [
-    config.security.signedCookie.key1,
-    config.security.signedCookie.key2,
-];
+app.keys = [config.security.signedCookie.key1, config.security.signedCookie.key2];
 
 // See https://github.com/zadzbw/koa2-cors for configuration
 app.use(
@@ -31,7 +28,7 @@ app.use(
         allowHeaders: ['Origin, Content-Type, Accept, Authorization'],
         exposeHeaders: ['X-Total-Count', 'Link'],
         credentials: true,
-    })
+    }),
 );
 
 const router = new Router();
@@ -50,9 +47,7 @@ const errorHandler = (error) => {
             return [...acc, rawError.error];
         }, []);
     }
-    const updatedError = new Error(
-        `${error.message}${errorDetails ? ` (${errorDetails.join(', ')})` : ''}`
-    );
+    const updatedError = new Error(`${error.message}${errorDetails ? ` (${errorDetails.join(', ')})` : ''}`);
     updatedError.status = 400;
 
     throw updatedError;
@@ -70,7 +65,6 @@ const formatError = (error) => {
         message: error.message,
     };
 };
-
 
 app.use(jwtMiddleware);
 app.use(bodyParser());
@@ -90,12 +84,10 @@ app.use(router.routes()).use(router.allowedMethods());
 
 app.use(dbMiddleware);
 
-app.use(authenticationRouter.routes()).use(
-    authenticationRouter.allowedMethods()
-);
+app.use(authenticationRouter.routes()).use(authenticationRouter.allowedMethods());
 app.use(adminRouter.routes()).use(adminRouter.allowedMethods());
 
-app.use(async(ctx, next) => {
+app.use(async (ctx, next) => {
     const mw = await oas({
         file: `${__dirname}/../openapi/openapi.json`,
         uiEndpoint: '/documentation',

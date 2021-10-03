@@ -18,7 +18,7 @@ describe('Query Parameters Helpers', () => {
                     perPage: 10,
                     currentPage: 3,
                     age: 'gte:40',
-                })
+                }),
             ).toEqual({
                 filters: { age: 'gte:40' },
                 sort: { sortBy: 'name', orderBy: 'DESC' },

@@ -1,19 +1,17 @@
 const omit = require('lodash.omit');
 const pick = require('lodash.pick');
 const slugify = require('slugify');
-const { markdownToTxt } = require('markdown-to-txt');
-const marked  = require("marked");
 
 const { getDbClient } = require('../toolbox/dbConnexion');
 
 const slugConfig = {
-    replacement: "-", // replace spaces with replacement character, defaults to `-`
+    replacement: '-', // replace spaces with replacement character, defaults to `-`
     remove: undefined, // remove characters that match regex, defaults to `undefined`
     lower: true, // convert to lower case, defaults to `false`
     strict: true, // strip special characters except replacement, defaults to `false`
     locale: 'fr', // language code of the locale to use
     trim: true, // trim leading and trailing replacement chars, defaults to `true`
-  };
+};
 
 const tableName = 'organization';
 const authorizedFilters = ['name', 'addressLocality', 'postalCode'];
@@ -41,7 +39,7 @@ const getFilteredOrganizationsQuery = (client) => {
                 'contactType',
                 contact_point.contact_type
             ) ORDER BY contact_point.contact_type))
-            FROM contact_point WHERE contact_point.organization_id = ${tableName}.id) as contact_points`)
+            FROM contact_point WHERE contact_point.organization_id = ${tableName}.id) as contact_points`),
         )
         .from(tableName);
 };
@@ -53,19 +51,9 @@ const getFilteredOrganizationsQuery = (client) => {
  * @returns {object} an organization object as describe in OpenAPI contract
  */
 const formatOrganizationForAPI = (dbOrganization) => ({
-    ...omit(dbOrganization, [
-        'addressCountry',
-        'addressLocality',
-        'postalCode',
-        'streetAddress',
-    ]),
+    ...omit(dbOrganization, ['addressCountry', 'addressLocality', 'postalCode', 'streetAddress']),
     address: {
-        ...pick(dbOrganization, [
-            'addressCountry',
-            'addressLocality',
-            'postalCode',
-            'streetAddress',
-        ]),
+        ...pick(dbOrganization, ['addressCountry', 'addressLocality', 'postalCode', 'streetAddress']),
     },
 });
 
@@ -133,7 +121,7 @@ const getOneByIdQuery = (client, organizationId) => {
                 'contactType',
                 contact_point.contact_type
             ) ORDER BY contact_point.contact_type))
-            FROM contact_point WHERE contact_point.organization_id = ${tableName}.id) as contact_points`)
+            FROM contact_point WHERE contact_point.organization_id = ${tableName}.id) as contact_points`),
         )
         .where({ id: organizationId });
 };
@@ -146,9 +134,7 @@ const getOneByIdQuery = (client, organizationId) => {
  */
 const createOne = async (apiData) => {
     const client = getDbClient();
-    const { organization, contactPoints } = prepareOrganizationDataForSave(
-        apiData
-    );
+    const { organization, contactPoints } = prepareOrganizationDataForSave(apiData);
 
     return client
         .transaction((trx) => {
@@ -158,33 +144,26 @@ const createOne = async (apiData) => {
                 .insert(organization)
                 .then(([organizationId]) => {
                     if (!contactPoints) return organizationId;
-                    const contactsToCreate = contactPoints.reduce(
-                        (acc, contact) => {
-                            acc.push(
-                                client('contact_point')
-                                    .transacting(trx)
-                                    .insert({
-                                        ...contact,
-                                        organizationId,
-                                    })
-                            );
+                    const contactsToCreate = contactPoints.reduce((acc, contact) => {
+                        acc.push(
+                            client('contact_point')
+                                .transacting(trx)
+                                .insert({
+                                    ...contact,
+                                    organizationId,
+                                }),
+                        );
 
-                            return acc;
-                        },
-                        []
-                    );
+                        return acc;
+                    }, []);
 
-                    return Promise.all(contactsToCreate).then(
-                        () => organizationId
-                    );
+                    return Promise.all(contactsToCreate).then(() => organizationId);
                 })
                 .then(trx.commit)
                 .catch(trx.rollback);
         })
         .then((newOrganizationId) => {
-            return getOneByIdQuery(client, newOrganizationId).then(
-                formatOrganizationForAPI
-            );
+            return getOneByIdQuery(client, newOrganizationId).then(formatOrganizationForAPI);
         })
         .catch((error) => ({ error }));
 };
@@ -227,9 +206,7 @@ const deleteOne = async (organizationId) => {
  * @returns {array} an array of id that should be deleted from database
  */
 const getIdsToDelete = (idsInDb, objectsFromApi) => {
-    const idsApi = objectsFromApi
-        .map((object) => object.identifier)
-        .filter((id) => id);
+    const idsApi = objectsFromApi.map((object) => object.identifier).filter((id) => id);
     return idsInDb.filter((id) => !idsApi.includes(id));
 };
 
@@ -241,9 +218,7 @@ const getIdsToDelete = (idsInDb, objectsFromApi) => {
  */
 const updateOne = async (organizationId, apiData) => {
     const client = getDbClient();
-    const { organization, contactPoints } = prepareOrganizationDataForSave(
-        apiData
-    );
+    const { organization, contactPoints } = prepareOrganizationDataForSave(apiData);
 
     try {
         await client.transaction((trx) => {
@@ -256,53 +231,37 @@ const updateOne = async (organizationId, apiData) => {
                     const existingContactIds = await client('contact_point')
                         .select('id')
                         .where({ organization_id: organizationId })
-                        .then((contacts) =>
-                            contacts.map((contact) => contact.id)
-                        );
+                        .then((contacts) => contacts.map((contact) => contact.id));
 
-                    const contactUpdates = contactPoints.reduce(
-                        (acc, contact) => {
-                            // Contacts to update
-                            if (
-                                contact.identifier &&
-                                existingContactIds.includes(contact.identifier)
-                            ) {
-                                acc.push(
-                                    client('contact_point')
-                                        .transacting(trx)
-                                        .where({ id: contact.identifier })
-                                        .update(omit(contact, ['identifier']))
-                                );
-                            }
-                            // Contacts to create
-                            if (!contact.identifier) {
-                                acc.push(
-                                    client('contact_point')
-                                        .transacting(trx)
-                                        .insert({
-                                            ...contact,
-                                            organizationId,
-                                        })
-                                );
-                            }
+                    const contactUpdates = contactPoints.reduce((acc, contact) => {
+                        // Contacts to update
+                        if (contact.identifier && existingContactIds.includes(contact.identifier)) {
+                            acc.push(
+                                client('contact_point')
+                                    .transacting(trx)
+                                    .where({ id: contact.identifier })
+                                    .update(omit(contact, ['identifier'])),
+                            );
+                        }
+                        // Contacts to create
+                        if (!contact.identifier) {
+                            acc.push(
+                                client('contact_point')
+                                    .transacting(trx)
+                                    .insert({
+                                        ...contact,
+                                        organizationId,
+                                    }),
+                            );
+                        }
 
-                            return acc;
-                        },
-                        []
-                    );
+                        return acc;
+                    }, []);
 
                     // Contacts to delete
-                    const idsToDelete = getIdsToDelete(
-                        existingContactIds,
-                        contactPoints
-                    );
+                    const idsToDelete = getIdsToDelete(existingContactIds, contactPoints);
                     idsToDelete.map((id) =>
-                        contactUpdates.push(
-                            client('contact_point')
-                                .transacting(trx)
-                                .where({ id })
-                                .del()
-                        )
+                        contactUpdates.push(client('contact_point').transacting(trx).where({ id }).del()),
                     );
                     return Promise.all(contactUpdates);
                 })

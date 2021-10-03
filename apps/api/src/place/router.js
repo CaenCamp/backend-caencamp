@@ -1,15 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    deleteOne,
-    createOne,
-    getOne,
-    getPaginatedList,
-    updateOne,
-} = require('./repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { deleteOne, createOne, getOne, getPaginatedList, updateOne } = require('./repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
     prefix: '/places',
@@ -47,9 +39,7 @@ router.get('/:placeId', async (ctx) => {
     const place = await getOne(ctx.params.placeId);
 
     if (!place.id) {
-        const explainedError = new Error(
-            `The place of id ${ctx.params.placeId} does not exist.`
-        );
+        const explainedError = new Error(`The place of id ${ctx.params.placeId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -69,9 +59,7 @@ router.delete('/:placeId', async (ctx) => {
     const deletedPlace = await deleteOne(ctx.params.placeId);
 
     if (!deletedPlace.id) {
-        const explainedError = new Error(
-            `The speaker of id ${ctx.params.placeId} does not exist.`
-        );
+        const explainedError = new Error(`The speaker of id ${ctx.params.placeId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -88,10 +76,7 @@ router.delete('/:placeId', async (ctx) => {
 });
 
 router.put('/:placeId', async (ctx) => {
-    const updatedPlace = await updateOne(
-        ctx.params.placeId,
-        ctx.request.body
-    );
+    const updatedPlace = await updateOne(ctx.params.placeId, ctx.request.body);
 
     if (updatedPlace.error) {
         const explainedError = new Error(updatedPlace.error.message);
@@ -102,7 +87,7 @@ router.put('/:placeId', async (ctx) => {
 
     if (!updatedPlace.id) {
         const explainedError = new Error(
-            `The speaker of id ${ctx.params.placeId} does not exist, so it could not be updated`
+            `The speaker of id ${ctx.params.placeId} does not exist, so it could not be updated`,
         );
         explainedError.status = 404;
 

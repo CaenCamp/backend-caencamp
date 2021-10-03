@@ -1,12 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    getOne,
-    getPaginatedList,
-} = require('./public-repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { getOne, getPaginatedList } = require('./public-repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const defaultQueryParameters = {
     currentPage: 1,
@@ -48,9 +43,7 @@ router.get('/:organizationId', async (ctx) => {
     }
 
     if (!organization.identifier) {
-        const explainedError = new Error(
-            `The organization of id ${ctx.params.organizationId} does not exist.`
-        );
+        const explainedError = new Error(`The organization of id ${ctx.params.organizationId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;

@@ -24,13 +24,7 @@
  * @param {Object} query - The query parameters
  * @returns {FormatedQueryParameters} The extracted parameters, ready for sanitizing
  */
-const formatQueryParameters = ({
-    sortBy,
-    orderBy,
-    currentPage,
-    perPage,
-    ...filters
-} = {}) => {
+const formatQueryParameters = ({ sortBy, orderBy, currentPage, perPage, ...filters } = {}) => {
     return {
         sort: sortBy ? { sortBy, orderBy: orderBy || 'ASC' } : null,
         pagination: {

@@ -1,15 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    createOne,
-    deleteOne,
-    getOne,
-    getPaginatedList,
-    updateOne,
-} = require('./repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { createOne, deleteOne, getOne, getPaginatedList, updateOne } = require('./repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
     prefix: '/job-postings',
@@ -54,9 +46,7 @@ router.get('/:jobPostingId', async (ctx) => {
     }
 
     if (!jobPosting.id) {
-        const explainedError = new Error(
-            `The jobPosting of id ${ctx.params.jobPostingId} does not exist.`
-        );
+        const explainedError = new Error(`The jobPosting of id ${ctx.params.jobPostingId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -76,9 +66,7 @@ router.delete('/:jobPostingId', async (ctx) => {
     }
 
     if (!deletedJobPosting.id) {
-        const explainedError = new Error(
-            `The jobPosting of id ${ctx.params.jobPostingId} does not exist.`
-        );
+        const explainedError = new Error(`The jobPosting of id ${ctx.params.jobPostingId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -88,10 +76,7 @@ router.delete('/:jobPostingId', async (ctx) => {
 });
 
 router.put('/:jobPostingId', async (ctx) => {
-    const updatedJobPosting = await updateOne(
-        ctx.params.jobPostingId,
-        ctx.request.body
-    );
+    const updatedJobPosting = await updateOne(ctx.params.jobPostingId, ctx.request.body);
 
     if (updatedJobPosting.error) {
         const explainedError = new Error(updatedJobPosting.error.message);
@@ -102,7 +87,7 @@ router.put('/:jobPostingId', async (ctx) => {
 
     if (!updatedJobPosting.id) {
         const explainedError = new Error(
-            `The jobPosting of id ${ctx.params.jobPostingId} does not exist, so it could not be updated`
+            `The jobPosting of id ${ctx.params.jobPostingId} does not exist, so it could not be updated`,
         );
         explainedError.status = 404;
 

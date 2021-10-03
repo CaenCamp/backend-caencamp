@@ -1,12 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    getOne,
-    getPaginatedList,
-} = require('./public-repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { getOne, getPaginatedList } = require('./public-repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
     prefix: '/events',
@@ -43,9 +38,7 @@ router.get('/:eventSlug', async (ctx) => {
     const edition = await getOne(ctx.params.eventSlug);
 
     if (!edition) {
-        const explainedError = new Error(
-            `The event of id ${ctx.params.eventSlug} does not exist.`
-        );
+        const explainedError = new Error(`The event of id ${ctx.params.eventSlug} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;

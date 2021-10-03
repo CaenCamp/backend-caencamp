@@ -19,12 +19,8 @@ const paginationSanitizer = ({ perPage, currentPage }) => {
     };
 
     return {
-        perPage:
-            convertedPagination.perPage < 1 ? 10 : convertedPagination.perPage,
-        currentPage:
-            convertedPagination.currentPage < 1
-                ? 1
-                : convertedPagination.currentPage,
+        perPage: convertedPagination.perPage < 1 ? 10 : convertedPagination.perPage,
+        currentPage: convertedPagination.currentPage < 1 ? 1 : convertedPagination.currentPage,
     };
 };
 
@@ -57,12 +53,8 @@ const formatPaginationToLinkHeader = ({ resourceURI, pagination = {} }) => {
         return null;
     }
 
-    const prevPage =
-        currentPage - 1 <= lastPage && currentPage - 1 > 0
-            ? currentPage - 1
-            : currentPage;
-    const nextPage =
-        currentPage + 1 <= lastPage ? currentPage + 1 : currentPage;
+    const prevPage = currentPage - 1 <= lastPage && currentPage - 1 > 0 ? currentPage - 1 : currentPage;
+    const nextPage = currentPage + 1 <= lastPage ? currentPage + 1 : currentPage;
 
     let items = [
         { resourceURI, currentPage: 1, perPage, rel: 'first' },

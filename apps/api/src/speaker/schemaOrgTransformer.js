@@ -1,6 +1,3 @@
-const addHours = require('date-fns/addHours');
-const formatISO = require('date-fns/formatISO');
-
 const API_URL = 'http://localhost:3001/api';
 
 const formatSpeaker = (speaker) => {
@@ -16,7 +13,7 @@ const formatSpeaker = (speaker) => {
         descriptionHtml: speaker.biographyHtml,
         image: 'https://caen.camp/static/logoFondBlanc-278da657a83902f7d21083ade8e9ce7a.png',
         websites: speaker.websites,
-        talks:speaker.talks.map(talk => ({
+        talks: speaker.talks.map((talk) => ({
             '@type': 'CreativeWork',
             '@id': talk.slug,
             identifier: talk.slug,
@@ -31,8 +28,8 @@ const formatSpeaker = (speaker) => {
             image: 'https://caen.camp/static/logoFondBlanc-278da657a83902f7d21083ade8e9ce7a.png',
         })),
     };
-  };
-  
-  module.exports = {
+};
+
+module.exports = {
     formatSpeaker,
-  };
+};

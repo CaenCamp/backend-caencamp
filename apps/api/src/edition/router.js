@@ -1,15 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    deleteOne,
-    createOne,
-    getOne,
-    getPaginatedList,
-    updateOne,
-} = require('./repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { deleteOne, createOne, getOne, getPaginatedList, updateOne } = require('./repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
     prefix: '/editions',
@@ -47,9 +39,7 @@ router.get('/:editionId', async (ctx) => {
     const edition = await getOne(ctx.params.editionId);
 
     if (!edition.id) {
-        const explainedError = new Error(
-            `The edition of id ${ctx.params.editionId} does not exist.`
-        );
+        const explainedError = new Error(`The edition of id ${ctx.params.editionId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -69,9 +59,7 @@ router.delete('/:editionId', async (ctx) => {
     const deletedEdition = await deleteOne(ctx.params.editionId);
 
     if (!deletedEdition.id) {
-        const explainedError = new Error(
-            `The organization of id ${ctx.params.editionId} does not exist.`
-        );
+        const explainedError = new Error(`The organization of id ${ctx.params.editionId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -88,10 +76,7 @@ router.delete('/:editionId', async (ctx) => {
 });
 
 router.put('/:editionId', async (ctx) => {
-    const updatedEdition = await updateOne(
-        ctx.params.editionId,
-        ctx.request.body
-    );
+    const updatedEdition = await updateOne(ctx.params.editionId, ctx.request.body);
 
     if (updatedEdition.error) {
         const explainedError = new Error(updatedEdition.error.message);
@@ -102,7 +87,7 @@ router.put('/:editionId', async (ctx) => {
 
     if (!updatedEdition.id) {
         const explainedError = new Error(
-            `The tag of id ${ctx.params.editionId} does not exist, so it could not be updated`
+            `The tag of id ${ctx.params.editionId} does not exist, so it could not be updated`,
         );
         explainedError.status = 404;
 
