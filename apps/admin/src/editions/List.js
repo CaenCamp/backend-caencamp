@@ -28,9 +28,7 @@ const EditionFilter = (props) => (
     </Filter>
 );
 
-const EditionPagination = (props) => (
-    <Pagination rowsPerPageOptions={[25, 50]} {...props} />
-);
+const EditionPagination = (props) => <Pagination rowsPerPageOptions={[25, 50]} {...props} />;
 
 export const EditionList = ({ permissions, ...props }) => {
     return (
@@ -54,12 +52,7 @@ export const EditionList = ({ permissions, ...props }) => {
                 <ReferenceField label="Mode" source="modeId" reference="edition-modes">
                     <ChipField source="label" />
                 </ReferenceField>
-                <ReferenceArrayField
-                    label="Le.s talk.s"
-                    reference="talks"
-                    source="talks"
-                    perPage={100}
-                >
+                <ReferenceArrayField label="Le.s talk.s" reference="talks" source="talks" perPage={100}>
                     <SingleFieldList>
                         <ChipField source="title" />
                     </SingleFieldList>

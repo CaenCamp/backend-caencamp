@@ -11,9 +11,7 @@ const LoginPage = ({ theme }) => {
     const notify = useNotify();
     const submit = (e) => {
         e.preventDefault();
-        login({ username, password }).catch(() =>
-            notify('Invalid email or password')
-        );
+        login({ username, password }).catch(() => notify('Invalid email or password'));
     };
 
     return (

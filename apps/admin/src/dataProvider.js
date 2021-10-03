@@ -3,9 +3,7 @@ import omit from 'lodash.omit';
 
 const getXTotalCountHeaderValue = (headers) => {
     if (!headers.has('x-total-count')) {
-        throw new Error(
-            'The X-Total-Count header is missing in the HTTP Response.'
-        );
+        throw new Error('The X-Total-Count header is missing in the HTTP Response.');
     }
 
     return parseInt(headers.get('x-total-count'), 10);
@@ -33,7 +31,7 @@ const formatFilters = (filters) => {
  * create      => POST http://my.api.url/posts
  * delete      => DELETE http://my.api.url/posts/123
  */
- export default (apiUrl, httpClient) => ({
+export default (apiUrl, httpClient) => ({
     getList: (resource, params) => {
         const { page: currentPage, perPage } = params.pagination;
         const { field, order } = params.sort;
@@ -117,8 +115,7 @@ const formatFilters = (filters) => {
                 if (resource === 'job-postings') {
                     data = {
                         ...omit(params.data, ['id', 'hiringOrganization']),
-                        hiringOrganizationId:
-                            params.data.hiringOrganization.identifier,
+                        hiringOrganizationId: params.data.hiringOrganization.identifier,
                     };
                 } else {
                     data = params.data;
@@ -127,19 +124,14 @@ const formatFilters = (filters) => {
                     method: 'PUT',
                     body: JSON.stringify(data),
                 }).then(({ json }) => ({ data: json }));
-            })
+            }),
         ).then((responses) => ({ data: responses.map(({ json }) => json.id) })),
 
     create: (resource, params) => {
         let data;
         if (resource === 'organizations') {
             data = {
-                ...omit(params.data, [
-                    'address',
-                    'contact_name',
-                    'contact_email',
-                    'contact_phone',
-                ]),
+                ...omit(params.data, ['address', 'contact_name', 'contact_email', 'contact_phone']),
                 address: {
                     ...params.data.address,
                     addressCountry: 'FR',
@@ -147,10 +139,7 @@ const formatFilters = (filters) => {
                 contactPoints: [
                     {
                         email: params.data.contact_email || params.data.email,
-                        telephone:
-                            params.data.contact_phone ||
-                            params.data.telephone ||
-                            null,
+                        telephone: params.data.contact_phone || params.data.telephone || null,
                         name: params.data.contact_name,
                         contactType: "Offres d'emploi",
                     },
@@ -185,8 +174,8 @@ const formatFilters = (filters) => {
             params.ids.map((id) =>
                 httpClient(`${apiUrl}/${resource}/${id}`, {
                     method: 'DELETE',
-                })
-            )
+                }),
+            ),
         ).then((responses) => ({ data: responses.map(({ json }) => json.id) })),
 });
 
