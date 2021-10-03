@@ -1,13 +1,9 @@
 const { getDbClient } = require('../toolbox/dbConnexion');
 const { formatSpeaker } = require('./schemaOrgTransformer');
 
-const tableName = "speaker";
-const authorizedSort = [
-  'name',
-];
-const authorizedFilters = [
-  'name',
-];
+const tableName = 'speaker';
+const authorizedSort = ['name'];
+const authorizedFilters = ['name'];
 
 /**
  * Knex query for filtrated Oject list
@@ -16,16 +12,17 @@ const authorizedFilters = [
  * @returns {Promise} - Knew query for filtrated Oject list
  */
 const getFilteredQuery = (client) => {
-  return client.select(
-        `${tableName}.*`,
-        client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
+    return client
+        .select(
+            `${tableName}.*`,
+            client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
             'type', web_site_type.label,
             'url', web_site.url
         ) ORDER BY web_site_type.label))
         FROM web_site, web_site_type
         WHERE web_site.speaker_id = ${tableName}.id
         AND web_site.type_id = web_site_type.id) as websites`),
-        client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
+            client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
             'slug', talk.slug,
             'title', talk.title,
             'type', talk_type.label,
@@ -38,8 +35,9 @@ const getFilteredQuery = (client) => {
         WHERE talk_speaker.speaker_id = ${tableName}.id
         AND talk_speaker.talk_id = talk.id
         AND talk.edition_id = edition.id
-        AND talk_type.id = talk.type_id) as talks`)
-    ).from(tableName);
+        AND talk_type.id = talk.type_id) as talks`),
+        )
+        .from(tableName);
 };
 
 /**
@@ -54,35 +52,29 @@ const getFilteredQuery = (client) => {
  * @return {Object} Query parameters renamed as db row name
  */
 const renameFiltersFromAPI = (queryParameters) => {
-  const filterNamesToChange = {};
+    const filterNamesToChange = {};
 
-  return Object.keys(queryParameters).reduce((acc, filter) => {
-    if (filter === "sortBy") {
-      const sortName = Object.prototype.hasOwnProperty.call(
-        filterNamesToChange,
-        queryParameters.sortBy
-      )
-        ? filterNamesToChange[queryParameters.sortBy]
-        : queryParameters.sortBy;
+    return Object.keys(queryParameters).reduce((acc, filter) => {
+        if (filter === 'sortBy') {
+            const sortName = Object.prototype.hasOwnProperty.call(filterNamesToChange, queryParameters.sortBy)
+                ? filterNamesToChange[queryParameters.sortBy]
+                : queryParameters.sortBy;
 
-      return {
-        ...acc,
-        sortBy: sortName,
-      };
-    }
+            return {
+                ...acc,
+                sortBy: sortName,
+            };
+        }
 
-    const filterName = Object.prototype.hasOwnProperty.call(
-      filterNamesToChange,
-      filter
-    )
-      ? filterNamesToChange[filter]
-      : filter;
+        const filterName = Object.prototype.hasOwnProperty.call(filterNamesToChange, filter)
+            ? filterNamesToChange[filter]
+            : filter;
 
-    return {
-      ...acc,
-      [filterName]: queryParameters[filter],
-    };
-  }, {});
+        return {
+            ...acc,
+            [filterName]: queryParameters[filter],
+        };
+    }, {});
 };
 
 /**
@@ -92,17 +84,17 @@ const renameFiltersFromAPI = (queryParameters) => {
  * @returns {Promise} - paginated object with paginated WebSite list and pagination
  */
 const getPaginatedList = async (queryParameters) => {
-  const client = getDbClient();
-  return getFilteredQuery(client)
-    .paginateRestList({
-      queryParameters: renameFiltersFromAPI(queryParameters),
-      authorizedFilters,
-      authorizedSort,
-    })
-    .then(({ data, pagination }) => ({
-      speakers: data.map(formatSpeaker),
-      pagination,
-    }));
+    const client = getDbClient();
+    return getFilteredQuery(client)
+        .paginateRestList({
+            queryParameters: renameFiltersFromAPI(queryParameters),
+            authorizedFilters,
+            authorizedSort,
+        })
+        .then(({ data, pagination }) => ({
+            speakers: data.map(formatSpeaker),
+            pagination,
+        }));
 };
 
 /**
@@ -112,17 +104,17 @@ const getPaginatedList = async (queryParameters) => {
  * @returns {Promise} - Knew query for single Object
  */
 const getOneBySlugQuery = (client, slug) => {
-  return client
-    .first(
-        `${tableName}.*`,
-        client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
+    return client
+        .first(
+            `${tableName}.*`,
+            client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
             'type', web_site_type.label,
             'url', web_site.url
         ) ORDER BY web_site_type.label))
         FROM web_site, web_site_type
         WHERE web_site.speaker_id = ${tableName}.id
         AND web_site.type_id = web_site_type.id) as websites`),
-        client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
+            client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
             'slug', talk.slug,
             'title', talk.title,
             'type', talk_type.label,
@@ -135,11 +127,11 @@ const getOneBySlugQuery = (client, slug) => {
         WHERE talk_speaker.speaker_id = ${tableName}.id
         AND talk_speaker.talk_id = talk.id
         AND talk.edition_id = edition.id
-        AND talk_type.id = talk.type_id) as talks`)
-    )
-    .from(tableName)
-    .where({ [`${tableName}.slug`]: slug })
-    .then(formatSpeaker);
+        AND talk_type.id = talk.type_id) as talks`),
+        )
+        .from(tableName)
+        .where({ [`${tableName}.slug`]: slug })
+        .then(formatSpeaker);
 };
 
 /**
@@ -149,11 +141,11 @@ const getOneBySlugQuery = (client, slug) => {
  * @returns {Promise} - the Object
  */
 const getOne = async (slug) => {
-  const client = getDbClient();
-  return getOneBySlugQuery(client, slug).catch((error) => ({ error }));
+    const client = getDbClient();
+    return getOneBySlugQuery(client, slug).catch((error) => ({ error }));
 };
 
 module.exports = {
-  getOne,
-  getPaginatedList,
+    getOne,
+    getPaginatedList,
 };

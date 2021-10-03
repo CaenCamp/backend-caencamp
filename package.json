@@ -1,0 +1,25 @@
+{
+  "name": "backend-caencamp",
+  "version": "1.0.0",
+  "description": "Le backend (API, admin, bots, ...) du caen.camp",
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaenCamp/backend-caencamp.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://github.com/CaenCamp/backend-caencamp/issues"
+  },
+  "homepage": "https://github.com/CaenCamp/backend-caencamp#readme",
+  "devDependencies": {
+    "husky": "7.0.2",
+    "lint-staged": "11.1.2"
+  },
+  "lint-staged": {
+    "app/api/**/*.js": "cd app/api && npm run lint",
+    "app/admin/**/*.js": "cd app/admin && npm run lint"
+  }
+}

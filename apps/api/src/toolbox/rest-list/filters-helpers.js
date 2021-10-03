@@ -78,10 +78,7 @@ const filtersSanitizer = (filters, filterableFields) => {
             return {
                 name: filterKey,
                 value: value,
-                operator:
-                    !operator || !filterOperators.includes(operator)
-                        ? FILTER_OPERATOR_EQ
-                        : operator,
+                operator: !operator || !filterOperators.includes(operator) ? FILTER_OPERATOR_EQ : operator,
             };
         })
         .filter((filter) => filter !== null);

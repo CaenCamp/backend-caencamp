@@ -12,10 +12,7 @@ const inMemoryJWTManager = () => {
     // before it's no longer valid
     let refreshTimeOutId;
     const refreshToken = (delay) => {
-        refreshTimeOutId = window.setTimeout(
-            getRefreshedJWT,
-            delay * 1000 - 3000
-        ); // Validity period of the token in seconds, minus 3 seconds
+        refreshTimeOutId = window.setTimeout(getRefreshedJWT, delay * 1000 - 3000); // Validity period of the token in seconds, minus 3 seconds
     };
     const abordRefreshToken = () => {
         if (refreshTimeOutId) {
@@ -35,9 +32,7 @@ const inMemoryJWTManager = () => {
             .then((response) => {
                 if (response.status !== 200) {
                     ereaseToken();
-                    global.console.log(
-                        'Failed to renew the jwt from the refresh token.'
-                    );
+                    global.console.log('Failed to renew the jwt from the refresh token.');
                     return { token: null };
                 }
                 return response.json();

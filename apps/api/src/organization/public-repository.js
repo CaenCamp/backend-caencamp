@@ -38,12 +38,10 @@ const getFilteredOrganizationsQuery = (client) => {
             ) ORDER BY edition.start_date_time DESC))
             FROM edition, edition_category
             WHERE edition.sponsor_id = ${tableName}.id
-            AND edition_category.id = edition.category_id) as events`)
+            AND edition_category.id = edition.category_id) as events`),
         )
         .from(tableName);
 };
-
-
 
 /**
  * Return paginated and filtered list of organization
@@ -100,7 +98,7 @@ const getOneBySlugQuery = (client, organizationSlug) => {
             ) ORDER BY edition.start_date_time DESC))
             FROM edition, edition_category
             WHERE edition.sponsor_id = ${tableName}.id
-            AND edition_category.id = edition.category_id) as events`)
+            AND edition_category.id = edition.category_id) as events`),
         )
         .where({ slug: organizationSlug });
 };

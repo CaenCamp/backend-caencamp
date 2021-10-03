@@ -7,15 +7,7 @@ import { FormHelperText } from '@material-ui/core';
 import '@toast-ui/editor/dist/toastui-editor.css';
 import { Editor } from '@toast-ui/react-editor';
 
-export const MarkdownInput = ({
-    fullWidth,
-    helperText,
-    label,
-    options,
-    resource,
-    source,
-    ...rest
-}) => {
+export const MarkdownInput = ({ fullWidth, helperText, label, options, resource, source, ...rest }) => {
     const editorRef = useRef();
 
     const {
@@ -29,7 +21,7 @@ export const MarkdownInput = ({
 
     const { error, submitError, touched } = meta;
 
-    const handleChange = editor => {
+    const handleChange = (editor) => {
         onChange(editor.getMarkdown());
     };
 
@@ -52,17 +44,9 @@ export const MarkdownInput = ({
             source={source}
         >
             <>
-                <Editor
-                    initialValue={value}
-                    ref={editorRef}
-                    {...mergedOptions}
-                />
+                <Editor initialValue={value} ref={editorRef} {...mergedOptions} />
                 <FormHelperText error={touched && (error || submitError)}>
-                    <InputHelperText
-                        touched={touched}
-                        error={error || submitError}
-                        helperText={helperText}
-                    />
+                    <InputHelperText touched={touched} error={error || submitError} helperText={helperText} />
                 </FormHelperText>
             </>
         </Labeled>
@@ -90,5 +74,5 @@ export const caenCampOptions = {
         ['heading', 'bold', 'italic'],
         ['ul', 'quote', 'indent', 'outdent'],
         ['table', 'link', 'code'],
-      ]
+    ],
 };

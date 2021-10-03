@@ -1,15 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    deleteOne,
-    createOne,
-    getOne,
-    getPaginatedList,
-    updateOne,
-} = require('./mode-repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { deleteOne, createOne, getOne, getPaginatedList, updateOne } = require('./mode-repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
     prefix: '/edition-modes',
@@ -47,9 +39,7 @@ router.get('/:modeId', async (ctx) => {
     const type = await getOne(ctx.params.modeId);
 
     if (!type.id) {
-        const explainedError = new Error(
-            `The type of id ${ctx.params.modeId} does not exist.`
-        );
+        const explainedError = new Error(`The type of id ${ctx.params.modeId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -69,9 +59,7 @@ router.delete('/:modeId', async (ctx) => {
     const deletedMode = await deleteOne(ctx.params.modeId);
 
     if (!deletedMode.id) {
-        const explainedError = new Error(
-            `The talk types of id ${ctx.params.modeId} does not exist.`
-        );
+        const explainedError = new Error(`The talk types of id ${ctx.params.modeId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -88,10 +76,7 @@ router.delete('/:modeId', async (ctx) => {
 });
 
 router.put('/:modeId', async (ctx) => {
-    const updatedMode = await updateOne(
-        ctx.params.modeId,
-        ctx.request.body
-    );
+    const updatedMode = await updateOne(ctx.params.modeId, ctx.request.body);
 
     if (updatedMode.error) {
         const explainedError = new Error(updatedMode.error.message);
@@ -102,7 +87,7 @@ router.put('/:modeId', async (ctx) => {
 
     if (!updatedMode.id) {
         const explainedError = new Error(
-            `The mode of id ${ctx.params.modeId} does not exist, so it could not be updated`
+            `The mode of id ${ctx.params.modeId} does not exist, so it could not be updated`,
         );
         explainedError.status = 404;
 

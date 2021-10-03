@@ -1,31 +1,20 @@
 const slugify = require('slugify');
 const { getDbClient } = require('../toolbox/dbConnexion');
 const { markdownToTxt } = require('markdown-to-txt');
-const marked  = require("marked");
+const marked = require('marked');
 
 const slugConfig = {
-    replacement: "-", // replace spaces with replacement character, defaults to `-`
+    replacement: '-', // replace spaces with replacement character, defaults to `-`
     remove: undefined, // remove characters that match regex, defaults to `undefined`
     lower: true, // convert to lower case, defaults to `false`
     strict: true, // strip special characters except replacement, defaults to `false`
     locale: 'fr', // language code of the locale to use
     trim: true, // trim leading and trailing replacement chars, defaults to `true`
-  };
+};
 
 const tableName = 'edition';
-const authorizedSort = [
-    'title',
-    'number',
-    'start_date_time',
-    'categoryId',
-    'modeId',
-];
-const authorizedFilters = [
-    'title',
-    'published',
-    'categoryId',
-    'modeId',
-];
+const authorizedSort = ['title', 'number', 'start_date_time', 'categoryId', 'modeId'];
+const authorizedFilters = ['title', 'published', 'categoryId', 'modeId'];
 
 /**
  * Knex query for filtrated Oject list
@@ -62,10 +51,7 @@ const renameFiltersFromAPI = (queryParameters) => {
 
     return Object.keys(queryParameters).reduce((acc, filter) => {
         if (filter === 'sortBy') {
-            const sortName = Object.prototype.hasOwnProperty.call(
-                filterNamesToChange,
-                queryParameters.sortBy
-            )
+            const sortName = Object.prototype.hasOwnProperty.call(filterNamesToChange, queryParameters.sortBy)
                 ? filterNamesToChange[queryParameters.sortBy]
                 : queryParameters.sortBy;
 
@@ -75,10 +61,7 @@ const renameFiltersFromAPI = (queryParameters) => {
             };
         }
 
-        const filterName = Object.prototype.hasOwnProperty.call(
-            filterNamesToChange,
-            filter
-        )
+        const filterName = Object.prototype.hasOwnProperty.call(filterNamesToChange, filter)
             ? filterNamesToChange[filter]
             : filter;
 
@@ -137,8 +120,7 @@ const getOneByIdQuery = (client, id) => {
  */
 const getOne = async (id) => {
     const client = getDbClient();
-    return getOneByIdQuery(client, id)
-        .catch((error) => ({ error }));
+    return getOneByIdQuery(client, id).catch((error) => ({ error }));
 };
 
 /**
@@ -191,10 +173,7 @@ const deleteOne = async (id) => {
 const updateOne = async (id, apiData) => {
     const client = getDbClient();
     // check that jobPosting exist
-    const currentObject = await client
-        .first('id')
-        .from(tableName)
-        .where({ id });
+    const currentObject = await client.first('id').from(tableName).where({ id });
     if (!currentObject) {
         return {};
     }
@@ -216,18 +195,14 @@ const updateOne = async (id, apiData) => {
         return updatedObject;
     }
 
-    await client('talk')
-        .where({ editionId: id })
-        .update({ editionId: null });
-    
+    await client('talk').where({ editionId: id }).update({ editionId: null });
+
     if (talks && talks.length) {
-        const talksUpdates = talks.map(talkId => {
-            return client('talk')
-            .where({ id: talkId })
-            .update({ editionId: id });
+        const talksUpdates = talks.map((talkId) => {
+            return client('talk').where({ id: talkId }).update({ editionId: id });
         });
         await Promise.all(talksUpdates);
-        
+
         const tagsFromDb = await client('talk_tag')
             .select('tag.slug')
             .join('tag', {
@@ -235,22 +210,18 @@ const updateOne = async (id, apiData) => {
             })
             .whereIn('talk_id', talks);
         if (tagsFromDb.length) {
-            const tags = [...new Set(tagsFromDb.map(tfdb => tfdb.slug))];
-            const tagsData = tags.map(tag => ({
+            const tags = [...new Set(tagsFromDb.map((tfdb) => tfdb.slug))];
+            const tagsData = tags.map((tag) => ({
                 editionId: id,
                 tag,
             }));
-            await client('edition_tag')
-                .where({ editionId: id })
-                .del();
-            await client('edition_tag')
-                .insert(tagsData);
+            await client('edition_tag').where({ editionId: id }).del();
+            await client('edition_tag').insert(tagsData);
         }
     }
 
     // return the complete Object from db
-    return getOneByIdQuery(client, id)
-        .catch((error) => ({ error }));
+    return getOneByIdQuery(client, id).catch((error) => ({ error }));
 };
 
 module.exports = {

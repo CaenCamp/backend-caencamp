@@ -1,14 +1,6 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
-import {
-    List,
-    Datagrid,
-    TextField,
-    EditButton,
-    Filter,
-    TextInput,
-    Pagination,
-} from 'react-admin';
+import { List, Datagrid, TextField, EditButton, Filter, TextInput, Pagination } from 'react-admin';
 
 const OrganizationLogo = ({ record }) => {
     return record && record.image ? (
@@ -33,22 +25,12 @@ const OrganizationAddress = ({ record: { address } }) => {
 const OrganizationFilter = (props) => (
     <Filter {...props}>
         <TextInput source="name:%l%" label="Filtre par nom" alwaysOn />
-        <TextInput
-            source="addressLocality:l%"
-            label="Filtre par ville"
-            alwaysOn
-        />
-        <TextInput
-            source="postalCode:l%"
-            label="Filtre par code postal"
-            alwaysOn
-        />
+        <TextInput source="addressLocality:l%" label="Filtre par ville" alwaysOn />
+        <TextInput source="postalCode:l%" label="Filtre par code postal" alwaysOn />
     </Filter>
 );
 
-const OrganizationPagination = (props) => (
-    <Pagination rowsPerPageOptions={[1, 10, 25, 50]} {...props} />
-);
+const OrganizationPagination = (props) => <Pagination rowsPerPageOptions={[1, 10, 25, 50]} {...props} />;
 
 export const OrganizationList = (props) => {
     return (
@@ -70,4 +52,3 @@ export const OrganizationList = (props) => {
         </List>
     );
 };
-

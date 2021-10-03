@@ -1,14 +1,9 @@
-const {
-    paginationSanitizer,
-    formatPaginationToLinkHeader,
-} = require('./pagination-helpers');
+const { paginationSanitizer, formatPaginationToLinkHeader } = require('./pagination-helpers');
 
 describe('Pagination Helpers', () => {
     describe('paginationSanitizer', () => {
         it('should return string pagination params as integer if it possible', () => {
-            expect(
-                paginationSanitizer({ perPage: '12', currentPage: '2' })
-            ).toEqual({ perPage: 12, currentPage: 2 });
+            expect(paginationSanitizer({ perPage: '12', currentPage: '2' })).toEqual({ perPage: 12, currentPage: 2 });
         });
 
         it('should return default pagination if pagination array is empty', () => {
@@ -19,18 +14,16 @@ describe('Pagination Helpers', () => {
         });
 
         it('should return default pagination if one of pagination params could not be cast as integer', () => {
-            expect(
-                paginationSanitizer({ perPage: 'douze', currentPage: '2' })
-            ).toEqual({ perPage: 10, currentPage: 2 });
-            expect(
-                paginationSanitizer({ perPage: '12', currentPage: 'deux' })
-            ).toEqual({ perPage: 12, currentPage: 1 });
-            expect(
-                paginationSanitizer({ perPage: {}, currentPage: '2' })
-            ).toEqual({ perPage: 10, currentPage: 2 });
-            expect(
-                paginationSanitizer({ perPage: null, currentPage: '2' })
-            ).toEqual({ perPage: 10, currentPage: 2 });
+            expect(paginationSanitizer({ perPage: 'douze', currentPage: '2' })).toEqual({
+                perPage: 10,
+                currentPage: 2,
+            });
+            expect(paginationSanitizer({ perPage: '12', currentPage: 'deux' })).toEqual({
+                perPage: 12,
+                currentPage: 1,
+            });
+            expect(paginationSanitizer({ perPage: {}, currentPage: '2' })).toEqual({ perPage: 10, currentPage: 2 });
+            expect(paginationSanitizer({ perPage: null, currentPage: '2' })).toEqual({ perPage: 10, currentPage: 2 });
         });
 
         it('should remove the supernumerary parameters of the pagination array', () => {
@@ -40,7 +33,7 @@ describe('Pagination Helpers', () => {
                     currentPage: 3,
                     notPage: 'foo',
                     isPage: 'bar',
-                })
+                }),
             ).toEqual({ perPage: 22, currentPage: 3 });
         });
 
@@ -49,7 +42,7 @@ describe('Pagination Helpers', () => {
                 paginationSanitizer({
                     perPage: -6,
                     currentPage: 3,
-                })
+                }),
             ).toEqual({ perPage: 10, currentPage: 3 });
         });
 
@@ -58,7 +51,7 @@ describe('Pagination Helpers', () => {
                 paginationSanitizer({
                     perPage: 6,
                     currentPage: -2,
-                })
+                }),
             ).toEqual({ perPage: 6, currentPage: 1 });
         });
     });
@@ -72,7 +65,7 @@ describe('Pagination Helpers', () => {
                         perPage: 10,
                         lastPage: 5,
                     },
-                })
+                }),
             ).toEqual(
                 [
                     '</api/resources?currentPage=1&perPage=10>; rel="first"',
@@ -80,7 +73,7 @@ describe('Pagination Helpers', () => {
                     '</api/resources?currentPage=3&perPage=10>; rel="self"',
                     '</api/resources?currentPage=4&perPage=10>; rel="next"',
                     '</api/resources?currentPage=5&perPage=10>; rel="last"',
-                ].join(',')
+                ].join(','),
             );
         });
 
@@ -93,7 +86,7 @@ describe('Pagination Helpers', () => {
                         perPage: 10,
                         lastPage: 3,
                     },
-                })
+                }),
             ).toEqual(
                 [
                     '</api/resources?currentPage=1&perPage=10>; rel="first"',
@@ -101,7 +94,7 @@ describe('Pagination Helpers', () => {
                     '</api/resources?currentPage=1&perPage=10>; rel="self"',
                     '</api/resources?currentPage=2&perPage=10>; rel="next"',
                     '</api/resources?currentPage=3&perPage=10>; rel="last"',
-                ].join(',')
+                ].join(','),
             );
         });
 
@@ -114,7 +107,7 @@ describe('Pagination Helpers', () => {
                         perPage: 10,
                         lastPage: 3,
                     },
-                })
+                }),
             ).toEqual(
                 [
                     '</api/resources?currentPage=1&perPage=10>; rel="first"',
@@ -122,7 +115,7 @@ describe('Pagination Helpers', () => {
                     '</api/resources?currentPage=3&perPage=10>; rel="self"',
                     '</api/resources?currentPage=3&perPage=10>; rel="next"',
                     '</api/resources?currentPage=3&perPage=10>; rel="last"',
-                ].join(',')
+                ].join(','),
             );
         });
 
@@ -135,7 +128,7 @@ describe('Pagination Helpers', () => {
                         perPage: 10,
                         lastPage: 1,
                     },
-                })
+                }),
             ).toEqual(
                 [
                     '</api/resources?currentPage=1&perPage=10>; rel="first"',
@@ -143,7 +136,7 @@ describe('Pagination Helpers', () => {
                     '</api/resources?currentPage=1&perPage=10>; rel="self"',
                     '</api/resources?currentPage=1&perPage=10>; rel="next"',
                     '</api/resources?currentPage=1&perPage=10>; rel="last"',
-                ].join(',')
+                ].join(','),
             );
         });
 
@@ -155,7 +148,7 @@ describe('Pagination Helpers', () => {
                         currentPage: 3,
                         perPage: 10,
                     },
-                })
+                }),
             ).toBeNull();
             expect(
                 formatPaginationToLinkHeader({
@@ -164,7 +157,7 @@ describe('Pagination Helpers', () => {
                         currentPage: 3,
                         lastPage: 5,
                     },
-                })
+                }),
             ).toBeNull();
             expect(
                 formatPaginationToLinkHeader({
@@ -172,12 +165,12 @@ describe('Pagination Helpers', () => {
                         currentPage: 3,
                         lastPage: 5,
                     },
-                })
+                }),
             ).toBeNull();
             expect(
                 formatPaginationToLinkHeader({
                     resourceURI: '/api/resources',
-                })
+                }),
             ).toBeNull();
         });
     });

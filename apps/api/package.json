@@ -12,7 +12,8 @@
         "migrate:up": "knex migrate:up",
         "migrate:down": "knex migrate:down",
         "migrate:list": "knex migrate:list",
-        "migrate:create": "knex migrate:make"
+        "migrate:create": "knex migrate:make",
+        "lint": "eslint src/ --fix"
     },
     "dependencies": {
         "bcrypt": "5.0.1",
@@ -41,7 +42,13 @@
         "swagger-ui-dist": "3.52.3"
     },
     "devDependencies": {
+        "eslint": "7.32.0",
+        "eslint-config-prettier": "8.3.0",
+        "eslint-plugin-jest": "24.5.0",
+        "eslint-plugin-jsdoc": "36.1.0",
+        "eslint-plugin-prettier": "4.0.0",
         "faker": "5.5.3",
-        "nodemon": "2.0.13"
+        "nodemon": "2.0.13",
+        "prettier": "2.4.1"
     }
 }

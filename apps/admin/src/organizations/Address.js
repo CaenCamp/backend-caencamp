@@ -4,15 +4,9 @@ import Typography from '@material-ui/core/Typography';
 
 const AddressField = ({ className, record = {}, ...rest }) => {
     return (
-        <Typography
-            component="span"
-            variant="body2"
-            className={className}
-            {...rest}
-        >
+        <Typography component="span" variant="body2" className={className} {...rest}>
             {record.address.streetAddress} <br />
-            {record.address.postalCode} {record.address.addressLocality}{' '}
-            {record.address.addressCountry}
+            {record.address.postalCode} {record.address.addressLocality} {record.address.addressCountry}
         </Typography>
     );
 };

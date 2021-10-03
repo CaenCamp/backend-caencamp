@@ -1,8 +1,8 @@
 const { formatPlace } = require('./schemaOrgTransformer');
 
-const { getDbClient } = require("../toolbox/dbConnexion");
+const { getDbClient } = require('../toolbox/dbConnexion');
 
-const tableName = "place";
+const tableName = 'place';
 const authorizedSort = ['name'];
 const authorizedFilters = [];
 
@@ -13,9 +13,10 @@ const authorizedFilters = [];
  * @returns {Promise} - Knew query for filtrated Oject list
  */
 const getFilteredQuery = (client) => {
-  return client.select(
-    `${tableName}.*`,
-      client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
+    return client
+        .select(
+            `${tableName}.*`,
+            client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
           'slug', edition.slug,
           'name', edition.title,
           'number', edition.number,
@@ -25,8 +26,9 @@ const getFilteredQuery = (client) => {
       ) ORDER BY edition.start_date_time DESC))
       FROM edition, edition_category
       WHERE edition.place_id = ${tableName}.id
-      AND edition_category.id = edition.category_id) as events`)
-  ).from(tableName);
+      AND edition_category.id = edition.category_id) as events`),
+        )
+        .from(tableName);
 };
 
 /**
@@ -41,35 +43,29 @@ const getFilteredQuery = (client) => {
  * @return {Object} Query parameters renamed as db row name
  */
 const renameFiltersFromAPI = (queryParameters) => {
-  const filterNamesToChange = {};
+    const filterNamesToChange = {};
 
-  return Object.keys(queryParameters).reduce((acc, filter) => {
-    if (filter === "sortBy") {
-      const sortName = Object.prototype.hasOwnProperty.call(
-        filterNamesToChange,
-        queryParameters.sortBy
-      )
-        ? filterNamesToChange[queryParameters.sortBy]
-        : queryParameters.sortBy;
+    return Object.keys(queryParameters).reduce((acc, filter) => {
+        if (filter === 'sortBy') {
+            const sortName = Object.prototype.hasOwnProperty.call(filterNamesToChange, queryParameters.sortBy)
+                ? filterNamesToChange[queryParameters.sortBy]
+                : queryParameters.sortBy;
 
-      return {
-        ...acc,
-        sortBy: sortName,
-      };
-    }
+            return {
+                ...acc,
+                sortBy: sortName,
+            };
+        }
 
-    const filterName = Object.prototype.hasOwnProperty.call(
-      filterNamesToChange,
-      filter
-    )
-      ? filterNamesToChange[filter]
-      : filter;
+        const filterName = Object.prototype.hasOwnProperty.call(filterNamesToChange, filter)
+            ? filterNamesToChange[filter]
+            : filter;
 
-    return {
-      ...acc,
-      [filterName]: queryParameters[filter],
-    };
-  }, {});
+        return {
+            ...acc,
+            [filterName]: queryParameters[filter],
+        };
+    }, {});
 };
 
 /**
@@ -79,17 +75,17 @@ const renameFiltersFromAPI = (queryParameters) => {
  * @returns {Promise} - paginated object with paginated WebSite list and pagination
  */
 const getPaginatedList = async (queryParameters) => {
-  const client = getDbClient();
-  return getFilteredQuery(client)
-    .paginateRestList({
-      queryParameters: renameFiltersFromAPI(queryParameters),
-      authorizedFilters,
-      authorizedSort,
-    })
-    .then(({ data, pagination }) => ({
-      places: data.map(formatPlace),
-      pagination,
-    }));
+    const client = getDbClient();
+    return getFilteredQuery(client)
+        .paginateRestList({
+            queryParameters: renameFiltersFromAPI(queryParameters),
+            authorizedFilters,
+            authorizedSort,
+        })
+        .then(({ data, pagination }) => ({
+            places: data.map(formatPlace),
+            pagination,
+        }));
 };
 
 /**
@@ -99,10 +95,10 @@ const getPaginatedList = async (queryParameters) => {
  * @returns {Promise} - Knew query for single Object
  */
 const getOneBySlugQuery = (client, slug) => {
-  return client
-    .first(
-      `${tableName}.*`,
-      client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
+    return client
+        .first(
+            `${tableName}.*`,
+            client.raw(`(SELECT array_to_json(array_agg(jsonb_build_object(
           'slug', edition.slug,
           'name', edition.title,
           'number', edition.number,
@@ -112,11 +108,11 @@ const getOneBySlugQuery = (client, slug) => {
       ) ORDER BY edition.start_date_time DESC))
       FROM edition, edition_category
       WHERE edition.place_id = ${tableName}.id
-      AND edition_category.id = edition.category_id) as events`)
-    )
-    .from(tableName)
-    .where({ [`${tableName}.slug`]: slug })
-    .then(formatPlace);
+      AND edition_category.id = edition.category_id) as events`),
+        )
+        .from(tableName)
+        .where({ [`${tableName}.slug`]: slug })
+        .then(formatPlace);
 };
 
 /**
@@ -126,11 +122,11 @@ const getOneBySlugQuery = (client, slug) => {
  * @returns {Promise} - the Object
  */
 const getOne = async (slug) => {
-  const client = getDbClient();
-  return getOneBySlugQuery(client, slug).catch((error) => ({ error }));
+    const client = getDbClient();
+    return getOneBySlugQuery(client, slug).catch((error) => ({ error }));
 };
 
 module.exports = {
-  getOne,
-  getPaginatedList,
+    getOne,
+    getPaginatedList,
 };

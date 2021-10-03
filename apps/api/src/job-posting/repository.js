@@ -37,7 +37,7 @@ const getFilteredJobPostingsQuery = (client) => {
             'organization.address_locality as hiringOrganizationAddressLocality',
             'organization.address_country as hiringOrganizationAddressCountry',
             'organization.logo as hiringOrganizationImage',
-            'organization.url as hiringOrganizationUrl'
+            'organization.url as hiringOrganizationUrl',
         )
         .from(tableName)
         .join('organization', {
@@ -69,22 +69,14 @@ const formatJobPostingForAPI = (dbJobPosting) => {
                   image: dbJobPosting.hiringOrganizationImage,
                   url: dbJobPosting.hiringOrganizationUrl,
                   address: {
-                      addressCountry:
-                          dbJobPosting.hiringOrganizationAddressCountry,
-                      addressLocality:
-                          dbJobPosting.hiringOrganizationAddressLocality,
+                      addressCountry: dbJobPosting.hiringOrganizationAddressCountry,
+                      addressLocality: dbJobPosting.hiringOrganizationAddressLocality,
                       postalCode: dbJobPosting.hiringOrganizationPostalCode,
                   },
               },
-              datePosted: dbJobPosting.datePosted
-                  ? dbJobPosting.datePosted.toISOString().substring(0, 10)
-                  : null,
-              jobStartDate: dbJobPosting.jobStartDate
-                  ? dbJobPosting.jobStartDate.toISOString().substring(0, 10)
-                  : null,
-              validThrough: dbJobPosting.validThrough
-                  ? dbJobPosting.validThrough.toISOString().substring(0, 10)
-                  : null,
+              datePosted: dbJobPosting.datePosted ? dbJobPosting.datePosted.toISOString().substring(0, 10) : null,
+              jobStartDate: dbJobPosting.jobStartDate ? dbJobPosting.jobStartDate.toISOString().substring(0, 10) : null,
+              validThrough: dbJobPosting.validThrough ? dbJobPosting.validThrough.toISOString().substring(0, 10) : null,
           }
         : {};
 };
@@ -109,10 +101,7 @@ const renameFiltersFromAPI = (queryParameters) => {
 
     return Object.keys(queryParameters).reduce((acc, filter) => {
         if (filter === 'sortBy') {
-            const sortName = Object.prototype.hasOwnProperty.call(
-                filterNamesToChange,
-                queryParameters.sortBy
-            )
+            const sortName = Object.prototype.hasOwnProperty.call(filterNamesToChange, queryParameters.sortBy)
                 ? filterNamesToChange[queryParameters.sortBy]
                 : queryParameters.sortBy;
 
@@ -122,10 +111,7 @@ const renameFiltersFromAPI = (queryParameters) => {
             };
         }
 
-        const filterName = Object.prototype.hasOwnProperty.call(
-            filterNamesToChange,
-            filter
-        )
+        const filterName = Object.prototype.hasOwnProperty.call(filterNamesToChange, filter)
             ? filterNamesToChange[filter]
             : filter;
 
@@ -171,7 +157,7 @@ const getOneByIdQuery = (client, id) => {
             'organization.address_locality as hiringOrganizationAddressLocality',
             'organization.address_country as hiringOrganizationAddressCountry',
             'organization.logo as hiringOrganizationImage',
-            'organization.url as hiringOrganizationUrl'
+            'organization.url as hiringOrganizationUrl',
         )
         .from(tableName)
         .join('organization', {
@@ -201,10 +187,7 @@ const getOne = async (id) => {
  */
 const createOne = async (apiData) => {
     const client = getDbClient();
-    const organization = await client
-        .first('id')
-        .from('organization')
-        .where({ id: apiData.hiringOrganizationId });
+    const organization = await client.first('id').from('organization').where({ id: apiData.hiringOrganizationId });
 
     if (!organization) {
         return { error: new Error('this organization does not exist') };
@@ -214,9 +197,7 @@ const createOne = async (apiData) => {
         .returning('id')
         .insert(apiData)
         .then(([newJobPostingId]) => {
-            return getOneByIdQuery(client, newJobPostingId).then(
-                formatJobPostingForAPI
-            );
+            return getOneByIdQuery(client, newJobPostingId).then(formatJobPostingForAPI);
         })
         .catch((error) => ({ error }));
 };
@@ -248,22 +229,14 @@ const deleteOne = async (id) => {
 const updateOne = async (id, apiData) => {
     const client = getDbClient();
     // check that jobPosting exist
-    const currentJobPosting = await client
-        .first('id', 'hiringOrganizationId')
-        .from(tableName)
-        .where({ id });
+    const currentJobPosting = await client.first('id', 'hiringOrganizationId').from(tableName).where({ id });
     if (!currentJobPosting) {
         return {};
     }
 
     // check that if the hiringOrganizationId has change, the new organization exist
-    if (
-        currentJobPosting.hiringOrganizationId !== apiData.hiringOrganizationId
-    ) {
-        const organization = await client
-            .first('id')
-            .from('organization')
-            .where({ id: apiData.hiringOrganizationId });
+    if (currentJobPosting.hiringOrganizationId !== apiData.hiringOrganizationId) {
+        const organization = await client.first('id').from('organization').where({ id: apiData.hiringOrganizationId });
 
         if (!organization) {
             return {

@@ -1,15 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    deleteOne,
-    createOne,
-    getOne,
-    getPaginatedList,
-    updateOne,
-} = require('./repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { deleteOne, createOne, getOne, getPaginatedList, updateOne } = require('./repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
     prefix: '/talks',
@@ -47,9 +39,7 @@ router.get('/:talkId', async (ctx) => {
     const talk = await getOne(ctx.params.talkId);
 
     if (!talk.id) {
-        const explainedError = new Error(
-            `The talk of id ${ctx.params.talkId} does not exist.`
-        );
+        const explainedError = new Error(`The talk of id ${ctx.params.talkId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -69,9 +59,7 @@ router.delete('/:talkId', async (ctx) => {
     const deletedTalk = await deleteOne(ctx.params.talkId);
 
     if (!deletedTalk.id) {
-        const explainedError = new Error(
-            `The organization of id ${ctx.params.talkId} does not exist.`
-        );
+        const explainedError = new Error(`The organization of id ${ctx.params.talkId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -88,10 +76,7 @@ router.delete('/:talkId', async (ctx) => {
 });
 
 router.put('/:talkId', async (ctx) => {
-    const updatedTalk = await updateOne(
-        ctx.params.talkId,
-        ctx.request.body
-    );
+    const updatedTalk = await updateOne(ctx.params.talkId, ctx.request.body);
 
     if (updatedTalk.error) {
         const explainedError = new Error(updatedTalk.error.message);
@@ -102,7 +87,7 @@ router.put('/:talkId', async (ctx) => {
 
     if (!updatedTalk.id) {
         const explainedError = new Error(
-            `The tag of id ${ctx.params.talkId} does not exist, so it could not be updated`
+            `The tag of id ${ctx.params.talkId} does not exist, so it could not be updated`,
         );
         explainedError.status = 404;
 

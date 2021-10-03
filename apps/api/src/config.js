@@ -80,8 +80,7 @@ const config = convict({
                 env: 'REFRESH_TOKEN_NAME',
             },
             rememberExpiration: {
-                doc:
-                    'The token lifetime if user ask to remember her/him in seconds',
+                doc: 'The token lifetime if user ask to remember her/him in seconds',
                 format: 'integer',
                 default: 1296000, // 15 days
                 env: 'REFRESH_TOKEN_NAME',

@@ -1,8 +1,4 @@
-const {
-    formatOrganizationForAPI,
-    getIdsToDelete,
-    prepareOrganizationDataForSave,
-} = require('./repository');
+const { formatOrganizationForAPI, getIdsToDelete, prepareOrganizationDataForSave } = require('./repository');
 
 describe('Organization Repository', () => {
     describe('formatOrganizationForAPI', () => {
@@ -105,40 +101,20 @@ describe('Organization Repository', () => {
 
     describe('getIdsToDelete', () => {
         it('should return ids presents in db but absent from API', () => {
-            expect(
-                getIdsToDelete(
-                    ['a', 'b', 'c'],
-                    [{ identifier: 'a' }, { identifier: 'c' }]
-                )
-            ).toEqual(['b']);
+            expect(getIdsToDelete(['a', 'b', 'c'], [{ identifier: 'a' }, { identifier: 'c' }])).toEqual(['b']);
         });
 
         it('should return an empty array if nothing change', () => {
-            expect(
-                getIdsToDelete(
-                    ['a', 'b'],
-                    [{ identifier: 'a' }, { identifier: 'b' }]
-                )
-            ).toEqual([]);
+            expect(getIdsToDelete(['a', 'b'], [{ identifier: 'a' }, { identifier: 'b' }])).toEqual([]);
         });
 
         it('should return all db ids if all is deleted from API', () => {
-            expect(getIdsToDelete(['a', 'b', 'c'], [])).toEqual([
-                'a',
-                'b',
-                'c',
-            ]);
+            expect(getIdsToDelete(['a', 'b', 'c'], [])).toEqual(['a', 'b', 'c']);
         });
 
         it('should manage case where object from API has no identifier (creation case from API)', () => {
             expect(
-                getIdsToDelete(
-                    ['a', 'c'],
-                    [
-                        { identifier: 'a' },
-                        { name: 'new object without identifier' },
-                    ]
-                )
+                getIdsToDelete(['a', 'c'], [{ identifier: 'a' }, { name: 'new object without identifier' }]),
             ).toEqual(['c']);
         });
     });

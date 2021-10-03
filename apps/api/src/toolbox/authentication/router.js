@@ -52,18 +52,13 @@ router.post('/authenticate', async (ctx) => {
             userId: user.id,
             rememberMe,
             validity_timestamp: rememberMe
-                ? currentTimestamp +
-                  config.security.refreshToken.rememberExpiration
+                ? currentTimestamp + config.security.refreshToken.rememberExpiration
                 : currentTimestamp + config.security.refreshToken.expiration,
         };
         const newRefreshToken = await createRefreshToken(newTokenData);
 
         if (!newRefreshToken || newRefreshToken.error) {
-            ctx.throw(
-                newRefreshToken.error
-                    ? newRefreshToken.error.message
-                    : 'Error during refresh token creation'
-            );
+            ctx.throw(newRefreshToken.error ? newRefreshToken.error.message : 'Error during refresh token creation');
             return;
         }
 
@@ -81,19 +76,19 @@ router.post('/authenticate', async (ctx) => {
         secure: false,
         signed: true,
     };
-    ctx.cookies.set(
-        config.security.refreshToken.name,
-        refreshTokenId,
-        cookieOptions
-    );
+    ctx.cookies.set(config.security.refreshToken.name, refreshTokenId, cookieOptions);
 
-    const token = jwt.sign({
-        id: user.id,
-        fullName: 'CaenCamp Admin',
-        avatar: 'https://secure-content.meetupstatic.com/images/https%3A%2F%2Fsecure.meetupstatic.com%2Fphotos%2Fevent%2F2%2Ff%2F0%2F4%2Fhighres_468312036.jpeg/56x56.jpg',
-    }, config.security.jwt.secretkey, {
-        expiresIn: config.security.jwt.expiration,
-    });
+    const token = jwt.sign(
+        {
+            id: user.id,
+            fullName: 'CaenCamp Admin',
+            avatar: 'https://secure-content.meetupstatic.com/images/https%3A%2F%2Fsecure.meetupstatic.com%2Fphotos%2Fevent%2F2%2Ff%2F0%2F4%2Fhighres_468312036.jpeg/56x56.jpg',
+        },
+        config.security.jwt.secretkey,
+        {
+            expiresIn: config.security.jwt.expiration,
+        },
+    );
 
     ctx.body = {
         token: token,
@@ -129,13 +124,9 @@ router.get('/refresh-token', async (ctx) => {
         return;
     }
 
-    const token = jwt.sign(
-        { username: user.username },
-        config.security.jwt.secretkey,
-        {
-            expiresIn: config.security.jwt.expiration,
-        }
-    );
+    const token = jwt.sign({ username: user.username }, config.security.jwt.secretkey, {
+        expiresIn: config.security.jwt.expiration,
+    });
 
     ctx.body = {
         token: token,

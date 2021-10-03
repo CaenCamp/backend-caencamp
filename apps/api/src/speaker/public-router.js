@@ -1,12 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    getOne,
-    getPaginatedList,
-} = require('./public-repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { getOne, getPaginatedList } = require('./public-repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const defaultQueryParameters = {
     currentPage: 1,
@@ -48,9 +43,7 @@ router.get('/:speakerSlug', async (ctx) => {
     }
 
     if (!speaker.identifier) {
-        const explainedError = new Error(
-            `The speaker of identifier ${ctx.params.speakerSlug} does not exist.`
-        );
+        const explainedError = new Error(`The speaker of identifier ${ctx.params.speakerSlug} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;

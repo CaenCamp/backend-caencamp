@@ -1,7 +1,4 @@
-const {
-    formatJobPostingForAPI,
-    renameFiltersFromAPI,
-} = require('./repository');
+const { formatJobPostingForAPI, renameFiltersFromAPI } = require('./repository');
 
 describe('jobPosting repository', () => {
     describe('renameFiltersFromAPI', () => {
@@ -10,9 +7,7 @@ describe('jobPosting repository', () => {
                 sortBy: 'foo',
                 bar: 'foo:neq',
             };
-            expect(renameFiltersFromAPI(queryParameters)).toEqual(
-                queryParameters
-            );
+            expect(renameFiltersFromAPI(queryParameters)).toEqual(queryParameters);
         });
 
         it('should rename the filters whose mapping is declared.', () => {
@@ -57,8 +52,7 @@ describe('jobPosting repository', () => {
                 validThrough: null,
                 hiringOrganizationId: 'ac3ab955-041e-4007-869d-21c5967e55cb',
                 hiringOrganizationName: 'Qwarry',
-                hiringOrganizationImage:
-                    'https://qwarry.com/wp-content/uploads/2019/09/Qwarry-Logo-hearder-2.png',
+                hiringOrganizationImage: 'https://qwarry.com/wp-content/uploads/2019/09/Qwarry-Logo-hearder-2.png',
                 hiringOrganizationAddressCountry: 'FR',
                 hiringOrganizationAddressLocality: 'Colombelles',
                 hiringOrganizationPostalCode: '14460',
@@ -78,8 +72,7 @@ describe('jobPosting repository', () => {
                 hiringOrganization: {
                     identifier: 'ac3ab955-041e-4007-869d-21c5967e55cb',
                     name: 'Qwarry',
-                    image:
-                        'https://qwarry.com/wp-content/uploads/2019/09/Qwarry-Logo-hearder-2.png',
+                    image: 'https://qwarry.com/wp-content/uploads/2019/09/Qwarry-Logo-hearder-2.png',
                     url: 'https://org.org',
                     address: {
                         addressCountry: 'FR',

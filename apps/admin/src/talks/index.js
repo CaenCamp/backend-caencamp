@@ -5,10 +5,10 @@ import TalkEdit from './Edit';
 import TalkCreate from './Create';
 
 const talks = {
-  icon: TalkIcon,
-  list: TalkList,
-  edit: TalkEdit,
-  create: TalkCreate,
+    icon: TalkIcon,
+    list: TalkList,
+    edit: TalkEdit,
+    create: TalkCreate,
 };
 
 export default talks;

@@ -34,6 +34,7 @@ db-dump: ## Create dump and replace the last one. Environment must be started
 # =====================================================================
 
 install: ## Install all js deps
+	npm install
 	cd apps/admin && npm install
 	cd apps/api && npm install
 

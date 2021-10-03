@@ -1,20 +1,20 @@
-const omit = require("lodash.omit");
+const omit = require('lodash.omit');
 const slugify = require('slugify');
 
-const { getDbClient } = require("../toolbox/dbConnexion");
+const { getDbClient } = require('../toolbox/dbConnexion');
 
 const slugConfig = {
-  replacement: "-", // replace spaces with replacement character, defaults to `-`
-  remove: undefined, // remove characters that match regex, defaults to `undefined`
-  lower: true, // convert to lower case, defaults to `false`
-  strict: true, // strip special characters except replacement, defaults to `false`
-  locale: 'fr', // language code of the locale to use
-  trim: true, // trim leading and trailing replacement chars, defaults to `true`
+    replacement: '-', // replace spaces with replacement character, defaults to `-`
+    remove: undefined, // remove characters that match regex, defaults to `undefined`
+    lower: true, // convert to lower case, defaults to `false`
+    strict: true, // strip special characters except replacement, defaults to `false`
+    locale: 'fr', // language code of the locale to use
+    trim: true, // trim leading and trailing replacement chars, defaults to `true`
 };
 
-const tableName = "tag";
-const authorizedSort = ["label", "nbTalks"];
-const authorizedFilters = ["label"];
+const tableName = 'tag';
+const authorizedSort = ['label', 'nbTalks'];
+const authorizedFilters = ['label'];
 
 /**
  * Knex query for filtrated Oject list
@@ -23,25 +23,25 @@ const authorizedFilters = ["label"];
  * @returns {Promise} - Knew query for filtrated Oject list
  */
 const getFilteredQuery = (client) => {
-  return client.select(
-      `${tableName}.*`,
-      client.raw(`(SELECT ARRAY(
+    return client
+        .select(
+            `${tableName}.*`,
+            client.raw(`(SELECT ARRAY(
         SELECT tt.talk_id
         FROM   talk_tag tt
         WHERE  tt.tag_id = ${tableName}.id
       ) as talks)`),
-      client.raw(`(
+            client.raw(`(
         SELECT count(*)
         FROM   talk_tag tt
         WHERE  tt.tag_id = ${tableName}.id
       ) as nb_talks`),
-  )
-  .from(tableName);
+        )
+        .from(tableName);
 };
 
 const getPublicFilteredQuery = (client) => {
-  return client.select(`${tableName}.slug`, `${tableName}.label`)
-  .from(tableName);
+    return client.select(`${tableName}.slug`, `${tableName}.label`).from(tableName);
 };
 
 /**
@@ -56,35 +56,29 @@ const getPublicFilteredQuery = (client) => {
  * @return {Object} Query parameters renamed as db row name
  */
 const renameFiltersFromAPI = (queryParameters) => {
-  const filterNamesToChange = {};
+    const filterNamesToChange = {};
 
-  return Object.keys(queryParameters).reduce((acc, filter) => {
-    if (filter === "sortBy") {
-      const sortName = Object.prototype.hasOwnProperty.call(
-        filterNamesToChange,
-        queryParameters.sortBy
-      )
-        ? filterNamesToChange[queryParameters.sortBy]
-        : queryParameters.sortBy;
+    return Object.keys(queryParameters).reduce((acc, filter) => {
+        if (filter === 'sortBy') {
+            const sortName = Object.prototype.hasOwnProperty.call(filterNamesToChange, queryParameters.sortBy)
+                ? filterNamesToChange[queryParameters.sortBy]
+                : queryParameters.sortBy;
 
-      return {
-        ...acc,
-        sortBy: sortName,
-      };
-    }
+            return {
+                ...acc,
+                sortBy: sortName,
+            };
+        }
 
-    const filterName = Object.prototype.hasOwnProperty.call(
-      filterNamesToChange,
-      filter
-    )
-      ? filterNamesToChange[filter]
-      : filter;
+        const filterName = Object.prototype.hasOwnProperty.call(filterNamesToChange, filter)
+            ? filterNamesToChange[filter]
+            : filter;
 
-    return {
-      ...acc,
-      [filterName]: queryParameters[filter],
-    };
-  }, {});
+        return {
+            ...acc,
+            [filterName]: queryParameters[filter],
+        };
+    }, {});
 };
 
 /**
@@ -94,51 +88,51 @@ const renameFiltersFromAPI = (queryParameters) => {
  * @returns {Promise} - paginated object with paginated WebSite list and pagination
  */
 const getPaginatedList = async (queryParameters) => {
-  const client = getDbClient();
-  return getFilteredQuery(client)
-    .paginateRestList({
-      queryParameters: renameFiltersFromAPI(queryParameters),
-      authorizedFilters,
-      authorizedSort,
-    })
-    .then(({ data, pagination }) => ({
-      tags: data,
-      pagination,
-    }));
+    const client = getDbClient();
+    return getFilteredQuery(client)
+        .paginateRestList({
+            queryParameters: renameFiltersFromAPI(queryParameters),
+            authorizedFilters,
+            authorizedSort,
+        })
+        .then(({ data, pagination }) => ({
+            tags: data,
+            pagination,
+        }));
 };
 
 const getPublicPaginatedList = async (queryParameters) => {
-  const client = getDbClient();
-  return getPublicFilteredQuery(client)
-    .paginateRestList({
-      queryParameters: renameFiltersFromAPI(queryParameters),
-      authorizedFilters,
-      authorizedSort,
-    })
-    .then(({ data, pagination }) => ({
-      tags: data.reduce((acc, tag) => ([...acc, { identifier: tag.slug, label: tag.label }]), []),
-      pagination,
-    }));
+    const client = getDbClient();
+    return getPublicFilteredQuery(client)
+        .paginateRestList({
+            queryParameters: renameFiltersFromAPI(queryParameters),
+            authorizedFilters,
+            authorizedSort,
+        })
+        .then(({ data, pagination }) => ({
+            tags: data.reduce((acc, tag) => [...acc, { identifier: tag.slug, label: tag.label }], []),
+            pagination,
+        }));
 };
 
 /**
- * Knex query for single Object
+ * Knex query for single Tag Object
  *
  * @param {string} ObjectId - Object Id
  * @returns {Promise} - Knew query for single Object
  */
 const getOneByIdQuery = (client, id) => {
-  return client
-    .first(
-        `${tableName}.*`,
-        client.raw(`(SELECT ARRAY(
+    return client
+        .first(
+            `${tableName}.*`,
+            client.raw(`(SELECT ARRAY(
           SELECT tt.talk_id
           FROM   talk_tag tt
           WHERE  tt.tag_id = ${tableName}.id
         ) as talks)`),
-    )
-    .from(tableName)
-    .where({ [`${tableName}.id`]: id });
+        )
+        .from(tableName)
+        .where({ [`${tableName}.id`]: id });
 };
 
 /**
@@ -148,8 +142,8 @@ const getOneByIdQuery = (client, id) => {
  * @returns {Promise} - the Object
  */
 const getOne = async (id) => {
-  const client = getDbClient();
-  return getOneByIdQuery(client, id).catch((error) => ({ error }));
+    const client = getDbClient();
+    return getOneByIdQuery(client, id).catch((error) => ({ error }));
 };
 
 /**
@@ -159,18 +153,18 @@ const getOne = async (id) => {
  * @returns {Promise} - the created Oject
  */
 const createOne = async (apiData) => {
-  const client = getDbClient();
+    const client = getDbClient();
 
-  return client(tableName)
-    .returning("id")
-    .insert({
-        ...apiData,
-        slug: slugify(apiData.label, slugConfig),
-    })
-    .then(([wsId]) => {
-      return getOneByIdQuery(client, wsId);
-    })
-    .catch((error) => ({ error }));
+    return client(tableName)
+        .returning('id')
+        .insert({
+            ...apiData,
+            slug: slugify(apiData.label, slugConfig),
+        })
+        .then(([wsId]) => {
+            return getOneByIdQuery(client, wsId);
+        })
+        .catch((error) => ({ error }));
 };
 
 /**
@@ -180,14 +174,14 @@ const createOne = async (apiData) => {
  * @returns {Promise} - the id of the deleted Object or an empty object if Object is not in db
  */
 const deleteOne = async (id) => {
-  const client = getDbClient();
-  return client(tableName)
-    .where({ id })
-    .del()
-    .then((nbDeletion) => {
-      return nbDeletion ? { id } : {};
-    })
-    .catch((error) => ({ error }));
+    const client = getDbClient();
+    return client(tableName)
+        .where({ id })
+        .del()
+        .then((nbDeletion) => {
+            return nbDeletion ? { id } : {};
+        })
+        .catch((error) => ({ error }));
 };
 
 /**
@@ -198,35 +192,35 @@ const deleteOne = async (id) => {
  * @returns {Promise} - the updated Object
  */
 const updateOne = async (id, apiData) => {
-  const client = getDbClient();
-  // check that jobPosting exist
-  const currentObject = await client.first("id").from(tableName).where({ id });
-  if (!currentObject) {
-    return {};
-  }
+    const client = getDbClient();
+    // check that jobPosting exist
+    const currentObject = await client.first('id').from(tableName).where({ id });
+    if (!currentObject) {
+        return {};
+    }
 
-  // update the Oject
-  const updatedObject = await client(tableName)
-    .where({ id })
-    .update({
-      ...omit(apiData, ['talks']),
-      slug: slugify(apiData.label, slugConfig),
-    })
-    .catch((error) => ({ error }));
-  if (updatedObject.error) {
-    return updatedObject;
-  }
+    // update the Oject
+    const updatedObject = await client(tableName)
+        .where({ id })
+        .update({
+            ...omit(apiData, ['talks']),
+            slug: slugify(apiData.label, slugConfig),
+        })
+        .catch((error) => ({ error }));
+    if (updatedObject.error) {
+        return updatedObject;
+    }
 
-  // return the complete Object from db
-  return getOneByIdQuery(client, id).catch((error) => ({ error }));
+    // return the complete Object from db
+    return getOneByIdQuery(client, id).catch((error) => ({ error }));
 };
 
 module.exports = {
-  createOne,
-  deleteOne,
-  getOne,
-  getPaginatedList,
-  getPublicPaginatedList,
-  renameFiltersFromAPI,
-  updateOne,
+    createOne,
+    deleteOne,
+    getOne,
+    getPaginatedList,
+    getPublicPaginatedList,
+    renameFiltersFromAPI,
+    updateOne,
 };

@@ -16,11 +16,7 @@ const sortSanitizer = (sort, sortableFields) => {
         return { sortBy: sortableFields[0], orderBy: 'ASC' };
     }
     const { sortBy, orderBy } = sort;
-    if (
-        orderBy === undefined ||
-        sortBy === undefined ||
-        !sortableFields.includes(sortBy)
-    ) {
+    if (orderBy === undefined || sortBy === undefined || !sortableFields.includes(sortBy)) {
         return { sortBy: sortableFields[0], orderBy: 'ASC' };
     }
 

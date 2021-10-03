@@ -37,14 +37,10 @@ const isValidPassword = (password) => {
     const passwordTest = owasp.test(password);
     let error = null;
     if (passwordTest.requiredTestErrors.length) {
-        error = `Le mot de passe n'est pas valide : ${passwordTest.requiredTestErrors.join(
-            ', '
-        )}`;
+        error = `Le mot de passe n'est pas valide : ${passwordTest.requiredTestErrors.join(', ')}`;
     }
     if (!error && !passwordTest.strong) {
-        error = `Le mot de passe n'est pas assez complexe : ${passwordTest.optionalTestErrors.join(
-            ', '
-        )}`;
+        error = `Le mot de passe n'est pas assez complexe : ${passwordTest.optionalTestErrors.join(', ')}`;
     }
 
     return error ? { isValid: false, error } : { isValid: true };
@@ -56,8 +52,7 @@ const isValidPassword = (password) => {
  * @param {string} plainTextPassword
  * @returns {Promise<string>} A promise that will return the hashed password ready for secure storage
  */
-const hashPassword = (plainTextPassword) =>
-    bcrypt.hash(plainTextPassword, config.security.bcryptSaltRounds);
+const hashPassword = (plainTextPassword) => bcrypt.hash(plainTextPassword, config.security.bcryptSaltRounds);
 
 module.exports = {
     hashPassword,

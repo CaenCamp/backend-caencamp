@@ -1,16 +1,8 @@
-const omit = require('lodash.omit');
 const { getDbClient } = require('../toolbox/dbConnexion');
 
 const tableName = 'web_site';
-const authorizedSort = [
-    'typeId',
-    'speakerId',
-    'url'
-];
-const authorizedFilters = [
-    'typeId',
-    'speakerId',
-];
+const authorizedSort = ['typeId', 'speakerId', 'url'];
+const authorizedFilters = ['typeId', 'speakerId'];
 
 /**
  * Knex query for filtrated Oject list
@@ -19,9 +11,7 @@ const authorizedFilters = [
  * @returns {Promise} - Knew query for filtrated Oject list
  */
 const getFilteredQuery = (client) => {
-    return client
-        .select('*')
-        .from(tableName);
+    return client.select('*').from(tableName);
 };
 
 /**
@@ -66,8 +56,7 @@ const getOneByIdQuery = (client, id) => {
  */
 const getOne = async (id) => {
     const client = getDbClient();
-    return getOneByIdQuery(client, id)
-        .catch((error) => ({ error }));
+    return getOneByIdQuery(client, id).catch((error) => ({ error }));
 };
 
 /**
@@ -79,19 +68,13 @@ const getOne = async (id) => {
 const createOne = async (apiData) => {
     const client = getDbClient();
 
-    const speaker = await client
-        .first('id')
-        .from('speaker')
-        .where({ id: apiData.speakerId });
+    const speaker = await client.first('id').from('speaker').where({ id: apiData.speakerId });
 
     if (!speaker) {
         return { error: new Error('this speaker does not exist') };
     }
 
-    const type = await client
-        .first('id')
-        .from('web_site_type')
-        .where({ id: apiData.typeId });
+    const type = await client.first('id').from('web_site_type').where({ id: apiData.typeId });
 
     if (!type) {
         return { error: new Error('this type does not exist') };
@@ -133,10 +116,7 @@ const deleteOne = async (id) => {
 const updateOne = async (id, apiData) => {
     const client = getDbClient();
     // check that jobPosting exist
-    const currentObject = await client
-        .first('id')
-        .from(tableName)
-        .where({ id });
+    const currentObject = await client.first('id').from(tableName).where({ id });
     if (!currentObject) {
         return {};
     }
@@ -151,8 +131,7 @@ const updateOne = async (id, apiData) => {
     }
 
     // return the complete Object from db
-    return getOneByIdQuery(client, id)
-        .catch((error) => ({ error }));
+    return getOneByIdQuery(client, id).catch((error) => ({ error }));
 };
 
 module.exports = {

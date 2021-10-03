@@ -1,15 +1,7 @@
 const Router = require('koa-router');
 
-const {
-    deleteOne,
-    createOne,
-    getOne,
-    getPaginatedList,
-    updateOne,
-} = require('./repository');
-const {
-    formatPaginationToLinkHeader,
-} = require('../toolbox/rest-list/pagination-helpers');
+const { deleteOne, createOne, getOne, getPaginatedList, updateOne } = require('./repository');
+const { formatPaginationToLinkHeader } = require('../toolbox/rest-list/pagination-helpers');
 
 const router = new Router({
     prefix: '/speakers',
@@ -47,9 +39,7 @@ router.get('/:speakerId', async (ctx) => {
     const speaker = await getOne(ctx.params.speakerId);
 
     if (!speaker.id) {
-        const explainedError = new Error(
-            `The speaker of id ${ctx.params.speakerId} does not exist.`
-        );
+        const explainedError = new Error(`The speaker of id ${ctx.params.speakerId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -69,9 +59,7 @@ router.delete('/:speakerId', async (ctx) => {
     const deletedSpeaker = await deleteOne(ctx.params.speakerId);
 
     if (!deletedSpeaker.id) {
-        const explainedError = new Error(
-            `The speaker of id ${ctx.params.speakerId} does not exist.`
-        );
+        const explainedError = new Error(`The speaker of id ${ctx.params.speakerId} does not exist.`);
         explainedError.status = 404;
 
         throw explainedError;
@@ -88,10 +76,7 @@ router.delete('/:speakerId', async (ctx) => {
 });
 
 router.put('/:speakerId', async (ctx) => {
-    const updatedSpeaker = await updateOne(
-        ctx.params.speakerId,
-        ctx.request.body
-    );
+    const updatedSpeaker = await updateOne(ctx.params.speakerId, ctx.request.body);
 
     if (updatedSpeaker.error) {
         const explainedError = new Error(updatedSpeaker.error.message);
@@ -102,7 +87,7 @@ router.put('/:speakerId', async (ctx) => {
 
     if (!updatedSpeaker.id) {
         const explainedError = new Error(
-            `The speaker of id ${ctx.params.speakerId} does not exist, so it could not be updated`
+            `The speaker of id ${ctx.params.speakerId} does not exist, so it could not be updated`,
         );
         explainedError.status = 404;
 

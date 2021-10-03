@@ -22,26 +22,52 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "lint": "eslint src/ --fix"
   },
   "homepage": "/admin",
   "eslintConfig": {
     "extends": [
       "react-app",
-      "react-app/jest"
+      "react-app/jest",
+      "eslint:recommended",
+      "prettier",
+      "plugin:prettier/recommended"
     ],
     "ignorePatterns": [
       "src/components/menu/**/*.js"
     ],
+    "plugins": [
+      "prettier",
+      "react-hooks"
+    ],
     "rules": {
-      "import/no-anonymous-default-export": 0,
-      "quotes": [
-        2,
-        "single",
+      "no-console": [
+        "error",
         {
-          "avoidEscape": true
+          "allow": [
+            "warn",
+            "error"
+          ]
         }
-      ]
+      ],
+      "no-unused-vars": [
+        "error",
+        {
+          "ignoreRestSiblings": true
+        }
+      ],
+      "no-irregular-whitespace": [
+        "error",
+        {
+          "skipStrings": true,
+          "skipComments": false,
+          "skipRegExps": true,
+          "skipTemplates": true
+        }
+      ],
+      "prettier/prettier": "error",
+      "react-hooks/rules-of-hooks": "error",
+      "react-hooks/exhaustive-deps": "warn"
     }
   },
   "browserslist": {
@@ -55,5 +81,12 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-prettier": "4.0.0",
+    "eslint-plugin-react": "7.26.1",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "prettier": "2.4.1"
   }
 }
