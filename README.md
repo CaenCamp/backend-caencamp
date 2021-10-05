@@ -34,25 +34,22 @@ Le [guide du contributeur](./.github/CONTRIBUTING.md#installer-le-projet) détai
 make install
 ```
 
-### Lancer les services du projet
+### Démarrer l'environnement de développement
 
-Vous pouvez lancer la base de données dans un conteneur avec la commande :
-
-```bash
-make db-start
-```
-
-Vous pouvez lancer l'API avec la commande :
+Vous pouvez lancer l'environnement de développement (attention cela va aussi lancer un containeur Docker pour la base de données) :
 
 ```bash
-cd apps/api && npm start
+make start
 ```
 
-Vous pouvez lancer l'interface d'administation avec la commande :
+Ensuite, si c'est la première fois que vous démarrez le projet, vous pourrez ajouter du contenu à la base de données avec la commande :
 
 ```bash
-cd apps/admin && npm start
+make db-init
 ```
+
+L'api est accessible sur http://localhost:3001/documentation
+L'interface d'administration est accessible sur http://localhost:3000/admin
 
 ## Vous souhaitez participer
 
