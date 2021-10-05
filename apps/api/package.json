@@ -1,8 +1,7 @@
 {
-    "name": "cc-jobboard-api",
+    "name": "cc-api",
     "version": "0.1.0",
-    "private": true,
-    "description": "Backend part of the caencamp jobboard",
+    "description": "Serve CaenCamp contents with a Rest API",
     "scripts": {
         "start": "nodemon --watch ./src ./src/index",
         "test": "jest",
