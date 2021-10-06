@@ -9,6 +9,38 @@ DOCKER := docker run --rm -v ${PWD}:/app -u=${CURRENT_UID} -w /app node:14-alpin
 help: ## Display available commands
 	@fgrep -h "##" $(MAKEFILE_LIST) | fgrep -v fgrep | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
+# =====================================================================
+# Initialization ======================================================
+# =====================================================================
+
+install: ## Install all js deps
+	npm install
+	cd apps/admin && npm install
+	cd apps/api && npm install
+
+# ==============================================================
+# PM2 dev environment ==========================================
+# ==============================================================
+
+start: db-start ## start api and admin with pm2
+	PM2_HOME='.pm2' ./node_modules/.bin/pm2 start ecosystem.config.js
+
+stop: db-stop ## stop api and admin
+	PM2_HOME='.pm2' ./node_modules/.bin/pm2 stop ecosystem.config.js
+	PM2_HOME='.pm2' ./node_modules/.bin/pm2 cleardump
+
+logs: ## display pm2 logs of api and admin
+	PM2_HOME='.pm2' ./node_modules/.bin/pm2 logs
+
+status: ## display pm2 list
+	PM2_HOME='.pm2' ./node_modules/.bin/pm2 ls
+
+monit: ## display pm2 monitoring
+	PM2_HOME='.pm2' ./node_modules/.bin/pm2 dash
+
+reset: ## reset pm2
+	PM2_HOME='.pm2' ./node_modules/.bin/pm2 cleardump
+
 # ===============================================================
 # Dockerized Database ===========================================
 # ===============================================================
@@ -27,17 +59,6 @@ db-init: ## Create dump and replace the last one. Environment must be started
 
 db-dump: ## Create dump and replace the last one. Environment must be started
 	docker-compose exec postgres bash -ci 'pg_dump -U backend-local-user cc_backend_db > /db-dump/backend.sql'
-
-
-# =====================================================================
-# Initialization ======================================================
-# =====================================================================
-
-install: ## Install all js deps
-	npm install
-	cd apps/admin && npm install
-	cd apps/api && npm install
-
 
 # =====================================================================
 # ADR - Architecture Decision Records =================================

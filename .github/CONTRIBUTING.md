@@ -108,23 +108,19 @@ $ make install
 
 ### Démarrer le projet
 
-Vous pouvez lancer la base de données dans un conteneur avec la commande :
+Vous pouvez lancer l'environnement de développement (attention cela va aussi lancer un containeur Docker pour la base de données) :
 
 ```bash
-make db-start
+make start
 ```
 
-Vous pouvez lancer l'API avec la commande :
+Ensuite, si c'est la première fois que vous démarrez le projet, vous pourrez ajouter du contenu à la base de données avec la commande :
 
 ```bash
-cd apps/api && npm start
+make db-init
 ```
 
-Vous pouvez lancer l'interface d'administation avec la commande :
-
-```bash
-cd apps/admin && npm start
-```
+On utilise [PM2](https://pm2.keymetrics.io/) pour lancer en parallèle l'api et l'administration.
 
 ## La convention de codage (coding style)
 

@@ -1,92 +1,92 @@
 {
-  "name": "admin",
-  "version": "0.1.0",
-  "private": true,
-  "dependencies": {
-    "@material-ui/core": "4.12.3",
-    "@testing-library/jest-dom": "5.14.1",
-    "@testing-library/react": "12.1.1",
-    "@testing-library/user-event": "13.2.1",
-    "@toast-ui/react-editor": "3.1.0",
-    "jsonwebtoken": "8.5.1",
-    "lodash.merge": "4.6.2",
-    "lodash.omit": "4.5.0",
-    "query-string": "7.0.1",
-    "react": "^17.0.2",
-    "react-admin": "3.18.3",
-    "react-dom": "^17.0.2",
-    "react-scripts": "4.0.3",
-    "web-vitals": "2.1.0"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "lint": "eslint src/ --fix"
-  },
-  "homepage": "/admin",
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest",
-      "eslint:recommended",
-      "prettier",
-      "plugin:prettier/recommended"
-    ],
-    "ignorePatterns": [
-      "src/components/menu/**/*.js"
-    ],
-    "plugins": [
-      "prettier",
-      "react-hooks"
-    ],
-    "rules": {
-      "no-console": [
-        "error",
-        {
-          "allow": [
-            "warn",
-            "error"
-          ]
+    "name": "cc-admin",
+    "version": "0.1.0",
+    "description": "Admin CaenCamp contents with react-admin",
+    "dependencies": {
+        "@material-ui/core": "4.12.3",
+        "@testing-library/jest-dom": "5.14.1",
+        "@testing-library/react": "12.1.1",
+        "@testing-library/user-event": "13.2.1",
+        "@toast-ui/react-editor": "3.1.0",
+        "jsonwebtoken": "8.5.1",
+        "lodash.merge": "4.6.2",
+        "lodash.omit": "4.5.0",
+        "query-string": "7.0.1",
+        "react": "^17.0.2",
+        "react-admin": "3.18.3",
+        "react-dom": "^17.0.2",
+        "react-scripts": "4.0.3",
+        "web-vitals": "2.1.0"
+    },
+    "scripts": {
+        "start": "react-scripts start",
+        "build": "react-scripts build",
+        "test": "react-scripts test",
+        "lint": "eslint src/ --fix"
+    },
+    "homepage": "/admin",
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest",
+            "eslint:recommended",
+            "prettier",
+            "plugin:prettier/recommended"
+        ],
+        "ignorePatterns": [
+            "src/components/menu/**/*.js"
+        ],
+        "plugins": [
+            "prettier",
+            "react-hooks"
+        ],
+        "rules": {
+            "no-console": [
+                "error",
+                {
+                    "allow": [
+                        "warn",
+                        "error"
+                    ]
+                }
+            ],
+            "no-unused-vars": [
+                "error",
+                {
+                    "ignoreRestSiblings": true
+                }
+            ],
+            "no-irregular-whitespace": [
+                "error",
+                {
+                    "skipStrings": true,
+                    "skipComments": false,
+                    "skipRegExps": true,
+                    "skipTemplates": true
+                }
+            ],
+            "prettier/prettier": "error",
+            "react-hooks/rules-of-hooks": "error",
+            "react-hooks/exhaustive-deps": "warn"
         }
-      ],
-      "no-unused-vars": [
-        "error",
-        {
-          "ignoreRestSiblings": true
-        }
-      ],
-      "no-irregular-whitespace": [
-        "error",
-        {
-          "skipStrings": true,
-          "skipComments": false,
-          "skipRegExps": true,
-          "skipTemplates": true
-        }
-      ],
-      "prettier/prettier": "error",
-      "react-hooks/rules-of-hooks": "error",
-      "react-hooks/exhaustive-deps": "warn"
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "devDependencies": {
+        "eslint-config-prettier": "8.3.0",
+        "eslint-plugin-prettier": "4.0.0",
+        "eslint-plugin-react": "7.26.1",
+        "eslint-plugin-react-hooks": "4.2.0",
+        "prettier": "2.4.1"
     }
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "devDependencies": {
-    "eslint-config-prettier": "8.3.0",
-    "eslint-plugin-prettier": "4.0.0",
-    "eslint-plugin-react": "7.26.1",
-    "eslint-plugin-react-hooks": "4.2.0",
-    "prettier": "2.4.1"
-  }
 }
