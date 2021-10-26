@@ -90,6 +90,7 @@ const formatEvent = (event) => {
                 disambiguatingDescription: speaker.shortBiography,
             })),
             video: talk.video,
+            tags: talk.tags,
         })),
         performers: event.talks
             .reduce((acc, talk) => [...acc, ...talk.speakers], [])

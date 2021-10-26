@@ -154,6 +154,14 @@ const getPaginatedList = async (queryParameters) => {
                             FROM talk_speaker, speaker
                             WHERE talk_speaker.talk_id = talk.id
                             AND talk_speaker.speaker_id = speaker.id
+                        ),
+                        'tags', (
+                            SELECT ARRAY(
+                                SELECT tag.label
+                                FROM talk_tag, tag
+                                WHERE talk_tag.talk_id = talk.id
+                                AND talk_tag.tag_id = tag.id
+                            )
                         )
                     ) ORDER BY talk.title))
                     FROM talk, talk_type
@@ -237,6 +245,14 @@ const getOneBySlugQuery = (client, slug) => {
                         FROM talk_speaker, speaker
                         WHERE talk_speaker.talk_id = talk.id
                         AND talk_speaker.speaker_id = speaker.id
+                    ),
+                    'tags', (
+                        SELECT ARRAY(
+                            SELECT tag.label
+                            FROM talk_tag, tag
+                            WHERE talk_tag.talk_id = talk.id
+                            AND talk_tag.tag_id = tag.id
+                        )
                     )
                 ) ORDER BY talk.title))
                 FROM talk, talk_type
