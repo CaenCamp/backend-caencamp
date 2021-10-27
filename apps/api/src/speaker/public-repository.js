@@ -29,7 +29,11 @@ const getFilteredQuery = (client) => {
             'durationInMinutes', talk_type.duration_in_minutes,
             'shortDescription', talk.short_description,
             'video', talk.video,
-            'edition', edition.slug
+            'eventSlug', edition.slug,
+            'eventName', edition.title,
+            'eventNumber', edition.number,
+            'eventResume', edition.short_description,
+            'eventDate', edition.start_date_time
         ) ORDER BY edition.start_date_time DESC))
         FROM talk_speaker, talk, talk_type, edition
         WHERE talk_speaker.speaker_id = ${tableName}.id
@@ -121,7 +125,11 @@ const getOneBySlugQuery = (client, slug) => {
             'durationInMinutes', talk_type.duration_in_minutes,
             'shortDescription', talk.short_description,
             'video', talk.video,
-            'edition', edition.slug
+            'eventSlug', edition.slug,
+            'eventName', edition.title,
+            'eventNumber', edition.number,
+            'eventResume', edition.short_description,
+            'eventDate', edition.start_date_time
         ) ORDER BY edition.start_date_time DESC))
         FROM talk_speaker, talk, talk_type, edition
         WHERE talk_speaker.speaker_id = ${tableName}.id

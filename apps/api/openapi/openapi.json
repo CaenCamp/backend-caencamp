@@ -1441,6 +1441,10 @@
                         },
                         "type": "string",
                         "nullable": false
+                    },
+                    "recordedAt": {
+                        "description": "L'édition du CaenCamp ou le talk a été donné.",
+                        "$ref": "#/components/schemas/EventResume"
                     }
                 },
                 "required": ["@type", "@id", "identifier", "url", "name", "format", "video", "abstract"]
