@@ -1,7 +1,7 @@
 const addHours = require('date-fns/addHours');
 const formatISO = require('date-fns/formatISO');
 
-const API_URL = 'http://localhost:3001/api';
+const API_URL = 'https://api.caen.camp/api';
 
 const formatEvent = (event) => {
     return {
