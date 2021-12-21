@@ -4,19 +4,19 @@
     "description": "Admin CaenCamp contents with react-admin",
     "dependencies": {
         "@material-ui/core": "4.12.3",
-        "@testing-library/jest-dom": "5.14.1",
-        "@testing-library/react": "12.1.1",
-        "@testing-library/user-event": "13.2.1",
+        "@testing-library/jest-dom": "5.16.1",
+        "@testing-library/react": "12.1.2",
+        "@testing-library/user-event": "13.5.0",
         "@toast-ui/react-editor": "3.1.0",
         "jsonwebtoken": "8.5.1",
         "lodash.merge": "4.6.2",
         "lodash.omit": "4.5.0",
         "query-string": "7.0.1",
         "react": "^17.0.2",
-        "react-admin": "3.18.3",
+        "react-admin": "3.19.4",
         "react-dom": "^17.0.2",
-        "react-scripts": "4.0.3",
-        "web-vitals": "2.1.0"
+        "react-scripts": "5.0.0",
+        "web-vitals": "2.1.2"
     },
     "scripts": {
         "start": "react-scripts start",
@@ -85,8 +85,8 @@
     "devDependencies": {
         "eslint-config-prettier": "8.3.0",
         "eslint-plugin-prettier": "4.0.0",
-        "eslint-plugin-react": "7.26.1",
-        "eslint-plugin-react-hooks": "4.2.0",
-        "prettier": "2.4.1"
+        "eslint-plugin-react": "7.27.1",
+        "eslint-plugin-react-hooks": "4.3.0",
+        "prettier": "2.5.1"
     }
 }
