@@ -8,6 +8,7 @@
         "@testing-library/react": "12.1.2",
         "@testing-library/user-event": "13.5.0",
         "@toast-ui/react-editor": "3.1.0",
+        "ansi-regex": ">=5.0.1",
         "jsonwebtoken": "8.5.1",
         "lodash.merge": "4.6.2",
         "lodash.omit": "4.5.0",
