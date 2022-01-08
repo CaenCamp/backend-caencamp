@@ -11,6 +11,7 @@ import editionCategories from './editions/categories';
 import editionModes from './editions/modes';
 import jobPostings from './job-postings';
 import organizations from './organizations';
+import papers from './papers';
 import places from './places';
 import speakers from './speakers';
 import tags from './tags';
@@ -46,6 +47,7 @@ const App = () => {
             <Resource name="editions" {...editions} />
             <Resource name="talks" {...talks} />
             <Resource name="speakers" {...speakers} />
+            <Resource name="papers" {...papers} />
             <Resource name="tags" {...tags} />
             <Resource name="places" {...places} />
             <Resource name="websites" {...webSites} />

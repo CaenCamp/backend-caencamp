@@ -6,7 +6,6 @@ import {
     DateField,
     Edit,
     EditButton,
-    Filter,
     List,
     Pagination,
     SimpleForm,
@@ -14,29 +13,13 @@ import {
     TextInput,
     required,
 } from 'react-admin';
-import PropTypes from 'prop-types';
-
-const TokensField = ({ record = {} }) => <span>{record.talks.length}</span>;
-
-TokensField.propTypes = {
-    label: PropTypes.string,
-    record: PropTypes.object,
-};
 
 const TokenPagination = (props) => <Pagination rowsPerPageOptions={[10, 25, 50]} {...props} />;
-
-const TokenFilters = (props) => (
-    <Filter {...props}>
-        <TextInput source="label" alwaysOn />
-    </Filter>
-);
 
 const TokenList = (props) => {
     return (
         <List
             {...props}
-            filters={<TokenFilters />}
-            filterDefaultValues={{}}
             sort={{ field: 'id', order: 'DESC' }}
             exporter={false}
             pagination={<TokenPagination />}

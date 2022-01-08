@@ -4,7 +4,7 @@ exports.up = function (knex) {
         table.string('name', 300).notNullable();
         table.string('title', 300).notNullable();
         table.text('description').notNullable();
-        table.text('contact', 150).notNullable();
+        table.text('contact').notNullable();
         table.dateTime('created_at').defaultTo(knex.fn.now());
         table.dateTime('updated_at').defaultTo(knex.fn.now());
         table.string('status', 20).notNullable().defaultTo('submitted');
