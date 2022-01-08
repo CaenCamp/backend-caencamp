@@ -4,7 +4,7 @@ module.exports = {
       name: "api",
       cwd: "./apps/api",
       script: "./src/index.js",
-      watch: ["./apps", "./src"],
+      watch: ["./src", "./openapi"],
     },
     {
       name: "admin",

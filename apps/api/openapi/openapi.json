@@ -1,1851 +1,2058 @@
 {
-    "openapi": "3.0.2",
-    "info": {
-        "version": "0.1.0",
-        "title": "API des CaenCamp",
-        "description": "L'API publique des CaenCamp.",
-        "license": {
-            "name": "Attribution - Partage dans les Mêmes Conditions 4.0 International (CC BY-SA 4.0)",
-            "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.fr"
-        },
-        "contact": {
-            "name": "CaenCamp",
-            "url": "https://caen.camp",
-            "email": "contact@caen.camp"
-        }
+  "openapi": "3.0.2",
+  "info": {
+    "version": "0.1.0",
+    "title": "API des CaenCamp",
+    "description": "L'API publique des CaenCamp.",
+    "license": {
+      "name": "Attribution - Partage dans les Mêmes Conditions 4.0 International (CC BY-SA 4.0)",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/deed.fr"
     },
-    "servers": [
-        {
-            "url": "https://api.caen.camp",
-            "description": "Serveur de production (live data)"
-        },
-        {
-            "url": "http://localhost:3001",
-            "description": "Serveur local (données de dev.)"
-        }
-    ],
-    "tags": [
-        {
-            "name": "Events",
-            "description": "Les événements des CaenCamp."
-        },
-        {
-            "name": "Organizations",
-            "description": "Les organisations liées aux numérique dans le Calvados."
-        },
-        {
-            "name": "Job-Postings",
-            "description": "Les offres d'emploie liées aux numérique dans le Calvados."
-        },
-        {
-            "name": "Speakers",
-            "description": "Les speakers des CaenCamp."
-        },
-        {
-            "name": "Places",
-            "description": "Les lieux oú se déroulent des événements des CaenCamp."
-        },
-        {
-            "name": "Tags",
-            "description": "Les tags associés aux événements."
-        }
-    ],
-    "paths": {
-        "/api/events": {
-            "get": {
-                "summary": "La liste paginée des événements.",
-                "description": "La liste paginée des événements.",
-                "operationId": "listEvents",
-                "tags": ["Events"],
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/currentPage"
-                    },
-                    {
-                        "$ref": "#/components/parameters/perPage"
-                    },
-                    {
-                        "schema": {
-                            "type": "string",
-                            "enum": ["CaenCamp", "Devops CaenCamp", "Coding CaenCamp"]
-                        },
-                        "in": "query",
-                        "name": "category",
-                        "description": "Une catégorie de rencontre des CaenCamp"
-                    },
-                    {
-                        "schema": {
-                            "type": "string",
-                            "enum": ["upcomming", "past"]
-                        },
-                        "in": "query",
-                        "name": "when",
-                        "description": "Filtre sur le statut passé ou à venir des événements"
-                    },
-                    {
-                        "schema": {
-                            "type": "string"
-                        },
-                        "in": "query",
-                        "name": "tag",
-                        "description": "Filtre sur un tag"
-                    },
-                    {
-                        "schema": {
-                            "type": "boolean"
-                        },
-                        "in": "query",
-                        "name": "hasVideo",
-                        "description": "Filtre sur l'existance d'une vidéo de l'événement."
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Une liste paginée d'événements",
-                        "headers": {
-                            "X-Total-Count": {
-                                "$ref": "#/components/headers/X-Total-Count"
-                            },
-                            "Link": {
-                                "$ref": "#/components/headers/Link"
-                            }
-                        },
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Events"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/events/{id}": {
-            "parameters": [
-                {
-                    "$ref": "#/components/parameters/id"
-                }
-            ],
-            "get": {
-                "summary": "Obtenir les détails d'un événement",
-                "tags": ["Events"],
-                "responses": {
-                    "200": {
-                        "description": "L'événement demandé",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Event"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                },
-                "operationId": "get-api-events-id",
-                "description": "Un événement"
-            }
-        },
-        "/api/organizations": {
-            "get": {
-                "summary": "La liste paginée des organisations.",
-                "description": "La liste paginée des organisations.",
-                "operationId": "listOrganizations",
-                "tags": ["Organizations"],
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/currentPage"
-                    },
-                    {
-                        "$ref": "#/components/parameters/perPage"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Une liste paginée d'organisations.",
-                        "headers": {
-                            "X-Total-Count": {
-                                "$ref": "#/components/headers/X-Total-Count"
-                            },
-                            "Link": {
-                                "$ref": "#/components/headers/Link"
-                            }
-                        },
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Organization"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/organizations/{id}": {
-            "parameters": [
-                {
-                    "$ref": "#/components/parameters/id"
-                }
-            ],
-            "get": {
-                "summary": "Obtenir les détails d'une organisation.",
-                "tags": ["Organizations"],
-                "responses": {
-                    "200": {
-                        "description": "L'organisation demandée",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Organization"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                },
-                "operationId": "getOrganization",
-                "description": "Une organization"
-            }
-        },
-        "/api/job-postings": {
-            "get": {
-                "summary": "La liste paginée des offres d'emploie.",
-                "description": "La liste paginée des offres d'emploie.",
-                "operationId": "listJobposting",
-                "tags": ["Job-Postings"],
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/currentPage"
-                    },
-                    {
-                        "$ref": "#/components/parameters/perPage"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Une liste paginée d'offres d'emploie.",
-                        "headers": {
-                            "X-Total-Count": {
-                                "$ref": "#/components/headers/X-Total-Count"
-                            },
-                            "Link": {
-                                "$ref": "#/components/headers/Link"
-                            }
-                        },
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/JobPosting"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "parameters": []
-        },
-        "/api/job-postings/{id}": {
-            "parameters": [
-                {
-                    "name": "id",
-                    "in": "path",
-                    "required": true,
-                    "schema": {
-                        "type": "string"
-                    },
-                    "description": "L'identifiant unique d'un objet"
-                }
-            ],
-            "get": {
-                "summary": "Obtenir les détails d'une offre d'emploi.",
-                "tags": ["Job-Postings"],
-                "responses": {
-                    "200": {
-                        "description": "L'offre d'emploie demandée",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/JobPosting"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                },
-                "operationId": "getJobPosting",
-                "description": "Une offre d'emploi"
-            }
-        },
-        "/api/places": {
-            "get": {
-                "summary": "La liste paginée des lieux.",
-                "description": "La liste paginée des lieux.",
-                "operationId": "listPlaces",
-                "tags": ["Places"],
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/currentPage"
-                    },
-                    {
-                        "$ref": "#/components/parameters/perPage"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Une liste paginée de lieux",
-                        "headers": {
-                            "X-Total-Count": {
-                                "$ref": "#/components/headers/X-Total-Count"
-                            },
-                            "Link": {
-                                "$ref": "#/components/headers/Link"
-                            }
-                        },
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Place"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/places/{id}": {
-            "parameters": [
-                {
-                    "$ref": "#/components/parameters/id"
-                }
-            ],
-            "get": {
-                "summary": "Obtenir les détails d'un lieu",
-                "tags": ["Places"],
-                "responses": {
-                    "200": {
-                        "description": "Le lieu demandé",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Place"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                },
-                "operationId": "getPlace",
-                "description": "Un lieu"
-            }
-        },
-        "/api/speakers": {
-            "get": {
-                "summary": "La liste paginée des speakers.",
-                "description": "La liste paginée des speakers.",
-                "operationId": "listSpeakers",
-                "tags": ["Speakers"],
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/currentPage"
-                    },
-                    {
-                        "$ref": "#/components/parameters/perPage"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Une liste paginée de speakers",
-                        "headers": {
-                            "X-Total-Count": {
-                                "$ref": "#/components/headers/X-Total-Count"
-                            },
-                            "Link": {
-                                "$ref": "#/components/headers/Link"
-                            }
-                        },
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/Speaker"
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/api/speakers/{id}": {
-            "parameters": [
-                {
-                    "$ref": "#/components/parameters/id"
-                }
-            ],
-            "get": {
-                "summary": "Obtenir les détails d'un speaker",
-                "tags": ["Speakers"],
-                "responses": {
-                    "200": {
-                        "description": "Le speaker demandé",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Speaker"
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Error"
-                                }
-                            }
-                        }
-                    }
-                },
-                "operationId": "getSpeaker",
-                "description": "Un speaker"
-            }
-        },
-        "/api/tags": {
-            "get": {
-                "summary": "La liste paginée des tags associés aux événements.",
-                "description": "La liste paginée des tags associés aux événements.",
-                "operationId": "listTags",
-                "tags": ["Tags"],
-                "parameters": [
-                    {
-                        "$ref": "#/components/parameters/currentPage"
-                    },
-                    {
-                        "$ref": "#/components/parameters/perPage"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Une liste paginée de tags",
-                        "headers": {
-                            "X-Total-Count": {
-                                "$ref": "#/components/headers/X-Total-Count"
-                            },
-                            "Link": {
-                                "$ref": "#/components/headers/Link"
-                            }
-                        },
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/Tags"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "components": {
-        "schemas": {
-            "Event": {
-                "type": "object",
-                "description": "Un évènement des CaenCamp. Le plus généralement une soirée avec la présentation d'un ou plusieurs talks. Le format des événements respecte le formatage des [events](https://schema.org/Event) de schema.org, où les talks sont des [CreativeWorks](https://schema.org/CreativeWork)",
-                "externalDocs": {
-                    "url": "https://schema.org/Event"
-                },
-                "properties": {
-                    "@context": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique de l'évènement.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "Url permettant d'obtenir les informations sur l'évènement depuis l'api",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "name": {
-                        "description": "Le titre de l'évènement.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "category": {
-                        "type": "string",
-                        "description": "La catégorie de rencontre des CaenCamp",
-                        "enum": ["CaenCamp", "Coding CaenCamp", "Devops CaenCamp"],
-                        "nullable": false
-                    },
-                    "number": {
-                        "description": "Le numéro de l'édition au sein de la catégorie.",
-                        "type": "integer",
-                        "nullable": true
-                    },
-                    "isAccessibleForFree": {
-                        "description": "La rencontre est-elle gratuite.",
-                        "type": "boolean"
-                    },
-                    "inLanguage": {
-                        "$ref": "#/components/schemas/Language"
-                    },
-                    "startDate": {
-                        "description": "La date et l'heure de début au format [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601).",
-                        "externalDocs": {
-                            "url": "https://schema.org/startDate"
-                        },
-                        "type": "string",
-                        "format": "date-time",
-                        "nullable": false
-                    },
-                    "endDate": {
-                        "description": "La date et l'heure de fin au format [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601).",
-                        "externalDocs": {
-                            "url": "https://schema.org/endDate"
-                        },
-                        "type": "string",
-                        "format": "date-time",
-                        "nullable": true
-                    },
-                    "eventAttendanceMode": {
-                        "description": "Le mode de rencontre (offline / online / mixed)",
-                        "externalDocs": {
-                            "url": "https://schema.org/eventAttendanceMode"
-                        },
-                        "type": "string",
-                        "format": "uri",
-                        "nullable": false
-                    },
-                    "eventStatus": {
-                        "description": "Le statut de la rencontre",
-                        "externalDocs": {
-                            "url": "https://schema.org/eventStatus"
-                        },
-                        "type": "string",
-                        "format": "uri",
-                        "nullable": false
-                    },
-                    "disambiguatingDescription": {
-                        "description": "Le résumé de la rencontre au format texte.",
-                        "externalDocs": {
-                            "url": "https://schema.org/disambiguatingDescription"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "description": {
-                        "description": "La description complète de l'évènement au format texte avec saut de ligne",
-                        "externalDocs": {
-                            "url": "https://schema.org/description"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "descriptionHtml": {
-                        "description": "La description complète de l'évènement au format html",
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "image": {
-                        "description": "L'url de l'image de l'évènenement.",
-                        "externalDocs": {
-                            "url": "http://schema.org/image"
-                        },
-                        "type": "string",
-                        "format": "uri",
-                        "nullable": true
-                    },
-                    "tags": {
-                        "type": "array",
-                        "description": "Tableau des tags associés à l'évenement.",
-                        "nullable": true,
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "hasVideo": {
-                        "description": "La rencontre a-t-elle une vidéo ?",
-                        "type": "boolean"
-                    },
-                    "meetupId": {
-                        "description": "L'identifiant de la rencontre sur meetup.com, pour les inscriptions.",
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "performers": {
-                        "$ref": "#/components/schemas/Performers"
-                    },
-                    "location": {
-                        "anyOf": [
-                            {
-                                "$ref": "#/components/schemas/VirtualLocation"
-                            },
-                            {
-                                "$ref": "#/components/schemas/PlaceEvent"
-                            }
-                        ]
-                    },
-                    "organizer": {
-                        "$ref": "#/components/schemas/OrganizationResume"
-                    },
-                    "sponsor": {
-                        "$ref": "#/components/schemas/OrganizationResume"
-                    },
-                    "workPerformed": {
-                        "description": "La liste des talks présentés durant l'événement.",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/CreativeWork"
-                        }
-                    }
-                },
-                "required": [
-                    "@context",
-                    "@type",
-                    "@id",
-                    "identifier",
-                    "url",
-                    "name",
-                    "category",
-                    "number",
-                    "isAccessibleForFree",
-                    "inLanguage",
-                    "startDate",
-                    "eventAttendanceMode",
-                    "disambiguatingDescription",
-                    "tags",
-                    "hasVideo",
-                    "performers",
-                    "location",
-                    "organizer",
-                    "workPerformed"
-                ]
-            },
-            "Events": {
-                "type": "array",
-                "items": {
-                    "$ref": "#/components/schemas/Event"
-                }
-            },
-            "EventResume": {
-                "type": "object",
-                "description": "Un résumé d'évènement des CaenCamp.",
-                "externalDocs": {
-                    "url": "https://schema.org/Event"
-                },
-                "properties": {
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique de l'évènement.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "Url permettant d'obtenir les informations sur l'évènement depuis l'api",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "name": {
-                        "description": "Le titre de l'évènement.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "category": {
-                        "type": "string",
-                        "description": "La catégorie de rencontre des CaenCamp",
-                        "enum": ["CaenCamp", "Coding CaenCamp", "Devops CaenCamp", "Dojo CaenCamp"],
-                        "nullable": false
-                    },
-                    "number": {
-                        "description": "Le numéro de l'édition au sein de la catégorie.",
-                        "type": "integer",
-                        "nullable": true
-                    },
-                    "startDate": {
-                        "description": "La date et l'heure de début au format [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601).",
-                        "externalDocs": {
-                            "url": "https://schema.org/startDate"
-                        },
-                        "type": "string",
-                        "format": "date-time",
-                        "nullable": false
-                    },
-                    "disambiguatingDescription": {
-                        "description": "Le résumé de la rencontre au format texte.",
-                        "externalDocs": {
-                            "url": "https://schema.org/disambiguatingDescription"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    }
-                },
-                "required": [
-                    "@type",
-                    "@id",
-                    "identifier",
-                    "url",
-                    "name",
-                    "category",
-                    "number",
-                    "startDate",
-                    "disambiguatingDescription"
-                ]
-            },
-            "Speaker": {
-                "type": "object",
-                "description": "Une personne ayant donné un ou plusieurs talks aux CaenCamp",
-                "externalDocs": {
-                    "url": "https://schema.org/Person"
-                },
-                "title": "",
-                "properties": {
-                    "@context": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique de le speaker.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "Url permettant d'obtenir les informations sur le speaker depuis l'api",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "name": {
-                        "description": "Le nom de le speaker.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "disambiguatingDescription": {
-                        "description": "Une présentation rapide du speaker au format texte.",
-                        "externalDocs": {
-                            "url": "https://schema.org/knowsAbout"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "description": {
-                        "description": "La description complète du speakers au format texte avec saut de ligne",
-                        "externalDocs": {
-                            "url": "https://schema.org/description"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "descriptionHtml": {
-                        "description": "La description complète du speakers au format html",
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "image": {
-                        "description": "L'url de l'image de l'évènenement.",
-                        "externalDocs": {
-                            "url": "http://schema.org/image"
-                        },
-                        "type": "string",
-                        "format": "uri",
-                        "nullable": true
-                    },
-                    "websites": {
-                        "type": "array",
-                        "nullable": true,
-                        "items": {
-                            "$ref": "#/components/schemas/WebSite"
-                        }
-                    },
-                    "talks": {
-                        "type": "array",
-                        "nullable": true,
-                        "items": {
-                            "$ref": "#/components/schemas/CreativeWorkResume"
-                        }
-                    }
-                },
-                "required": [
-                    "@type",
-                    "@id",
-                    "identifier",
-                    "url",
-                    "name",
-                    "disambiguatingDescription",
-                    "description",
-                    "descriptionHtml",
-                    "image"
-                ]
-            },
-            "SpeakerMaintainer": {
-                "type": "object",
-                "description": "Les informations sur le speaker d'un talk.",
-                "externalDocs": {
-                    "url": "https://schema.org/Person"
-                },
-                "title": "",
-                "properties": {
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique de le speaker.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "Url permettant d'obtenir les informations sur le speaker depuis l'api",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "name": {
-                        "description": "Le nom de le speaker.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "disambiguatingDescription": {
-                        "description": "Une présentation rapide du speaker au format texte.",
-                        "externalDocs": {
-                            "url": "https://schema.org/knowsAbout"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    }
-                },
-                "required": ["@type", "@id", "identifier", "url", "name", "disambiguatingDescription"]
-            },
-            "Performers": {
-                "type": "array",
-                "items": {
-                    "$ref": "#/components/schemas/SpeakerMaintainer"
-                },
-                "description": "L'ensemble des speakers d'une rencontre."
-            },
-            "Organization": {
-                "type": "object",
-                "description": "Une structure liée au numérique.",
-                "externalDocs": {
-                    "url": "https://schema.org/Organization"
-                },
-                "title": "",
-                "nullable": true,
-                "properties": {
-                    "@context": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique de l'organisation.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "Url permettant d'obtenir les informations sur l'organisation depuis l'api",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "name": {
-                        "description": "Le nom de l'organisation.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "email": {
-                        "type": "string",
-                        "description": "l'email principal de contact de l'organisation",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "format": "email",
-                        "nullable": true
-                    },
-                    "logo": {
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "location": {
-                        "$ref": "#/components/schemas/PostalAddress"
-                    },
-                    "description": {
-                        "description": "La description complète de l'évènement au format texte avec saut de ligne",
-                        "externalDocs": {
-                            "url": "https://schema.org/description"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "descriptionHtml": {
-                        "description": "La description complète de l'évènement au format html",
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "contactPoints": {
-                        "type": "array",
-                        "nullable": true,
-                        "items": {
-                            "$ref": "#/components/schemas/ContactPoint"
-                        }
-                    },
-                    "events": {
-                        "type": "array",
-                        "nullable": true,
-                        "items": {
-                            "$ref": "#/components/schemas/EventResume"
-                        }
-                    }
-                },
-                "required": ["@type", "@id", "identifier", "url", "name", "logo", "description", "descriptionHtml"]
-            },
-            "OrganizationResume": {
-                "type": "object",
-                "description": "Une structure liée au numérique.",
-                "externalDocs": {
-                    "url": "https://schema.org/Organization"
-                },
-                "title": "",
-                "nullable": true,
-                "properties": {
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique de l'organisation.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "Url permettant d'obtenir les informations sur l'organisation depuis l'api",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "name": {
-                        "description": "Le nom de l'organisation.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    }
-                },
-                "required": ["@type", "@id", "identifier", "url", "name"]
-            },
-            "JobPosting": {
-                "description": "Une offre d'emploi",
-                "type": "object",
-                "x-examples": {
-                    "example-devReact": {
-                        "title": "Developpeur Javascript",
-                        "url": "https://jobs.caen.camp",
-                        "datePosted": "2010-03-02",
-                        "employerOverview": "Au sein d'une équipe DSI composée de juniors et de séniors",
-                        "employmentType": "CDD",
-                        "experienceRequirements": "3 ans d'experience sur un projet Javascript",
-                        "jobStartDate": "2020-05-02",
-                        "skills": "JavaScript, Devops, Php, ...",
-                        "validThrough": "2010-05-05"
-                    }
-                },
-                "properties": {
-                    "@context": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique de l'organisation.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "Url permettant d'obtenir les informations sur l'organisation depuis l'api",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "title": {
-                        "type": "string",
-                        "example": "Developpeur Cobol"
-                    },
-                    "datePosted": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2010-03-02"
-                    },
-                    "employerOverview": {
-                        "type": "string",
-                        "example": "Au sein d'une équipe DSI composée de juniors et de séniors"
-                    },
-                    "employmentType": {
-                        "type": "string",
-                        "enum": ["CDI", "CDD", "Alternance", "Autre"],
-                        "example": "CDD"
-                    },
-                    "experienceRequirements": {
-                        "type": "string",
-                        "example": "3 ans d'experience sur un projet Javascript"
-                    },
-                    "jobStartDate": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2020-05-02",
-                        "nullable": true
-                    },
-                    "skills": {
-                        "type": "string",
-                        "example": "JavaScript, Devops, Php, ..."
-                    },
-                    "validThrough": {
-                        "type": "string",
-                        "format": "date-time",
-                        "example": "2010-05-05",
-                        "nullable": true
-                    },
-                    "hiringOrganization": {
-                        "$ref": "#/components/schemas/OrganizationResume"
-                    }
-                },
-                "required": [
-                    "@type",
-                    "@id",
-                    "identifier",
-                    "url",
-                    "title",
-                    "datePosted",
-                    "employerOverview",
-                    "employmentType",
-                    "experienceRequirements",
-                    "jobStartDate",
-                    "skills",
-                    "validThrough"
-                ]
-            },
-            "CreativeWork": {
-                "type": "object",
-                "description": "Le type le plus générique de travail créatif. Pour les CaenCamp, il s'agira de talks.",
-                "externalDocs": {
-                    "url": "https://schema.org/CreativeWork"
-                },
-                "properties": {
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique du talk.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "Url permettant d'obtenir les informations sur le talk depuis l'api",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "name": {
-                        "description": "Le titre du talk.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "format": {
-                        "$ref": "#/components/schemas/TalkType"
-                    },
-                    "video": {
-                        "type": "string",
-                        "description": "Url de la video du talk.",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "format": "uri",
-                        "nullable": true
-                    },
-                    "abstract": {
-                        "description": "Le résumé du talk au format texte.",
-                        "externalDocs": {
-                            "url": "https://schema.org/abstract"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "description": {
-                        "description": "La description complète du talk au format texte avec saut de ligne",
-                        "externalDocs": {
-                            "url": "https://schema.org/description"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "descriptionHtml": {
-                        "description": "La description complète du talk au format html",
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "maintainers": {
-                        "description": "La liste des speakers du talk",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/SpeakerMaintainer"
-                        }
-                    },
-                    "tags": {
-                        "type": "array",
-                        "description": "Tableau des tags associés au talk.",
-                        "nullable": true,
-                        "items": {
-                            "type": "string"
-                        }
-                    }
-                },
-                "required": [
-                    "@type",
-                    "@id",
-                    "identifier",
-                    "url",
-                    "name",
-                    "format",
-                    "video",
-                    "abstract",
-                    "description",
-                    "tags"
-                ]
-            },
-            "CreativeWorkResume": {
-                "type": "object",
-                "description": "Un résumé de talk.",
-                "externalDocs": {
-                    "url": "https://schema.org/CreativeWork"
-                },
-                "properties": {
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique du talk.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "Url permettant d'obtenir les informations sur le talk depuis l'api",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "name": {
-                        "description": "Le titre du talk.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "format": {
-                        "$ref": "#/components/schemas/TalkType"
-                    },
-                    "video": {
-                        "type": "string",
-                        "description": "Url de la video du talk.",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "format": "uri",
-                        "nullable": true
-                    },
-                    "abstract": {
-                        "description": "Le résumé du talk au format texte.",
-                        "externalDocs": {
-                            "url": "https://schema.org/abstract"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "recordedAt": {
-                        "description": "L'édition du CaenCamp ou le talk a été donné.",
-                        "$ref": "#/components/schemas/EventResume"
-                    }
-                },
-                "required": ["@type", "@id", "identifier", "url", "name", "format", "video", "abstract"]
-            },
-            "VirtualLocation": {
-                "type": "object",
-                "description": "Un service utilisé pour un événement online.",
-                "externalDocs": {
-                    "url": "https://schema.org/VirtualLocation"
-                },
-                "properties": {
-                    "@context": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique du service.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "L'url de l'événement sur le service",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "name": {
-                        "description": "Le nom du service.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    }
-                },
-                "required": ["@type", "@id", "identifier", "url", "name"]
-            },
-            "Place": {
-                "type": "object",
-                "description": "Un lieu où se déroule un événement.",
-                "externalDocs": {
-                    "url": "https://schema.org/Place"
-                },
-                "title": "",
-                "properties": {
-                    "@context": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique du lieu.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "Url permettant d'obtenir les informations sur le lieux depuis l'api",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "name": {
-                        "description": "Le nom du lieu.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "description": {
-                        "description": "La description complète du lieu au format texte avec saut de ligne",
-                        "externalDocs": {
-                            "url": "https://schema.org/description"
-                        },
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "descriptionHtml": {
-                        "description": "La description complète du lieu au format html",
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "image": {
-                        "description": "L'url de l'image du lieu.",
-                        "externalDocs": {
-                            "url": "http://schema.org/image"
-                        },
-                        "type": "string",
-                        "format": "uri",
-                        "nullable": true
-                    },
-                    "address": {
-                        "$ref": "#/components/schemas/PostalAddress"
-                    },
-                    "events": {
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/EventResume"
-                        }
-                    }
-                },
-                "required": [
-                    "@context",
-                    "@type",
-                    "@id",
-                    "identifier",
-                    "url",
-                    "name",
-                    "description",
-                    "descriptionHtml",
-                    "image",
-                    "address"
-                ]
-            },
-            "PlaceEvent": {
-                "type": "object",
-                "description": "Informations minimales sur le lieu oú se déroule un événement.",
-                "externalDocs": {
-                    "url": "https://schema.org/Place"
-                },
-                "properties": {
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "@id": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "identifier": {
-                        "description": "L'identifiant unique du lieu.",
-                        "externalDocs": {
-                            "url": "https://schema.org/identifier"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "url": {
-                        "type": "string",
-                        "description": "Url permettant d'obtenir les informations sur le lieux depuis l'api",
-                        "externalDocs": {
-                            "url": "http://schema.org/url"
-                        },
-                        "nullable": false,
-                        "format": "uri"
-                    },
-                    "name": {
-                        "description": "Le nom du lieu.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "address": {
-                        "$ref": "#/components/schemas/PostalAddress"
-                    }
-                },
-                "required": ["@type", "@id", "identifier", "url", "name"]
-            },
-            "PostalAddress": {
-                "type": "object",
-                "description": "Une adresse physique",
-                "externalDocs": {
-                    "url": "http://schema.org/PostalAddress"
-                },
-                "x-internal": false,
-                "properties": {
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "streetAddress": {
-                        "description": "Le détails de l'adresse (batiment, rue, ...)",
-                        "externalDocs": {
-                            "url": "http://schema.org/streetAddress"
-                        },
-                        "type": "string",
-                        "nullable": true
-                    },
-                    "postalCode": {
-                        "description": "Le code postale.",
-                        "externalDocs": {
-                            "url": "http://schema.org/postalCode"
-                        },
-                        "type": "string"
-                    },
-                    "addressLocality": {
-                        "description": "La ville.",
-                        "externalDocs": {
-                            "url": "http://schema.org/addressLocality"
-                        },
-                        "type": "string"
-                    },
-                    "addressCountry": {
-                        "description": "Le pays au format [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1).",
-                        "externalDocs": {
-                            "url": "http://schema.org/addressCountry"
-                        },
-                        "type": "string"
-                    }
-                },
-                "required": ["@type", "streetAddress", "postalCode", "addressLocality", "addressCountry"]
-            },
-            "Language": {
-                "type": "object",
-                "description": "Langues naturelles telles que le français, le tamoul, l'hindi, l'anglais, etc.",
-                "externalDocs": {
-                    "url": "https://schema.org/ContactPoint"
-                },
-                "properties": {
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "name": {
-                        "description": "Le langue.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    }
-                },
-                "required": ["@type", "name"],
-                "x-internal": false
-            },
-            "ContactPoint": {
-                "type": "object",
-                "description": "Un contact au sein d'une organisation.",
-                "externalDocs": {
-                    "url": "https://schema.org/Language"
-                },
-                "x-internal": false,
-                "properties": {
-                    "@type": {
-                        "type": "string",
-                        "readOnly": true
-                    },
-                    "contactType": {
-                        "description": "Le langue.",
-                        "externalDocs": {
-                            "url": "http://schema.org/name"
-                        },
-                        "type": "string",
-                        "nullable": false
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string",
-                        "format": "email",
-                        "nullable": true
-                    },
-                    "telephone": {
-                        "type": "string",
-                        "nullable": true
-                    }
-                },
-                "required": ["@type", "contactType", "email", "telephone"]
-            },
-            "Tag": {
-                "type": "object",
-                "properties": {
-                    "identifier": {
-                        "type": "string"
-                    },
-                    "label": {
-                        "type": "string"
-                    }
-                },
-                "required": ["identifier", "label"]
-            },
-            "TalkType": {
-                "required": ["label", "durationInMinutes"],
-                "properties": {
-                    "label": {
-                        "type": "string"
-                    },
-                    "durationInMinutes": {
-                        "type": "integer"
-                    }
-                },
-                "description": "Le type de talk (normal, lightning de 5 min...)"
-            },
-            "Tags": {
-                "type": "array",
-                "items": {
-                    "$ref": "#/components/schemas/Tag"
-                }
-            },
-            "WebSite": {
-                "type": "object",
-                "properties": {
-                    "type": {
-                        "type": "string",
-                        "enum": ["github", "twitter", "linkedin", "perso", "autre"]
-                    },
-                    "url": {
-                        "type": "string",
-                        "format": "uri"
-                    }
-                },
-                "required": ["type", "url"],
-                "description": "Un site web associé à un speaker."
-            },
-            "Error": {
-                "type": "object",
-                "properties": {
-                    "status": {
-                        "type": "integer",
-                        "format": "int32"
-                    },
-                    "message": {
-                        "type": "string"
-                    }
-                },
-                "required": ["status", "message"]
-            }
-        },
-        "headers": {
-            "X-Total-Count": {
-                "description": "Return information about total items to paginate",
-                "schema": {
-                    "type": "string"
-                },
-                "example": "42",
-                "required": false
-            },
-            "Link": {
-                "description": "Return information about pagination actions",
-                "schema": {
-                    "type": "string"
-                },
-                "example": "</resources?currentPage=3&perPage=10>; rel=\"self\",\n</resources?currentPage=1&perPage=10>; rel=\"first\",\n</resources?currentPage=2&perPage=10>; rel=\"prev\",\n</resources?currentPage=4&perPage=10>; rel=\"next\",\n</resources?currentPage=5&perPage=10>; rel=\"last\",\n",
-                "required": false
-            }
-        },
-        "parameters": {
-            "perPage": {
-                "name": "perPage",
-                "in": "query",
-                "required": false,
-                "schema": {
-                    "type": "integer",
-                    "example": 25,
-                    "format": "int32",
-                    "minimum": 1
-                },
-                "description": "Le paramètre de pagination pour définir le nombre d'éléments par page."
-            },
-            "currentPage": {
-                "name": "currentPage",
-                "in": "query",
-                "required": false,
-                "schema": {
-                    "type": "integer",
-                    "example": 1,
-                    "format": "int32",
-                    "minimum": 1
-                },
-                "description": "Le paramètre de pagination pour définir la page courante"
-            },
-            "id": {
-                "name": "id",
-                "in": "path",
-                "required": true,
-                "schema": {
-                    "type": "string"
-                },
-                "description": "L'identifiant unique d'un objet"
-            }
-        },
-        "securitySchemes": {}
+    "contact": {
+      "name": "CaenCamp",
+      "url": "https://caen.camp",
+      "email": "contact@caen.camp"
     }
+  },
+  "servers": [
+    {
+      "url": "https://api.caen.camp",
+      "description": "Serveur de production (live data)"
+    },
+    {
+      "url": "http://localhost:3001",
+      "description": "Serveur local (données de dev.)"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Events",
+      "description": "Les événements des CaenCamp."
+    },
+    {
+      "name": "Organizations",
+      "description": "Les organisations liées aux numérique dans le Calvados."
+    },
+    {
+      "name": "Job-Postings",
+      "description": "Les offres d'emploie liées aux numérique dans le Calvados."
+    },
+    {
+      "name": "Speakers",
+      "description": "Les speakers des CaenCamp."
+    },
+    {
+      "name": "Places",
+      "description": "Les lieux oú se déroulent des événements des CaenCamp."
+    },
+    {
+      "name": "Tags",
+      "description": "Les tags associés aux événements."
+    },
+    {
+      "name": "Papers",
+      "description": "Soumissions des propositions de talks (aka call for papers)."
+    }
+  ],
+  "paths": {
+    "/api/events": {
+      "get": {
+        "summary": "La liste paginée des événements.",
+        "description": "La liste paginée des événements.",
+        "operationId": "listEvents",
+        "tags": [
+          "Events"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPage"
+          },
+          {
+            "$ref": "#/components/parameters/perPage"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "CaenCamp",
+                "Devops CaenCamp",
+                "Coding CaenCamp"
+              ]
+            },
+            "in": "query",
+            "name": "category",
+            "description": "Une catégorie de rencontre des CaenCamp"
+          },
+          {
+            "schema": {
+              "type": "string",
+              "enum": [
+                "upcomming",
+                "past"
+              ]
+            },
+            "in": "query",
+            "name": "when",
+            "description": "Filtre sur le statut passé ou à venir des événements"
+          },
+          {
+            "schema": {
+              "type": "string"
+            },
+            "in": "query",
+            "name": "tag",
+            "description": "Filtre sur un tag"
+          },
+          {
+            "schema": {
+              "type": "boolean"
+            },
+            "in": "query",
+            "name": "hasVideo",
+            "description": "Filtre sur l'existance d'une vidéo de l'événement."
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste paginée d'événements",
+            "headers": {
+              "X-Total-Count": {
+                "$ref": "#/components/headers/X-Total-Count"
+              },
+              "Link": {
+                "$ref": "#/components/headers/Link"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Events"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/events/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/id"
+        }
+      ],
+      "get": {
+        "summary": "Obtenir les détails d'un événement",
+        "tags": [
+          "Events"
+        ],
+        "responses": {
+          "200": {
+            "description": "L'événement demandé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "get-api-events-id",
+        "description": "Un événement"
+      }
+    },
+    "/api/organizations": {
+      "get": {
+        "summary": "La liste paginée des organisations.",
+        "description": "La liste paginée des organisations.",
+        "operationId": "listOrganizations",
+        "tags": [
+          "Organizations"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPage"
+          },
+          {
+            "$ref": "#/components/parameters/perPage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste paginée d'organisations.",
+            "headers": {
+              "X-Total-Count": {
+                "$ref": "#/components/headers/X-Total-Count"
+              },
+              "Link": {
+                "$ref": "#/components/headers/Link"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Organization"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/organizations/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/id"
+        }
+      ],
+      "get": {
+        "summary": "Obtenir les détails d'une organisation.",
+        "tags": [
+          "Organizations"
+        ],
+        "responses": {
+          "200": {
+            "description": "L'organisation demandée",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organization"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getOrganization",
+        "description": "Une organization"
+      }
+    },
+    "/api/job-postings": {
+      "get": {
+        "summary": "La liste paginée des offres d'emploie.",
+        "description": "La liste paginée des offres d'emploie.",
+        "operationId": "listJobposting",
+        "tags": [
+          "Job-Postings"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPage"
+          },
+          {
+            "$ref": "#/components/parameters/perPage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste paginée d'offres d'emploie.",
+            "headers": {
+              "X-Total-Count": {
+                "$ref": "#/components/headers/X-Total-Count"
+              },
+              "Link": {
+                "$ref": "#/components/headers/Link"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/JobPosting"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "parameters": []
+    },
+    "/api/job-postings/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          },
+          "description": "L'identifiant unique d'un objet"
+        }
+      ],
+      "get": {
+        "summary": "Obtenir les détails d'une offre d'emploi.",
+        "tags": [
+          "Job-Postings"
+        ],
+        "responses": {
+          "200": {
+            "description": "L'offre d'emploie demandée",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JobPosting"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getJobPosting",
+        "description": "Une offre d'emploi"
+      }
+    },
+    "/api/places": {
+      "get": {
+        "summary": "La liste paginée des lieux.",
+        "description": "La liste paginée des lieux.",
+        "operationId": "listPlaces",
+        "tags": [
+          "Places"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPage"
+          },
+          {
+            "$ref": "#/components/parameters/perPage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste paginée de lieux",
+            "headers": {
+              "X-Total-Count": {
+                "$ref": "#/components/headers/X-Total-Count"
+              },
+              "Link": {
+                "$ref": "#/components/headers/Link"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Place"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/places/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/id"
+        }
+      ],
+      "get": {
+        "summary": "Obtenir les détails d'un lieu",
+        "tags": [
+          "Places"
+        ],
+        "responses": {
+          "200": {
+            "description": "Le lieu demandé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Place"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getPlace",
+        "description": "Un lieu"
+      }
+    },
+    "/api/speakers": {
+      "get": {
+        "summary": "La liste paginée des speakers.",
+        "description": "La liste paginée des speakers.",
+        "operationId": "listSpeakers",
+        "tags": [
+          "Speakers"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPage"
+          },
+          {
+            "$ref": "#/components/parameters/perPage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste paginée de speakers",
+            "headers": {
+              "X-Total-Count": {
+                "$ref": "#/components/headers/X-Total-Count"
+              },
+              "Link": {
+                "$ref": "#/components/headers/Link"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Speaker"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/speakers/{id}": {
+      "parameters": [
+        {
+          "$ref": "#/components/parameters/id"
+        }
+      ],
+      "get": {
+        "summary": "Obtenir les détails d'un speaker",
+        "tags": [
+          "Speakers"
+        ],
+        "responses": {
+          "200": {
+            "description": "Le speaker demandé",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Speaker"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        },
+        "operationId": "getSpeaker",
+        "description": "Un speaker"
+      }
+    },
+    "/api/tags": {
+      "get": {
+        "summary": "La liste paginée des tags associés aux événements.",
+        "description": "La liste paginée des tags associés aux événements.",
+        "operationId": "listTags",
+        "tags": [
+          "Tags"
+        ],
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/currentPage"
+          },
+          {
+            "$ref": "#/components/parameters/perPage"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Une liste paginée de tags",
+            "headers": {
+              "X-Total-Count": {
+                "$ref": "#/components/headers/X-Total-Count"
+              },
+              "Link": {
+                "$ref": "#/components/headers/Link"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tags"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/papers": {
+      "post": {
+        "summary": "Envoi d'une proposition de talk",
+        "operationId": "post-api-papers",
+        "tags": [
+          "Papers"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "",
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "message"
+                  ],
+                  "x-examples": {
+                    "example-1": {
+                      "message": "Error message"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Paper"
+              }
+            }
+          }
+        },
+        "description": "Soumission d'une proposition de talk"
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Event": {
+        "type": "object",
+        "description": "Un évènement des CaenCamp. Le plus généralement une soirée avec la présentation d'un ou plusieurs talks. Le format des événements respecte le formatage des [events](https://schema.org/Event) de schema.org, où les talks sont des [CreativeWorks](https://schema.org/CreativeWork)",
+        "externalDocs": {
+          "url": "https://schema.org/Event"
+        },
+        "properties": {
+          "@context": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique de l'évènement.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur l'évènement depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le titre de l'évènement.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "category": {
+            "type": "string",
+            "description": "La catégorie de rencontre des CaenCamp",
+            "enum": [
+              "CaenCamp",
+              "Coding CaenCamp",
+              "Devops CaenCamp"
+            ],
+            "nullable": false
+          },
+          "number": {
+            "description": "Le numéro de l'édition au sein de la catégorie.",
+            "type": "integer",
+            "nullable": true
+          },
+          "isAccessibleForFree": {
+            "description": "La rencontre est-elle gratuite.",
+            "type": "boolean"
+          },
+          "inLanguage": {
+            "$ref": "#/components/schemas/Language"
+          },
+          "startDate": {
+            "description": "La date et l'heure de début au format [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601).",
+            "externalDocs": {
+              "url": "https://schema.org/startDate"
+            },
+            "type": "string",
+            "format": "date-time",
+            "nullable": false
+          },
+          "endDate": {
+            "description": "La date et l'heure de fin au format [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601).",
+            "externalDocs": {
+              "url": "https://schema.org/endDate"
+            },
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "eventAttendanceMode": {
+            "description": "Le mode de rencontre (offline / online / mixed)",
+            "externalDocs": {
+              "url": "https://schema.org/eventAttendanceMode"
+            },
+            "type": "string",
+            "format": "uri",
+            "nullable": false
+          },
+          "eventStatus": {
+            "description": "Le statut de la rencontre",
+            "externalDocs": {
+              "url": "https://schema.org/eventStatus"
+            },
+            "type": "string",
+            "format": "uri",
+            "nullable": false
+          },
+          "disambiguatingDescription": {
+            "description": "Le résumé de la rencontre au format texte.",
+            "externalDocs": {
+              "url": "https://schema.org/disambiguatingDescription"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "description": {
+            "description": "La description complète de l'évènement au format texte avec saut de ligne",
+            "externalDocs": {
+              "url": "https://schema.org/description"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "descriptionHtml": {
+            "description": "La description complète de l'évènement au format html",
+            "type": "string",
+            "nullable": false
+          },
+          "image": {
+            "description": "L'url de l'image de l'évènenement.",
+            "externalDocs": {
+              "url": "http://schema.org/image"
+            },
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "tags": {
+            "type": "array",
+            "description": "Tableau des tags associés à l'évenement.",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          },
+          "hasVideo": {
+            "description": "La rencontre a-t-elle une vidéo ?",
+            "type": "boolean"
+          },
+          "meetupId": {
+            "description": "L'identifiant de la rencontre sur meetup.com, pour les inscriptions.",
+            "type": "string",
+            "nullable": true
+          },
+          "performers": {
+            "$ref": "#/components/schemas/Performers"
+          },
+          "location": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/VirtualLocation"
+              },
+              {
+                "$ref": "#/components/schemas/PlaceEvent"
+              }
+            ]
+          },
+          "organizer": {
+            "$ref": "#/components/schemas/OrganizationResume"
+          },
+          "sponsor": {
+            "$ref": "#/components/schemas/OrganizationResume"
+          },
+          "workPerformed": {
+            "description": "La liste des talks présentés durant l'événement.",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CreativeWork"
+            }
+          }
+        },
+        "required": [
+          "@context",
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "category",
+          "number",
+          "isAccessibleForFree",
+          "inLanguage",
+          "startDate",
+          "eventAttendanceMode",
+          "disambiguatingDescription",
+          "tags",
+          "hasVideo",
+          "performers",
+          "location",
+          "organizer",
+          "workPerformed"
+        ]
+      },
+      "Events": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Event"
+        }
+      },
+      "EventResume": {
+        "type": "object",
+        "description": "Un résumé d'évènement des CaenCamp.",
+        "externalDocs": {
+          "url": "https://schema.org/Event"
+        },
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique de l'évènement.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur l'évènement depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le titre de l'évènement.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "category": {
+            "type": "string",
+            "description": "La catégorie de rencontre des CaenCamp",
+            "enum": [
+              "CaenCamp",
+              "Coding CaenCamp",
+              "Devops CaenCamp",
+              "Dojo CaenCamp"
+            ],
+            "nullable": false
+          },
+          "number": {
+            "description": "Le numéro de l'édition au sein de la catégorie.",
+            "type": "integer",
+            "nullable": true
+          },
+          "startDate": {
+            "description": "La date et l'heure de début au format [ISO 8601](http://en.wikipedia.org/wiki/ISO_8601).",
+            "externalDocs": {
+              "url": "https://schema.org/startDate"
+            },
+            "type": "string",
+            "format": "date-time",
+            "nullable": false
+          },
+          "disambiguatingDescription": {
+            "description": "Le résumé de la rencontre au format texte.",
+            "externalDocs": {
+              "url": "https://schema.org/disambiguatingDescription"
+            },
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "category",
+          "number",
+          "startDate",
+          "disambiguatingDescription"
+        ]
+      },
+      "Speaker": {
+        "type": "object",
+        "description": "Une personne ayant donné un ou plusieurs talks aux CaenCamp",
+        "externalDocs": {
+          "url": "https://schema.org/Person"
+        },
+        "title": "",
+        "properties": {
+          "@context": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique de le speaker.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur le speaker depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le nom de le speaker.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "disambiguatingDescription": {
+            "description": "Une présentation rapide du speaker au format texte.",
+            "externalDocs": {
+              "url": "https://schema.org/knowsAbout"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "description": {
+            "description": "La description complète du speakers au format texte avec saut de ligne",
+            "externalDocs": {
+              "url": "https://schema.org/description"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "descriptionHtml": {
+            "description": "La description complète du speakers au format html",
+            "type": "string",
+            "nullable": false
+          },
+          "image": {
+            "description": "L'url de l'image de l'évènenement.",
+            "externalDocs": {
+              "url": "http://schema.org/image"
+            },
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "websites": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/WebSite"
+            }
+          },
+          "talks": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/CreativeWorkResume"
+            }
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "disambiguatingDescription",
+          "description",
+          "descriptionHtml",
+          "image"
+        ]
+      },
+      "SpeakerMaintainer": {
+        "type": "object",
+        "description": "Les informations sur le speaker d'un talk.",
+        "externalDocs": {
+          "url": "https://schema.org/Person"
+        },
+        "title": "",
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique de le speaker.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur le speaker depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le nom de le speaker.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "disambiguatingDescription": {
+            "description": "Une présentation rapide du speaker au format texte.",
+            "externalDocs": {
+              "url": "https://schema.org/knowsAbout"
+            },
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "disambiguatingDescription"
+        ]
+      },
+      "Performers": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/SpeakerMaintainer"
+        },
+        "description": "L'ensemble des speakers d'une rencontre."
+      },
+      "Organization": {
+        "type": "object",
+        "description": "Une structure liée au numérique.",
+        "externalDocs": {
+          "url": "https://schema.org/Organization"
+        },
+        "title": "",
+        "nullable": true,
+        "properties": {
+          "@context": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique de l'organisation.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur l'organisation depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le nom de l'organisation.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "email": {
+            "type": "string",
+            "description": "l'email principal de contact de l'organisation",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "format": "email",
+            "nullable": true
+          },
+          "logo": {
+            "type": "string",
+            "nullable": true
+          },
+          "location": {
+            "$ref": "#/components/schemas/PostalAddress"
+          },
+          "description": {
+            "description": "La description complète de l'évènement au format texte avec saut de ligne",
+            "externalDocs": {
+              "url": "https://schema.org/description"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "descriptionHtml": {
+            "description": "La description complète de l'évènement au format html",
+            "type": "string",
+            "nullable": true
+          },
+          "contactPoints": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/ContactPoint"
+            }
+          },
+          "events": {
+            "type": "array",
+            "nullable": true,
+            "items": {
+              "$ref": "#/components/schemas/EventResume"
+            }
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "logo",
+          "description",
+          "descriptionHtml"
+        ]
+      },
+      "OrganizationResume": {
+        "type": "object",
+        "description": "Une structure liée au numérique.",
+        "externalDocs": {
+          "url": "https://schema.org/Organization"
+        },
+        "title": "",
+        "nullable": true,
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique de l'organisation.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur l'organisation depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le nom de l'organisation.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name"
+        ]
+      },
+      "JobPosting": {
+        "description": "Une offre d'emploi",
+        "type": "object",
+        "x-examples": {
+          "example-devReact": {
+            "title": "Developpeur Javascript",
+            "url": "https://jobs.caen.camp",
+            "datePosted": "2010-03-02",
+            "employerOverview": "Au sein d'une équipe DSI composée de juniors et de séniors",
+            "employmentType": "CDD",
+            "experienceRequirements": "3 ans d'experience sur un projet Javascript",
+            "jobStartDate": "2020-05-02",
+            "skills": "JavaScript, Devops, Php, ...",
+            "validThrough": "2010-05-05"
+          }
+        },
+        "properties": {
+          "@context": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique de l'organisation.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur l'organisation depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "title": {
+            "type": "string",
+            "example": "Developpeur Cobol"
+          },
+          "datePosted": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2010-03-02"
+          },
+          "employerOverview": {
+            "type": "string",
+            "example": "Au sein d'une équipe DSI composée de juniors et de séniors"
+          },
+          "employmentType": {
+            "type": "string",
+            "enum": [
+              "CDI",
+              "CDD",
+              "Alternance",
+              "Autre"
+            ],
+            "example": "CDD"
+          },
+          "experienceRequirements": {
+            "type": "string",
+            "example": "3 ans d'experience sur un projet Javascript"
+          },
+          "jobStartDate": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2020-05-02",
+            "nullable": true
+          },
+          "skills": {
+            "type": "string",
+            "example": "JavaScript, Devops, Php, ..."
+          },
+          "validThrough": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2010-05-05",
+            "nullable": true
+          },
+          "hiringOrganization": {
+            "$ref": "#/components/schemas/OrganizationResume"
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "title",
+          "datePosted",
+          "employerOverview",
+          "employmentType",
+          "experienceRequirements",
+          "jobStartDate",
+          "skills",
+          "validThrough"
+        ]
+      },
+      "CreativeWork": {
+        "type": "object",
+        "description": "Le type le plus générique de travail créatif. Pour les CaenCamp, il s'agira de talks.",
+        "externalDocs": {
+          "url": "https://schema.org/CreativeWork"
+        },
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique du talk.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur le talk depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le titre du talk.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "format": {
+            "$ref": "#/components/schemas/TalkType"
+          },
+          "video": {
+            "type": "string",
+            "description": "Url de la video du talk.",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "format": "uri",
+            "nullable": true
+          },
+          "abstract": {
+            "description": "Le résumé du talk au format texte.",
+            "externalDocs": {
+              "url": "https://schema.org/abstract"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "description": {
+            "description": "La description complète du talk au format texte avec saut de ligne",
+            "externalDocs": {
+              "url": "https://schema.org/description"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "descriptionHtml": {
+            "description": "La description complète du talk au format html",
+            "type": "string",
+            "nullable": false
+          },
+          "maintainers": {
+            "description": "La liste des speakers du talk",
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/SpeakerMaintainer"
+            }
+          },
+          "tags": {
+            "type": "array",
+            "description": "Tableau des tags associés au talk.",
+            "nullable": true,
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "format",
+          "video",
+          "abstract",
+          "description",
+          "tags"
+        ]
+      },
+      "CreativeWorkResume": {
+        "type": "object",
+        "description": "Un résumé de talk.",
+        "externalDocs": {
+          "url": "https://schema.org/CreativeWork"
+        },
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique du talk.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur le talk depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le titre du talk.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "format": {
+            "$ref": "#/components/schemas/TalkType"
+          },
+          "video": {
+            "type": "string",
+            "description": "Url de la video du talk.",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "format": "uri",
+            "nullable": true
+          },
+          "abstract": {
+            "description": "Le résumé du talk au format texte.",
+            "externalDocs": {
+              "url": "https://schema.org/abstract"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "recordedAt": {
+            "description": "L'édition du CaenCamp ou le talk a été donné.",
+            "$ref": "#/components/schemas/EventResume"
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "format",
+          "video",
+          "abstract"
+        ]
+      },
+      "VirtualLocation": {
+        "type": "object",
+        "description": "Un service utilisé pour un événement online.",
+        "externalDocs": {
+          "url": "https://schema.org/VirtualLocation"
+        },
+        "properties": {
+          "@context": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique du service.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "L'url de l'événement sur le service",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le nom du service.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name"
+        ]
+      },
+      "Place": {
+        "type": "object",
+        "description": "Un lieu où se déroule un événement.",
+        "externalDocs": {
+          "url": "https://schema.org/Place"
+        },
+        "title": "",
+        "properties": {
+          "@context": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique du lieu.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur le lieux depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le nom du lieu.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "description": {
+            "description": "La description complète du lieu au format texte avec saut de ligne",
+            "externalDocs": {
+              "url": "https://schema.org/description"
+            },
+            "type": "string",
+            "nullable": true
+          },
+          "descriptionHtml": {
+            "description": "La description complète du lieu au format html",
+            "type": "string",
+            "nullable": true
+          },
+          "image": {
+            "description": "L'url de l'image du lieu.",
+            "externalDocs": {
+              "url": "http://schema.org/image"
+            },
+            "type": "string",
+            "format": "uri",
+            "nullable": true
+          },
+          "address": {
+            "$ref": "#/components/schemas/PostalAddress"
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/EventResume"
+            }
+          }
+        },
+        "required": [
+          "@context",
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name",
+          "description",
+          "descriptionHtml",
+          "image",
+          "address"
+        ]
+      },
+      "PlaceEvent": {
+        "type": "object",
+        "description": "Informations minimales sur le lieu oú se déroule un événement.",
+        "externalDocs": {
+          "url": "https://schema.org/Place"
+        },
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "@id": {
+            "type": "string",
+            "readOnly": true
+          },
+          "identifier": {
+            "description": "L'identifiant unique du lieu.",
+            "externalDocs": {
+              "url": "https://schema.org/identifier"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "url": {
+            "type": "string",
+            "description": "Url permettant d'obtenir les informations sur le lieux depuis l'api",
+            "externalDocs": {
+              "url": "http://schema.org/url"
+            },
+            "nullable": false,
+            "format": "uri"
+          },
+          "name": {
+            "description": "Le nom du lieu.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "address": {
+            "$ref": "#/components/schemas/PostalAddress"
+          }
+        },
+        "required": [
+          "@type",
+          "@id",
+          "identifier",
+          "url",
+          "name"
+        ]
+      },
+      "PostalAddress": {
+        "type": "object",
+        "description": "Une adresse physique",
+        "externalDocs": {
+          "url": "http://schema.org/PostalAddress"
+        },
+        "x-internal": false,
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "streetAddress": {
+            "description": "Le détails de l'adresse (batiment, rue, ...)",
+            "externalDocs": {
+              "url": "http://schema.org/streetAddress"
+            },
+            "type": "string",
+            "nullable": true
+          },
+          "postalCode": {
+            "description": "Le code postale.",
+            "externalDocs": {
+              "url": "http://schema.org/postalCode"
+            },
+            "type": "string"
+          },
+          "addressLocality": {
+            "description": "La ville.",
+            "externalDocs": {
+              "url": "http://schema.org/addressLocality"
+            },
+            "type": "string"
+          },
+          "addressCountry": {
+            "description": "Le pays au format [ISO 3166-1 alpha-2](http://en.wikipedia.org/wiki/ISO_3166-1).",
+            "externalDocs": {
+              "url": "http://schema.org/addressCountry"
+            },
+            "type": "string"
+          }
+        },
+        "required": [
+          "@type",
+          "streetAddress",
+          "postalCode",
+          "addressLocality",
+          "addressCountry"
+        ]
+      },
+      "Language": {
+        "type": "object",
+        "description": "Langues naturelles telles que le français, le tamoul, l'hindi, l'anglais, etc.",
+        "externalDocs": {
+          "url": "https://schema.org/ContactPoint"
+        },
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "name": {
+            "description": "Le langue.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          }
+        },
+        "required": [
+          "@type",
+          "name"
+        ],
+        "x-internal": false
+      },
+      "ContactPoint": {
+        "type": "object",
+        "description": "Un contact au sein d'une organisation.",
+        "externalDocs": {
+          "url": "https://schema.org/Language"
+        },
+        "x-internal": false,
+        "properties": {
+          "@type": {
+            "type": "string",
+            "readOnly": true
+          },
+          "contactType": {
+            "description": "Le langue.",
+            "externalDocs": {
+              "url": "http://schema.org/name"
+            },
+            "type": "string",
+            "nullable": false
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email",
+            "nullable": true
+          },
+          "telephone": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "required": [
+          "@type",
+          "contactType",
+          "email",
+          "telephone"
+        ]
+      },
+      "Tag": {
+        "type": "object",
+        "properties": {
+          "identifier": {
+            "type": "string"
+          },
+          "label": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "identifier",
+          "label"
+        ]
+      },
+      "TalkType": {
+        "required": [
+          "label",
+          "durationInMinutes"
+        ],
+        "properties": {
+          "label": {
+            "type": "string"
+          },
+          "durationInMinutes": {
+            "type": "integer"
+          }
+        },
+        "description": "Le type de talk (normal, lightning de 5 min...)"
+      },
+      "Tags": {
+        "type": "array",
+        "items": {
+          "$ref": "#/components/schemas/Tag"
+        }
+      },
+      "WebSite": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "github",
+              "twitter",
+              "linkedin",
+              "perso",
+              "autre"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "type",
+          "url"
+        ],
+        "description": "Un site web associé à un speaker."
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "message": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "message"
+        ]
+      },
+      "Paper": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "name": "John Doe",
+            "title": "Event Sourcing Made Easy",
+            "description": "d'applications haute concurrence. Mais, qu'est-ce qui se cache exactement sous ces termes ? En avez-vous réellement besoin sur votre application ?",
+            "contact": "Par télépone au 0606060606 ou par email none@sorry.com"
+          }
+        },
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "description": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contact": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "name",
+          "title",
+          "description",
+          "contact"
+        ]
+      }
+    },
+    "headers": {
+      "X-Total-Count": {
+        "description": "Return information about total items to paginate",
+        "schema": {
+          "type": "string"
+        },
+        "example": "42",
+        "required": false
+      },
+      "Link": {
+        "description": "Return information about pagination actions",
+        "schema": {
+          "type": "string"
+        },
+        "example": "</resources?currentPage=3&perPage=10>; rel=\"self\",\n</resources?currentPage=1&perPage=10>; rel=\"first\",\n</resources?currentPage=2&perPage=10>; rel=\"prev\",\n</resources?currentPage=4&perPage=10>; rel=\"next\",\n</resources?currentPage=5&perPage=10>; rel=\"last\",\n",
+        "required": false
+      }
+    },
+    "parameters": {
+      "perPage": {
+        "name": "perPage",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "example": 25,
+          "format": "int32",
+          "minimum": 1
+        },
+        "description": "Le paramètre de pagination pour définir le nombre d'éléments par page."
+      },
+      "currentPage": {
+        "name": "currentPage",
+        "in": "query",
+        "required": false,
+        "schema": {
+          "type": "integer",
+          "example": 1,
+          "format": "int32",
+          "minimum": 1
+        },
+        "description": "Le paramètre de pagination pour définir la page courante"
+      },
+      "id": {
+        "name": "id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "string"
+        },
+        "description": "L'identifiant unique d'un objet"
+      }
+    },
+    "securitySchemes": {}
+  }
 }

@@ -93,7 +93,7 @@ app.use(async (ctx, next) => {
         uiEndpoint: '/documentation',
         validatePaths: ['/api'],
         errorHandler,
-        validateResponse: true,
+        validateResponse: false,
     });
     return mw(ctx, next);
 });
