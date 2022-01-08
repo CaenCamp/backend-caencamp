@@ -647,17 +647,30 @@
                   "description": "",
                   "type": "object",
                   "properties": {
+                    "status": {
+                      "type": "number"
+                    },
                     "message": {
                       "type": "string",
                       "minLength": 1
                     }
                   },
                   "required": [
+                    "status",
                     "message"
                   ],
                   "x-examples": {
                     "example-1": {
-                      "message": "Error message"
+                      "status": 400,
+                      "message": "string"
+                    }
+                  }
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "status": 400,
+                      "message": "string"
                     }
                   }
                 }
@@ -674,11 +687,23 @@
             }
           }
         },
-        "description": "Soumission d'une proposition de talk"
+        "description": "Soumission d'une proposition de talk",
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       }
     }
   },
   "components": {
+    "securitySchemes": {
+      "JWT": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "string"
+      }
+    },
     "schemas": {
       "Event": {
         "type": "object",
@@ -2052,7 +2077,7 @@
         },
         "description": "L'identifiant unique d'un objet"
       }
-    },
-    "securitySchemes": {}
-  }
+    }
+  },
+  "security": []
 }

@@ -4,6 +4,7 @@ exports.up = function (knex) {
         table.string('owner', 200).notNullable();
         table.dateTime('created_at').defaultTo(knex.fn.now());
         table.dateTime('last_use_at');
+        table.integer('counter').notNullable().defaultTo(0);
         table.unique('owner');
     });
 };

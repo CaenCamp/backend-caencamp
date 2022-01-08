@@ -7,6 +7,7 @@ import {
     Edit,
     EditButton,
     List,
+    NumberField,
     Pagination,
     SimpleForm,
     TextField,
@@ -30,6 +31,7 @@ const TokenList = (props) => {
                 <TextField source="owner" label="Utilisateur" sortable={false} />
                 <DateField source="createdAt" label="Créé le" showTime />
                 <DateField source="lastUseAt" label="Dernière utilisation" showTime />
+                <NumberField source="counter" label="Nombre d'utilisation" />
                 <EditButton />
             </Datagrid>
         </List>

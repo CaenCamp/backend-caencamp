@@ -1,10 +1,13 @@
 const Router = require('koa-router');
 
+const publicTokenMiddleware = require('../toolbox/authentication/publicTokenMiddleware');
 const { createOne } = require('./public-repository');
 
 const router = new Router({
     prefix: '/papers',
 });
+
+router.use(publicTokenMiddleware);
 
 router.post('/', async (ctx) => {
     const newPaper = await createOne(ctx.request.body);
