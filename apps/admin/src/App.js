@@ -11,11 +11,13 @@ import editionCategories from './editions/categories';
 import editionModes from './editions/modes';
 import jobPostings from './job-postings';
 import organizations from './organizations';
+import papers from './papers';
 import places from './places';
 import speakers from './speakers';
 import tags from './tags';
 import talks from './talks';
 import talkTypes from './talks/types';
+import tokens from './tokens';
 import webSites from './websites';
 import webSiteTypes from './websites/types';
 
@@ -45,6 +47,7 @@ const App = () => {
             <Resource name="editions" {...editions} />
             <Resource name="talks" {...talks} />
             <Resource name="speakers" {...speakers} />
+            <Resource name="papers" {...papers} />
             <Resource name="tags" {...tags} />
             <Resource name="places" {...places} />
             <Resource name="websites" {...webSites} />
@@ -52,6 +55,7 @@ const App = () => {
             <Resource name="talk-types" {...talkTypes} />
             <Resource name="edition-categories" {...editionCategories} />
             <Resource name="edition-modes" {...editionModes} />
+            <Resource name="tokens" {...tokens} />
         </Admin>
     );
 };
