@@ -16,6 +16,7 @@ import speakers from './speakers';
 import tags from './tags';
 import talks from './talks';
 import talkTypes from './talks/types';
+import tokens from './tokens';
 import webSites from './websites';
 import webSiteTypes from './websites/types';
 
@@ -52,6 +53,7 @@ const App = () => {
             <Resource name="talk-types" {...talkTypes} />
             <Resource name="edition-categories" {...editionCategories} />
             <Resource name="edition-modes" {...editionModes} />
+            <Resource name="tokens" {...tokens} />
         </Admin>
     );
 };
