@@ -1,6 +1,7 @@
 exports.up = async function (knex) {
     await knex.schema.createTable('code_naf', function (table) {
-        table.string('code', 30).primary().notNullable();
+        table.uuid('id').primary().defaultTo(knex.raw('uuid_generate_v4()'));
+        table.string('code', 30).notNullable();
         table.string('label', 500).notNullable();
         table.string('id_1', 30).notNullable();
         table.string('label_1', 500).notNullable();
@@ -12,6 +13,7 @@ exports.up = async function (knex) {
         table.string('label_4', 500).notNullable();
         table.string('id_5', 30).notNullable();
         table.string('label_5', 500).notNullable();
+        table.boolean('is_used').defaultTo(false);
     });
 
     await knex.schema.createTable('staffing', function (table) {
@@ -38,8 +40,8 @@ exports.up = async function (knex) {
         table.dateTime('created_at').defaultTo(knex.fn.now());
         table.dateTime('updated_at').defaultTo(knex.fn.now());
         table.string('imported_from', 100).notNullable();
-        table.string('code_naf', 30).nullable();
-        table.foreign('code_naf').references('code_naf.code').onDelete('SET NULL');
+        table.uuid('code_naf_id').nullable();
+        table.foreign('code_naf_id').references('code_naf.id').onDelete('SET NULL');
         table.uuid('staffing_id').nullable();
         table.foreign('staffing_id').references('staffing.id').onDelete('SET NULL');
         table.uuid('legal_structure_id').nullable();
@@ -48,8 +50,8 @@ exports.up = async function (knex) {
 };
 
 exports.down = async function (knex) {
+    await knex.schema.dropTable('imported_organization');
     await knex.schema.dropTable('code_naf');
     await knex.schema.dropTable('staffing');
-    await knex.schema.dropTable('legal_structure');
-    return knex.schema.dropTable('imported_organization');
+    return knex.schema.dropTable('legal_structure');
 };

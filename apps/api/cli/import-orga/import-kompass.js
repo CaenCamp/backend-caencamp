@@ -277,17 +277,24 @@ const importation = async () => {
     await pg('legal_structure').del();
     await pg('imported_organization').del();
 
-    await pg('code_naf').insert(codesNaf);
+    await pg('code_naf').insert(
+        codesNaf.map((naf) => ({
+            ...naf,
+            is_used: activities.findIndex((act) => act.code === naf.code) > -1,
+        })),
+    );
     await pg('staffing').insert(staffing.map((s) => ({ label: s.label })));
     await pg('legal_structure').insert(status.map((s) => ({ label: s.label })));
 
     const staffings = await pg('staffing').select('*');
     const legalStructures = await pg('legal_structure').select('*');
+    const cNafs = await pg('code_naf').select('*').where({ is_used: true });
 
     for (let orgcount = 0; orgcount < organizations.length; orgcount++) {
         const orga = organizations[orgcount];
         const dbStaffing = staffings.find((s) => s.label === orga.staffing);
         const dbLegal = legalStructures.find((s) => s.label === orga.legalStatus);
+        const dbNaf = cNafs.find((n) => n.code === orga.activity.code);
         const data = {
             name: orga.name,
             slug: slugify(orga.name, slugConf),
@@ -299,7 +306,7 @@ const importation = async () => {
             street_address: orga.adress.street,
             creation_date: orga.creationDate,
             imported_from: 'https://fr.kompass.com/a/informatique-et-internet/57/d/calvados/fr_25_14',
-            code_naf: orga.activity.code,
+            code_naf_id: dbNaf ? dbNaf.id : null,
             staffing_id: dbStaffing ? dbStaffing.id : null,
             legal_structure_id: dbLegal ? dbLegal.id : null,
         };

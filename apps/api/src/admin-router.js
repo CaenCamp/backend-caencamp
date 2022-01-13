@@ -15,6 +15,11 @@ const tokenRouter = require('./post-token/router');
 const websiteRouter = require('./website/router');
 const websiteTypeRouter = require('./website/type-router');
 
+const importedOrgRouter = require('./importation/org-router');
+const nafRouter = require('./importation/naf-router');
+const staffingRouter = require('./importation/staffing-router');
+const legalRouter = require('./importation/legal-router');
+
 const router = new Router({
     prefix: '/api-admin',
 });
@@ -43,5 +48,10 @@ router.use(talkTypeRouter.routes()).use(talkTypeRouter.allowedMethods());
 router.use(tokenRouter.routes()).use(tokenRouter.allowedMethods());
 router.use(websiteRouter.routes()).use(websiteRouter.allowedMethods());
 router.use(websiteTypeRouter.routes()).use(websiteTypeRouter.allowedMethods());
+
+router.use(importedOrgRouter.routes()).use(importedOrgRouter.allowedMethods());
+router.use(nafRouter.routes()).use(nafRouter.allowedMethods());
+router.use(staffingRouter.routes()).use(staffingRouter.allowedMethods());
+router.use(legalRouter.routes()).use(legalRouter.allowedMethods());
 
 module.exports = router;
