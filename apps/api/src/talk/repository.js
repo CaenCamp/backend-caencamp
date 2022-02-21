@@ -1,7 +1,7 @@
 const slugify = require('slugify');
 const { getDbClient } = require('../toolbox/dbConnexion');
 const { markdownToTxt } = require('markdown-to-txt');
-const marked = require('marked');
+const { marked } = require('marked');
 
 const slugConfig = {
     replacement: '-', // replace spaces with replacement character, defaults to `-`
