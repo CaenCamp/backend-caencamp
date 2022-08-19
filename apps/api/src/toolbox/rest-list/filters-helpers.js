@@ -73,6 +73,22 @@ const filtersSanitizer = (filters, filterableFields) => {
                 return null;
             }
 
+            // try {
+            //     if (
+            //         unparsedValue === undefined ||
+            //         unparsedValue.trim().length == 0 ||
+            //         !filterableFields.includes(filterKey)
+            //     ) {
+            //         return null;
+            //     }
+            // } catch (error) {
+            //     console.log('DEBUG');
+            //     console.log(unparsedValue);
+            //     console.log(filters);
+            //     console.log(error);
+            //     return null;
+            // }
+
             let [value, operator] = unparsedValue.split(':');
 
             return {

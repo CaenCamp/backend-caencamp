@@ -58,7 +58,7 @@ db-init: ## Create dump and replace the last one. Environment must be started
 	docker-compose exec postgres bash -ci 'psql -U backend-local-user --file /db-init/initdb.sql cc_backend_db'
 
 db-dump: ## Create dump and replace the last one. Environment must be started
-	docker-compose exec postgres bash -ci 'pg_dump -U backend-local-user cc_backend_db > /db-dump/backend.sql'
+	docker-compose exec postgres bash -ci 'pg_dump -F c -U backend-local-user cc_backend_db > /db-dump/backend.dump'
 
 # =====================================================================
 # ADR - Architecture Decision Records =================================

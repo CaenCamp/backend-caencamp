@@ -21,6 +21,8 @@ import tokens from './tokens';
 import webSites from './websites';
 import webSiteTypes from './websites/types';
 
+import scrapping from './scrapping';
+
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
         options.headers = new Headers({ Accept: 'application/json' });
@@ -56,6 +58,10 @@ const App = () => {
             <Resource name="edition-categories" {...editionCategories} />
             <Resource name="edition-modes" {...editionModes} />
             <Resource name="tokens" {...tokens} />
+            <Resource name="imported-organizations" {...scrapping} />
+            <Resource name="nafs" />
+            <Resource name="staffings" />
+            <Resource name="legals" />
         </Admin>
     );
 };
