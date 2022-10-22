@@ -1,0 +1,5 @@
+site_name: Documentation du backend du CaenCamp
+site_url: https://api.caen.camp/docs
+nav:
+  - Home: index.md
+  - ADRs: adr/README.md

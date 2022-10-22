@@ -4,7 +4,7 @@ metadata:
   name: backend-caencamp
   annotations:
     github.com/project-slug: CaenCamp/backend-caencamp
-    backstage.io/techdocs-ref: dir:./doc
+    backstage.io/techdocs-ref: dir:.
 spec:
   type: other
   lifecycle: unknown
