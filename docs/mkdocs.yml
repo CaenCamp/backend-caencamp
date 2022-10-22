@@ -1,4 +1,4 @@
-site_name: Documentation du backend du CaenCamp (outside)
+site_name: Documentation du backend du CaenCamp (inside)
 site_url: https://api.caen.camp/docs
 nav:
   - Home: index.md
