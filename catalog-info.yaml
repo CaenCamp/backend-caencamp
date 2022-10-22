@@ -1,0 +1,10 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: backend-caencamp
+  annotations:
+    github.com/project-slug: CaenCamp/backend-caencamp
+spec:
+  type: other
+  lifecycle: unknown
+  owner: user:default/alexisjanvier
